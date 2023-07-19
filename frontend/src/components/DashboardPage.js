@@ -3,17 +3,25 @@ import { useNavigate } from "react-router-dom";
 
 function DashboardPage() {
   const navigate = useNavigate();
-  let handleLogOut = () => {
-    console.log("Loging out");
-    navigate("/"); // Redirect to the dashboard page
+
+  const handleLogOut = () => {
+    console.log("Logging out");
+    localStorage.removeItem("token"); // Remove the token from localStorage
+    navigate("/"); // Redirect to the home page
   };
 
-  return (
-    <div>
-      <h1>Dashboard Landing Page</h1>
-      <button onClick={handleLogOut}>Log out</button>
-    </div>
-  );
+  const isAuthenticated = localStorage.getItem("token") !== null;
+
+  if (isAuthenticated) {
+    return (
+      <div>
+        <h1>Dashboard Landing Page</h1>
+        <button onClick={handleLogOut}>Log out</button>
+      </div>
+    );
+  } else {
+    return <div>You are not authenticated</div>;
+  }
 }
 
 export default DashboardPage;

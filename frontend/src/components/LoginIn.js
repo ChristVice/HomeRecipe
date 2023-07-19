@@ -16,9 +16,10 @@ function LoginIn() {
       if (response && response.status === 200) {
         // Handle successful login
         console.log("Success!!");
+        localStorage.setItem("token", response.data);
         navigate("/dashboard"); // Redirect to the dashboard page
       } else {
-        console.error("Invalid response received or something");
+        console.error("Invalid response received");
         console.error(response.data);
       }
     } catch (error) {
