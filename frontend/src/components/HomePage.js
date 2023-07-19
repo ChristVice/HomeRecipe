@@ -1,6 +1,7 @@
 import React from "react";
 import "../styling/HomePage.css";
 import LoginIn from "./LoginIn";
+import SignUp from "./SignUp";
 
 function HomePage() {
   return (
@@ -8,6 +9,9 @@ function HomePage() {
       <div className="login-section">
         <LoginIn />
       </div>
+      <br />
+
+      <SignUp />
     </div>
   );
 }
