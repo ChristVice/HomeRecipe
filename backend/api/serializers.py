@@ -9,4 +9,4 @@ class UserSerializer(serializers.ModelSerializer):
 class NewUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = "__all__" # if i want to do all use "__all__"
+        fields = '__all__' # if i want to do all use "__all__"
