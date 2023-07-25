@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../styling/LogIn.css";
 
 function LoginIn() {
   const [username, setUsername] = useState("");
@@ -32,20 +33,28 @@ function LoginIn() {
   };
 
   return (
-    <div>
+    <div className="login-form-section">
+      <h1>
+        Username<span>*</span>
+      </h1>
       <input
         type="text"
-        placeholder="Username"
+        placeholder="Enter your username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
+      <h1>
+        Password<span>*</span>
+      </h1>
       <input
         type="password"
-        placeholder="Password"
+        placeholder="Enter your password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button onClick={handleLogin}>Login</button>
+      <button className="login-button" onClick={handleLogin}>
+        Login
+      </button>
     </div>
   );
 }

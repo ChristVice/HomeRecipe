@@ -8,8 +8,26 @@ function HomePage() {
   return (
     <div className="landing-page">
       <div className="left-section">
-        <LoginIn />
+        <div className="left-content">
+          <div className="title-logo">
+            <div className="logo"></div>
+            <h1 className="title">HomeRecipe</h1>
+          </div>
+          <div className="centered-content">
+            <h1 className="main-title">Log In</h1>
+            <p className="main-title-sub">Sign in and let’s start cooking!</p>
+
+            <div className="login-signup-section">
+              <LoginIn />
+
+              <p className="signup-text">
+                Don’t have an account? <a href="signup">Sign up</a>
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
+
       <div className="right-section">
         <div className="main-image">
           <div className="image-overlay"></div>
