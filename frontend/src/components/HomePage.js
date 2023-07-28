@@ -2,7 +2,6 @@ import React from "react";
 import "../styling/HomePage.css";
 import LoginIn from "./LoginIn";
 // import SignUp from "./SignUp";
-//import mainBkg from "../images/chad-montano-MqT0asuoIcU-unsplash.jpg";
 
 function HomePage() {
   return (

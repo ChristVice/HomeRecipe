@@ -5,14 +5,13 @@
 .login-form-section input {
   display: flex;
   width: 460px;
-  height: 32px;
   padding: 10px 22px 10px 22px;
   flex-direction: column;
   justify-content: center;
   flex-shrink: 0;
 
   font-family: Work Sans;
-  font-size: 20px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -33,7 +32,7 @@
 .login-form-section h1 {
   color: #000;
   font-family: Work Sans;
-  font-size: 20px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -46,7 +45,7 @@
   /*  '*'       */
   color: #eb4335;
   font-family: Work Sans;
-  font-size: 20px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -55,7 +54,7 @@
 .login-button {
   display: flex;
   width: 100%;
-  padding: 17px 0px 15px 0px;
+  padding: 10px 0px 10px 0px;
   justify-content: center;
   align-items: center;
 
@@ -65,12 +64,12 @@
   color: #fff;
   text-align: center;
   font-family: Work Sans;
-  font-size: 20px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
 
   cursor: pointer;
 
-  margin-top: 54px;
+  margin-top: 40px;
 }

@@ -7,6 +7,7 @@ function DashboardPage() {
   const handleLogOut = () => {
     console.log("Logging out");
     localStorage.removeItem("token"); // Remove the token from localStorage
+    console.log(localStorage.getItem("token"));
     navigate("/"); // Redirect to the home page
   };
 
