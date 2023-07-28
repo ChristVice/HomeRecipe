@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../styling/LoginSignForm.css";
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -35,32 +36,46 @@ function SignUp() {
   };
 
   return (
-    <div>
+    <div className="login-sign-form-section">
+      <h1>
+        Email<span>*</span>
+      </h1>
       <input
         type="text"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
+      <h1>
+        Username<span>*</span>
+      </h1>
       <input
         type="text"
         placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
+      <h1>
+        Password<span>*</span>
+      </h1>
       <input
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
+      <h1>
+        Confirm Password<span>*</span>
+      </h1>
       <input
         type="password"
         placeholder="Confirm Password"
         value={password_confirmation}
         onChange={(e) => setPasswordConfirmation(e.target.value)}
       />
-      <button onClick={handleSignUp}>Sign Up</button>
+      <button className="login-button" onClick={handleSignUp}>
+        Sign Up
+      </button>
     </div>
   );
 }

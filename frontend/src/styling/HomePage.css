@@ -108,7 +108,7 @@
   margin-top: 20px;
 }
 
-.signup-text a {
+.signup-text span {
   color: #2d75f6;
   font-family: Work Sans;
   font-size: 16px;
@@ -118,9 +118,10 @@
   text-decoration-line: underline;
 }
 
-.signup-text a:hover {
+.signup-text span:hover {
   color: #004080;
   text-decoration: underline;
+  cursor: pointer;
 }
 /* ================== RIGHT SECTION ================== */
 

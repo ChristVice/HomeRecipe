@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "../styling/LogIn.css";
+import "../styling/LoginSignForm.css";
 
 function LoginIn() {
   const [username, setUsername] = useState("");
@@ -38,7 +38,7 @@ function LoginIn() {
   };
 
   return (
-    <div className="login-form-section">
+    <div className="login-sign-form-section">
       <h1>
         Username<span>*</span>
       </h1>

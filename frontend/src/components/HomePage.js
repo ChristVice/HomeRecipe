@@ -1,9 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styling/HomePage.css";
 import LoginIn from "./LoginIn";
-// import SignUp from "./SignUp";
+import SignUp from "./SignUp";
 
 function HomePage() {
+  const [showSelectPage, setSelectPage] = useState(false);
+
+  const handleSelectePage = () => {
+    setSelectPage(!showSelectPage);
+  };
+
+  const SignupPage = () => {
+    // THIS WILL SHOW THE SIGN UP HTML
+    return (
+      <div className="centered-content">
+        <h1 className="main-title">Create Your Account</h1>
+        <p className="main-title-sub">Let’s get started!</p>
+
+        <div className="login-signup-section">
+          <SignUp />
+
+          <p className="signup-text">
+            Already have an account?{" "}
+            <span onClick={() => handleSelectePage()}>Log In</span>
+          </p>
+        </div>
+      </div>
+    );
+  };
+
+  const LoginPage = () => {
+    // THIS WILL SHOW THE LOG IN HTML
+    return (
+      <div className="centered-content">
+        <h1 className="main-title">Log In</h1>
+        <p className="main-title-sub">Sign in and let’s start cooking!</p>
+
+        <div className="login-signup-section">
+          <LoginIn />
+
+          <p className="signup-text">
+            Don't have an account?{" "}
+            <span onClick={() => handleSelectePage()}>Sign up</span>
+          </p>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="landing-page">
       <div className="left-section">
@@ -12,18 +56,7 @@ function HomePage() {
             <div className="logo"></div>
             <h1 className="title">HomeRecipe</h1>
           </div>
-          <div className="centered-content">
-            <h1 className="main-title">Log In</h1>
-            <p className="main-title-sub">Sign in and let’s start cooking!</p>
-
-            <div className="login-signup-section">
-              <LoginIn />
-
-              <p className="signup-text">
-                Don’t have an account? <a href="signup">Sign up</a>
-              </p>
-            </div>
-          </div>
+          {showSelectPage ? <SignupPage /> : <LoginPage />}
         </div>
       </div>
 

@@ -1,8 +1,8 @@
-.login-form-section > * {
+.login-sign-form-section > * {
   margin: 0;
 }
 
-.login-form-section input {
+.login-sign-form-section input {
   display: flex;
   width: 460px;
   padding: 10px 22px 10px 22px;
@@ -21,15 +21,15 @@
   background: #fff;
 }
 
-.login-form-section input::placeholder {
+.login-sign-form-section input::placeholder {
   color: #ababab;
 }
 
-.login-form-section input:focus {
+.login-sign-form-section input:focus {
   color: black;
 }
 
-.login-form-section h1 {
+.login-sign-form-section h1 {
   color: #000;
   font-family: Work Sans;
   font-size: 16px;
@@ -41,7 +41,7 @@
   margin-bottom: 15px;
 }
 
-.login-form-section h1 span {
+.login-sign-form-section h1 span {
   /*  '*'       */
   color: #eb4335;
   font-family: Work Sans;
