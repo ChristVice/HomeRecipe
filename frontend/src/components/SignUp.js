@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../styling/LoginSignForm.css";
+import "../styling/SignUp.css";
+
+import BulletImg from "../images/bulletcircle.png";
+import CheckMarkImg from "../images/checkmark.png";
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -10,11 +14,15 @@ function SignUp() {
   const [password_confirmation, setPasswordConfirmation] = useState("");
   const navigate = useNavigate();
 
-  //password checks
-  const [isCommonPassword, setIsCommonPassword] = useState(false);
-  const [isGoodLength, setIsGoodLength] = useState(false);
-  const [isSimilar, setIsSimilar] = useState(false);
-  const [isContainNumber, setIsContainNumber] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
 
   const handleSignUp = async () => {
     try {
@@ -23,56 +31,6 @@ function SignUp() {
         username,
         password,
       });
-
-      let commonPasswords = new Set([
-        "123456",
-        "123456789",
-        "Qwerty",
-        "Password",
-        "12345",
-        "12345678",
-        "111111",
-        "1234567",
-        "123123",
-        "Qwerty123",
-        "1q2w3e",
-        "1234567890",
-        "DEFAULT",
-        "0",
-        "Abc123",
-        "654321",
-        "123321",
-        "Qwertyuiop",
-        "Iloveyou",
-        "666666",
-      ]);
-
-      /*
-      These are all the checks for password
-      */
-
-      if (commonPasswords.has(password)) {
-        console.error("Password is too common");
-        setIsCommonPassword(!isCommonPassword);
-        return;
-      }
-      if (password.length < 8) {
-        console.error("Password must contain at least 8 characters");
-        setIsGoodLength(!isGoodLength);
-        return;
-      }
-      if (password.includes(email) || password.includes(username)) {
-        console.error("Password is too similar to personal information");
-        setIsSimilar(!isSimilar);
-        return;
-      }
-      if (!/\D/.test(password)) {
-        console.error(
-          "Password must contain at least one non-numeric character"
-        );
-        setIsContainNumber(!isContainNumber);
-        return;
-      }
 
       if (password !== password_confirmation) {
         console.error("passwords dont match");
@@ -98,6 +56,51 @@ function SignUp() {
     }
   };
 
+  const handlePasswordLength = () => {
+    return password.length >= 8;
+  };
+  const handlePasswordCommon = () => {
+    let commonPasswords = new Set([
+      "123456",
+      "123456789",
+      "Qwerty",
+      "Password",
+      "12345",
+      "12345678",
+      "111111",
+      "1234567",
+      "123123",
+      "Qwerty123",
+      "1q2w3e",
+      "1234567890",
+      "DEFAULT",
+      "0",
+      "Abc123",
+      "654321",
+      "123321",
+      "Qwertyuiop",
+      "Iloveyou",
+      "666666",
+    ]);
+    return password.length >= 8 && !commonPasswords.has(password);
+  };
+  const handlePasswordSimilar = () => {
+    return (
+      password.length >= 8 &&
+      !password.includes(username) &&
+      !password.includes(email)
+    );
+  };
+  const handlePasswordNumeric = () => {
+    const hasLetters = /[a-zA-Z]/.test(password);
+    const hasNumbers = /\d/.test(password);
+    const isNotEntirelyNumeric = !/^\d+$/.test(password);
+
+    return (
+      password.length >= 8 && hasLetters && hasNumbers && isNotEntirelyNumeric
+    );
+  };
+
   return (
     <div className="login-sign-form-section">
       <h1>
@@ -118,15 +121,57 @@ function SignUp() {
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
-      <h1>
-        Password<span>*</span>
-      </h1>
-      <input
-        type="password"
-        placeholder="Enter your password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+      <div className="password-container">
+        <h1>
+          Password<span>*</span>
+        </h1>
+        <input
+          type="password"
+          placeholder="Enter your password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="password-input"
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+        />
+        {isFocused && (
+          <div className="requirements-box">
+            <div className="checklist">
+              <p>Your password must:</p>
+              <ul>
+                <li>
+                  <img
+                    src={handlePasswordLength() ? CheckMarkImg : BulletImg}
+                    alt=""
+                  />
+                  Be at least 8 characters long
+                </li>
+                <li>
+                  <img
+                    src={handlePasswordSimilar() ? CheckMarkImg : BulletImg}
+                    alt=""
+                  />
+                  Not be similar to other personal information
+                </li>
+                <li>
+                  <img
+                    src={handlePasswordCommon() ? CheckMarkImg : BulletImg}
+                    alt=""
+                  />
+                  Not be a commonly used password
+                </li>
+                <li>
+                  <img
+                    src={handlePasswordNumeric() ? CheckMarkImg : BulletImg}
+                    alt=""
+                  />
+                  Not be entirely numeric
+                </li>
+              </ul>
+            </div>
+          </div>
+        )}
+      </div>
       <h1>
         Confirm Password<span>*</span>
       </h1>
