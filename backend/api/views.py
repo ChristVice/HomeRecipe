@@ -63,6 +63,8 @@ class NewUserLoginView(APIView):
             # Check if a user with the same username already exists
             if CustomUser.objects.filter(username=username).exists():
                 return Response({'error': 'Username already taken'}, status=status.HTTP_400_BAD_REQUEST)
+            elif CustomUser.objects.filter(email=email).exists():
+                return Response({'error': 'Email already in use'}, status=status.HTTP_400_BAD_REQUEST)
 
             # Create a new user
             user = CustomUser.objects.create_user(username=username, password=password, email=email)
@@ -70,5 +72,6 @@ class NewUserLoginView(APIView):
                 # user.first_name = serializer.validated_data['first_name']
                 # user.last_name = serializer.validated_data['last_name']
                 # user.save()
-            return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
+            message = f'User :: {username}, registered successfully'
+            return Response({'message': message}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

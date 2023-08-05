@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../styling/HomePage.css";
 import LoginIn from "./LoginIn";
 import SignUp from "./SignUp";
+import Logo from "../images/webicon.png";
 
 function HomePage() {
   const [showSelectPage, setSelectPage] = useState(false);
@@ -53,10 +54,14 @@ function HomePage() {
       <div className="left-section">
         <div className="left-content">
           <div className="title-logo">
-            <div className="logo"></div>
+            <div className="logo">
+              <img src={Logo} alt="logo" />
+            </div>
             <h1 className="title">HomeRecipe</h1>
           </div>
-          {showSelectPage ? <SignupPage /> : <LoginPage />}
+          {
+            showSelectPage ? <LoginPage /> : <SignupPage /> //showSelectPage ? <SignupPage /> : <LoginPage />
+          }
         </div>
       </div>
 
