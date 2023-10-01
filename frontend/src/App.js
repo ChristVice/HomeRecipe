@@ -6,11 +6,20 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<DashboardPage />} />
+      </Routes>
+    </Router>
+  );
+  /*
+  return (
+    <Router>
+      <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
       </Routes>
     </Router>
   );
+  */
 }
 
 export default App;

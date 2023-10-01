@@ -1,0 +1,158 @@
+.dashboard-page {
+  display: flex;
+  height: 100vh;
+}
+
+.right-side-panel {
+  border-radius: 50px 0px 0px 50px;
+  background: #f7f9f7;
+  box-shadow: -5px 0px 20px 0px rgba(0, 0, 0, 0.1);
+
+  width: 100%;
+
+  z-index: 100;
+}
+
+.left-side-panel {
+  width: 200px;
+
+  padding: 20px;
+  padding-right: 0px;
+}
+
+.top-title {
+  display: flex;
+  align-items: center;
+}
+.web-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.top-title p {
+  margin-left: 10px;
+
+  color: #000;
+  font-family: Work Sans;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.title-line {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  margin-right: 20px;
+}
+
+.side-tabs {
+  list-style: none;
+  padding: 0px;
+}
+
+.side-tabs li {
+  display: flex;
+  align-items: center;
+
+  margin-bottom: 2px;
+
+  height: 45px;
+  width: 100%;
+  border-radius: 15px 0px 0px 15px;
+}
+
+.side-tabs li a {
+  padding-left: 10px;
+  text-decoration: none;
+
+  color: #000;
+  font-family: Work Sans;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.side-tabs li svg {
+  width: 15px;
+  height: 15px;
+  fill: white;
+  padding-left: 20px;
+}
+
+.side-tabs li:hover {
+  display: flex;
+  align-items: center;
+
+  margin-bottom: 2px;
+
+  height: 45px;
+  width: 100%;
+  border-radius: 15px 0px 0px 15px;
+
+  background-color: #a7a7a7;
+}
+
+.side-tabs li:hover svg path {
+  width: 15px;
+  height: 15px;
+  fill: white;
+}
+
+.side-tabs li:hover a {
+  padding-left: 10px;
+  text-decoration: none;
+
+  color: white;
+  font-family: Work Sans;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.active {
+  background-color: #000;
+}
+
+.active svg path {
+  width: 15px;
+  height: 15px;
+  fill: white;
+}
+
+.side-tabs .active a {
+  padding-left: 10px;
+  text-decoration: none;
+
+  color: white;
+  font-family: Work Sans;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.logout-button {
+  color: #fff;
+  text-align: center;
+  font-family: Work Sans;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+  display: flex;
+  width: calc(100% - 20px);
+  padding: 10px 0px 10px 0px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 50px;
+  background: #000;
+
+  text-decoration: none;
+  border: none;
+  outline: none;
+}
