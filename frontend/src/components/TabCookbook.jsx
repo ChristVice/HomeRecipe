@@ -1,7 +1,7 @@
 import React from "react";
 
-function CookbookTab() {
+function TabCookbook({ isActive }) {
   return <div>CookbookTab</div>;
 }
 
-export default CookbookTab;
+export default TabCookbook;

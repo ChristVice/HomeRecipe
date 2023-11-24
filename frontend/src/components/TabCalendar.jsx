@@ -2,7 +2,7 @@ import { React, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
-function CalendarTab() {
+function TabCalendar({ isActive }) {
   const [date, setDate] = useState(new Date());
 
   return (
@@ -16,4 +16,4 @@ function CalendarTab() {
   );
 }
 
-export default CalendarTab;
+export default TabCalendar;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import OpenLinkButton from "./OpenLinkButton";
 import "../styling/TabHome.css";
 
-function TabHome() {
+function TabHome({ isActive }) {
   const [text, setText] = useState("");
   const [displayTxt, setDisplayTxt] = useState("");
   const [data, setData] = useState("");
@@ -74,6 +74,11 @@ function TabHome() {
     );
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && isActive) {
+      fetchData();
+    }
+  };
   const handleChange = (event) => {
     setText(event.target.value);
   };
@@ -94,6 +99,7 @@ function TabHome() {
           placeholder="Find recipes!"
           onChange={handleChange}
           className="search-txt"
+          onKeyDown={handleKeyPress}
         />
         <button className="search-btn" onClick={fetchData}>
           <svg

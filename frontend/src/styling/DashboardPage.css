@@ -69,7 +69,7 @@
   border-radius: 15px 0px 0px 15px;
 }
 
-.side-tabs li a {
+.side-tabs li p {
   padding-left: 10px;
   text-decoration: none;
 
@@ -110,7 +110,7 @@
   fill: black;
 }
 
-.side-tabs li:hover a {
+.side-tabs li:hover p {
   padding-left: 10px;
   text-decoration: none;
 
@@ -132,7 +132,7 @@
   fill: white;
 }
 
-.side-tabs .active a {
+.side-tabs .active p {
   padding-left: 10px;
   text-decoration: none;
 

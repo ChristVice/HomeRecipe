@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import "../styling/DashboardPage.css";
 import Icon from "../images/webicon.png";
 
-import HomeTab from "./TabHome";
-import CalendarTab from "./TabCalendar";
-import CookbookTab from "./TabCookbook";
+import TabHome from "./TabHome";
+import TabCalendar from "./TabCalendar";
+import TabCookbook from "./TabCookbook";
 
 function DashboardPage() {
   const navigate = useNavigate();
@@ -22,8 +22,9 @@ function DashboardPage() {
   //const isAuthenticated = localStorage.getItem("token") !== null;
   const isAuthenticated = true; //temporary to work on dashboard page
 
-  const handleActiveClick = (index) => {
+  const handleActiveClick = (index, tabName) => {
     setActive(index);
+    navigate(`/dashboard/${tabName}`); // Update URL to link/tabName
   };
 
   return (
@@ -55,7 +56,7 @@ function DashboardPage() {
         <ul className="side-tabs">
           <li
             className={activeLink === 1 ? "active" : ""}
-            onClick={() => handleActiveClick(1)}
+            onClick={() => handleActiveClick(1, "home")}
           >
             <svg
               width="500"
@@ -70,11 +71,11 @@ function DashboardPage() {
               />
             </svg>
 
-            <a href="#home">Home</a>
+            <p>Home</p>
           </li>
           <li
             className={activeLink === 2 ? "active" : ""}
-            onClick={() => handleActiveClick(2)}
+            onClick={() => handleActiveClick(1, "meal-calendar")}
           >
             <svg
               width="500"
@@ -89,11 +90,11 @@ function DashboardPage() {
               />
             </svg>
 
-            <a href="#meal-calendar">Meal Calendar</a>
+            <p>Meal Calendar</p>
           </li>
           <li
             className={activeLink === 3 ? "active" : ""}
-            onClick={() => handleActiveClick(3)}
+            onClick={() => handleActiveClick(1, "cookbook")}
           >
             <svg
               width="500"
@@ -108,7 +109,7 @@ function DashboardPage() {
               />
             </svg>
 
-            <a href="#cookbooks">Cookbooks</a>
+            <p>Cookbooks</p>
           </li>
         </ul>
         {/* Logout Button */}
@@ -121,11 +122,11 @@ function DashboardPage() {
       <div className="right-side-panel">
         <div className="top-gradient" />
         {activeLink === 1 ? (
-          <HomeTab />
+          <TabHome isActive={true} />
         ) : activeLink === 2 ? (
-          <CalendarTab />
+          <TabCalendar isActive={true} />
         ) : (
-          <CookbookTab />
+          <TabCookbook isActive={true} />
         )}
       </div>
     </div>
@@ -142,7 +143,18 @@ function DashboardPage() {
     );
   } else {
     return <div>You are not authenticated</div>;
+
   }
+
+
+
+  i want "/home" to show dashboard current page
+  dashboard has left and right side content, side tabs with links to other tabs site url
+  take dashboard 
+
+  tabHome should have dashboard page code
+
+
   */
 }
 
