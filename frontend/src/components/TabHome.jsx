@@ -7,8 +7,8 @@ function TabHome() {
   const [displayTxt, setDisplayTxt] = useState("");
   const [data, setData] = useState("");
 
-  const appID = "3e533734";
-  const appKEY = "b46dc6b9b41ea1ff8fe96a3df04725b0";
+  const appID = process.env.REACT_APP_APP_ID;
+  const appKEY = process.env.REACT_APP_APP_KEY;
 
   const fetchData = async () => {
     try {
