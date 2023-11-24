@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../styling/LoginSignForm.css";
 
 function LoginIn() {
   const [username, setUsername] = useState("");
@@ -15,9 +16,14 @@ function LoginIn() {
       });
       if (response && response.status === 200) {
         // Handle successful login
-        console.log("Success!!");
-        localStorage.setItem("token", response.data);
-        navigate("/dashboard"); // Redirect to the dashboard page
+        if (response.data.token) {
+          // If the token exists in the response data, log it to the console
+          console.log("Success!!");
+          localStorage.setItem("token", response.data);
+          navigate("/dashboard"); // Redirect to the dashboard page
+        } else {
+          console.log("Login failed:", response.data.error);
+        }
       } else {
         console.error("Invalid response received");
         console.error(response.data);
@@ -32,20 +38,28 @@ function LoginIn() {
   };
 
   return (
-    <div>
+    <div className="login-sign-form-section">
+      <h1>
+        Username<span>*</span>
+      </h1>
       <input
         type="text"
-        placeholder="Username"
+        placeholder="Enter your username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
+      <h1>
+        Password<span>*</span>
+      </h1>
       <input
         type="password"
-        placeholder="Password"
+        placeholder="Enter your password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button onClick={handleLogin}>Login</button>
+      <button className="login-button" onClick={handleLogin}>
+        Login
+      </button>
     </div>
   );
 }

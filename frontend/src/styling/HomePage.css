@@ -1,13 +1,233 @@
 .landing-page {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  height: 100vh; /* Set the container's height to fill the viewport */
-  width: 100%; /* Set the container's width to fill the viewport */
   overflow: hidden; /* Hide any overflowing content */
 
-  font-family: "Literata", serif;
-  font-family: "Roboto", sans-serif;
+  background: #f7f9f7;
+}
 
-  background-image: url("../images/blur.png");
+.left-section {
+  padding: 30px 0px 30px 30px;
+
+  flex: 1;
+  margin-right: 5px;
+  height: 100%;
+  display: flex;
+  align-items: center; /* Center the image vertically */
+  box-sizing: border-box;
+
+  position: relative;
+}
+.left-content {
+  position: relative;
+  right: 0;
+  margin-left: auto;
+
+  width: 100%;
+  height: 100%;
+  max-width: 726px;
+  max-height: 922px;
+}
+
+.left-section .title-logo {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  margin-top: 30px;
+  margin-left: 30px;
+}
+
+.logo img {
+  height: 50px;
+  width: 50px;
+  margin-right: 9px;
+  object-fit: fill;
+}
+.title {
+  color: #000;
+  font-family: EB Garamond;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.centered-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.centered-content > * {
+  margin: 0;
+}
+
+.centered-content .main-title {
+  /*Log In*/
+  color: #000;
+  text-align: center;
+  font-family: EB Garamond;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+
+  margin-top: 35px;
+}
+
+.centered-content .main-title-sub {
+  color: #4a4a4a;
+  text-align: center;
+  font-family: Work Sans;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.signup-text {
+  color: #000;
+  font-family: Work Sans;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  margin-top: 20px;
+}
+
+.signup-text span {
+  color: #2d75f6;
+  font-family: Work Sans;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration-line: underline;
+}
+
+.signup-text span:hover {
+  color: #004080;
+  text-decoration: underline;
+  cursor: pointer;
+}
+/* ================== RIGHT SECTION ================== */
+
+.right-section {
+  padding: 30px 30px 30px 0px;
+
+  flex: 1;
+  margin-left: 5px;
+  height: 100%;
+  display: flex;
+  align-items: center; /* Center the image vertically */
+  box-sizing: border-box;
+
+  position: relative;
+}
+
+.main-image {
+  position: relative;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+  max-width: 726px;
+  max-height: 922px;
+
+  flex: 1 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  border-radius: 50px;
+
+  background-image: url("../images/chad-montano-MqT0asuoIcU-unsplash.jpg"); /* Replace with the path to your image */
+  background-size: cover;
+  background-position: center;
+
+  box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(
+    0,
+    0,
+    0,
+    0.25
+  ); /* Adjust the opacity to control the darkness of the shade */
+  border-radius: 50px;
+}
+
+.text-overlay {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-overlay > * {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
+
+  margin: 0;
+}
+
+.large-pic-text {
+  /* SIMPLE AND TASTY RECIPES */
+  width: 688px;
+  height: 658px;
+
+  color: #fff;
+  text-align: center;
+  font-family: EB Garamond;
+  font-size: 116px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 6.4px;
+
+  color: #ffffff;
+
+  text-align: center;
+}
+
+.small-pic-text {
+  position: absolute;
+  bottom: 10px;
+  /* A recipe is soulless. The essence of the recipe must come from you, the cook. */
+  width: 525px;
+  height: 85px;
+
+  color: #fff;
+  text-align: center;
+  font-family: Work Sans;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }

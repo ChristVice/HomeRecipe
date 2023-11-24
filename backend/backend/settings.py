@@ -133,3 +133,5 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     # Add other allowed origins if needed
 ]
+
+AUTH_USER_MODEL = 'api.CustomUser'

@@ -1,9 +1,8 @@
+from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
-class User(models.Model):
-    username = models.CharField(max_length=100)
-    password = models.CharField(max_length=100)
-    email = models.EmailField()
 
-    def __str__(self):
-        return self.username
+class CustomUser(AbstractUser):
+    email = models.EmailField(unique=True)
+    birthday = models.DateField(null=True, blank=True)  # Add the birthday field
+
