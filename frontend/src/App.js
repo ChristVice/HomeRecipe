@@ -10,9 +10,6 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<DashboardPage />} />
-        <Route path="/dashboard/home" element={<TabHome />} />
-        <Route path="/dashboard/meal-calendar" element={<TabCalendar />} />
-        <Route path="/dashboard/cookbook" element={<TabCookbook />} />
       </Routes>
     </Router>
   );

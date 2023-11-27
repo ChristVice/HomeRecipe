@@ -25,6 +25,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  cursor: pointer;
 }
 
 .menu-icon {
@@ -220,6 +222,15 @@
   pointer-events: none; /* Allows clicks to go through the gradient */
 }
 
+.hamburger-icon {
+  position: absolute;
+  display: none;
+}
+
+.menu-panel-closed {
+  display: none;
+}
+
 /* =============== RESPONSIVENESS SETTINGS =============== */
 
 @media (max-width: 500px) {
@@ -235,6 +246,10 @@
     padding: 20px;
   }
 
+  .menu-panel {
+    display: inline;
+  }
+
   .top-title {
     position: relative;
   }
@@ -244,7 +259,7 @@
     margin-left: auto;
   }
 
-  .menu-icon {
+  .hamburger-icon {
     display: block;
 
     position: absolute;
