@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import "../styling/HomePage.css";
-import LoginIn from "./LoginIn";
 import SignUp from "./SignUp";
 import Logo from "../images/webicon.png";
+import { useNavigate } from "react-router-dom";
+import "../styling/HomePage.css";
 
-function HomePage() {
-  const [showSelectPage, setSelectPage] = useState(false);
+function SignUpPage() {
+  const navigate = useNavigate();
 
   const handleSelectePage = () => {
-    setSelectPage(!showSelectPage);
+    navigate("/login");
   };
 
   const SignupPage = () => {
-    // THIS WILL SHOW THE SIGN UP HTML
     return (
       <div className="centered-content">
         <h1 className="main-title">Create Your Account</h1>
@@ -29,26 +29,6 @@ function HomePage() {
       </div>
     );
   };
-
-  const LoginPage = () => {
-    // THIS WILL SHOW THE LOG IN HTML
-    return (
-      <div className="centered-content">
-        <h1 className="main-title">Log In</h1>
-        <p className="main-title-sub">Sign in and let’s start cooking!</p>
-
-        <div className="login-signup-section">
-          <LoginIn />
-
-          <p className="signup-text">
-            Don't have an account?{" "}
-            <span onClick={() => handleSelectePage()}>Sign up</span>
-          </p>
-        </div>
-      </div>
-    );
-  };
-
   return (
     <div className="landing-page">
       <div className="left-section">
@@ -59,9 +39,7 @@ function HomePage() {
             </div>
             <h1 className="title">HomeRecipe</h1>
           </div>
-          {
-            showSelectPage ? <LoginPage /> : <SignupPage /> //showSelectPage ? <SignupPage /> : <LoginPage />
-          }
+          <SignupPage />
         </div>
       </div>
 
@@ -81,4 +59,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default SignUpPage;

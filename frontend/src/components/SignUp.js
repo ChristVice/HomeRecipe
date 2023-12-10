@@ -16,6 +16,12 @@ function SignUp() {
 
   const [isFocused, setIsFocused] = useState(false);
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSignUpAndLogin();
+    }
+  };
+
   //ERROR HANDLING
   const [errorHandling, setErrorHandling] = useState({
     email: false,
@@ -33,6 +39,28 @@ function SignUp() {
     setIsFocused(false);
   };
 
+  async function handleSignUpAndLogin() {
+    try {
+      const signUpResponse = await handleSignUp();
+
+      if (signUpResponse && signUpResponse.success) {
+        const loginResponse = await handleLogin(email, password);
+
+        if (loginResponse && loginResponse.success) {
+          console.log("Logged in successfully!");
+          localStorage.setItem("token", loginResponse.data);
+          navigate("/d/"); // Redirect to the dashboard newPasswordpage
+        } else {
+          console.error("Login failed");
+        }
+      } else {
+        console.error("Sign up failed");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
   const handleSignUp = async () => {
     try {
       const response = await axios.post("http://localhost:8000/api/signup/", {
@@ -47,35 +75,57 @@ function SignUp() {
           username: errorHandling["username"],
           passwordMatch: !errorHandling["passwordMatch"],
         });
-        console.log("password check");
-        console.log(errorHandling);
+        console.log("Password mismatch error");
       } else {
-        // Do something with the valid form data, e.g., submit the form
-        console.log("its submitting this");
         setErrorHandling({
-          email: !errorHandling["email"],
-          username: !errorHandling["username"],
-          passwordMatch: errorHandling["passwordMatch"],
+          email: false,
+          username: false,
+          passwordMatch: true,
         });
-        console.log("Form submitted successfully");
+
         if (response && response.status === 201) {
-          // Handle successful sign up
-          console.log("Sign up successful!");
-          console.log(response.data);
-          navigate("/"); // Redirect to the login page
+          return { success: true, data: response.data }; // Return success
         } else {
           console.error("Invalid response received");
           console.error(response.data);
+          return { success: false, error: "Sign up failed" }; // Return failure
         }
       }
     } catch (error) {
       if (error.response && error.response.data) {
-        // console.error(error.response.data); // Handle the error response here
         setErrorHandling({
           email: error.response.data.hasOwnProperty("email"),
           username: error.response.data.hasOwnProperty("username"),
           passwordMatch: password === password_confirmation,
         });
+      } else {
+        console.error("An error occurred while processing the request");
+        return { success: false, error: "Error signing up" }; // Return failure
+      }
+    }
+  };
+
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post("http://localhost:8000/api/login/", {
+        username,
+        password,
+      });
+      if (response && response.status === 200) {
+        // Handle successful login
+        if (response.data.token) {
+          // If the token exists in the response data, log it to the console
+          return { success: true, data: response.data }; // Return success
+        } else {
+          console.log("Login failed:", response.data.error);
+        }
+      } else {
+        console.error("Invalid response received");
+        console.error(response.data);
+      }
+    } catch (error) {
+      if (error.response && error.response.data) {
+        console.error(error.response.data); // Handle the error response here
       } else {
         console.error("An error occurred while processing the request");
       }
@@ -128,7 +178,7 @@ function SignUp() {
   };
 
   return (
-    <div className="login-sign-form-section">
+    <div className="login-sign-form-section" onKeyDown={handleKeyPress}>
       <div className="signup-input-label">
         {errorHandling["email"] ? (
           <h1>
@@ -246,7 +296,7 @@ function SignUp() {
         value={password_confirmation}
         onChange={(e) => setPasswordConfirmation(e.target.value)}
       />
-      <button className="login-button" onClick={handleSignUp}>
+      <button className="login-button" onClick={handleSignUpAndLogin}>
         Sign Up
       </button>
     </div>

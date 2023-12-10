@@ -1,28 +1,62 @@
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import HomePage from "./components/HomePage";
+import { Navigate } from "react-router-dom";
+import LoginPage from "./components/LoginPage";
+import SignUpPage from "./components/SignUpPage";
 import TabHome from "./components/TabHome";
-import DashboardPage from "./components/DashboardPage";
 import TabCalendar from "./components/TabCalendar";
 import TabCookbook from "./components/TabCookbook";
+
+function ProtectedRoute({ children }) {
+  if (!localStorage.getItem("token")) {
+    return <Navigate to="/" />;
+  }
+  return children;
+}
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<DashboardPage />} />
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/login" element={<LoginPage />} />
+
+        <Route
+          path="/d/"
+          element={
+            <ProtectedRoute>
+              <TabHome />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/d/home"
+          element={
+            <ProtectedRoute>
+              <TabHome />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/d/calendar"
+          element={
+            <ProtectedRoute>
+              <TabCalendar />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/d/cookbook"
+          element={
+            <ProtectedRoute>
+              <TabCookbook />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );
-  /*
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-      </Routes>
-    </Router>
-  );
-  */
 }
 
 export default App;

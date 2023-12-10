@@ -8,6 +8,12 @@ function LoginIn() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleLogin();
+    }
+  };
+
   const handleLogin = async () => {
     try {
       const response = await axios.post("http://localhost:8000/api/login/", {
@@ -20,7 +26,7 @@ function LoginIn() {
           // If the token exists in the response data, log it to the console
           console.log("Success!!");
           localStorage.setItem("token", response.data);
-          navigate("/dashboard"); // Redirect to the dashboard page
+          navigate("/d/"); // Redirect to the dashboard page
         } else {
           console.log("Login failed:", response.data.error);
         }
@@ -38,7 +44,7 @@ function LoginIn() {
   };
 
   return (
-    <div className="login-sign-form-section">
+    <div className="login-sign-form-section" onKeyDown={handleKeyPress}>
       <h1>
         Username<span>*</span>
       </h1>
