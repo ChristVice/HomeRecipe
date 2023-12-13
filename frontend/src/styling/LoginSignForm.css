@@ -59,6 +59,7 @@
   align-items: center;
 
   border-radius: 50px;
+  border: 1px solid #000;
   background: #000;
 
   color: #fff;
@@ -72,4 +73,15 @@
   cursor: pointer;
 
   margin-top: 40px;
+}
+
+.login-button:hover {
+  background-color: #f7f9f7;
+
+  color: black;
+  border: 1px solid #000;
+
+  background: #fff;
+
+  transition: 0.3s;
 }

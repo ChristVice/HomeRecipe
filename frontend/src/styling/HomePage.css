@@ -138,29 +138,6 @@
   position: relative;
 }
 
-.main-image {
-  position: relative;
-  left: 0;
-
-  width: 100%;
-  height: 100%;
-  max-width: 726px;
-  max-height: 922px;
-
-  flex: 1 1;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-
-  border-radius: 50px;
-
-  background-image: url("../images/chad-montano-MqT0asuoIcU-unsplash.jpg"); /* Replace with the path to your image */
-  background-size: cover;
-  background-position: center;
-
-  box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.5);
-}
-
 .image-overlay {
   position: absolute;
   top: 0;
@@ -217,9 +194,9 @@
 }
 
 .small-pic-text {
+  /* A recipe is soulless. The essence of the recipe must come from you, the cook. */
   position: absolute;
   bottom: 10px;
-  /* A recipe is soulless. The essence of the recipe must come from you, the cook. */
   width: 525px;
   height: 85px;
 
@@ -230,4 +207,51 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+}
+
+.slideshow-overlay {
+  z-index: 1000;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.slideshow-container {
+  position: relative;
+  overflow: hidden;
+
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+  max-width: 726px;
+  max-height: 922px;
+
+  flex: 1 1;
+
+  border-radius: 50px;
+
+  background-size: cover;
+  background-position: center;
+
+  box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+.slide {
+  transition: transform 1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.active {
+  opacity: 1;
+}
+
+.slide-image {
+  min-width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
 }

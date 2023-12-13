@@ -17,9 +17,6 @@ function Nav({ currentTab }) {
     navigate("/"); // Redirect to the home page
   };
 
-  const isAuthenticated = localStorage.getItem("token") !== null;
-  // const isAuthenticated = true; //temporary to work on dashboard page
-
   const handleMenuResponsiveness = () => {
     setIsMenuClicked(!isMenuClicked);
     if (isMenuClicked) {

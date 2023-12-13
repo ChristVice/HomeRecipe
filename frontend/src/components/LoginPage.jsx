@@ -3,6 +3,7 @@ import "../styling/HomePage.css";
 import LoginIn from "./LoginIn";
 import Logo from "../images/webicon.png";
 import { useNavigate } from "react-router-dom";
+import MainPageRSection from "./MainPageRSection";
 import "../styling/HomePage.css";
 
 function LoginPage() {
@@ -44,18 +45,7 @@ function LoginPage() {
         </div>
       </div>
 
-      <div className="right-section">
-        <div className="main-image">
-          <div className="image-overlay"></div>
-          <div className="text-overlay">
-            <h1 className="large-pic-text">SIMPLE AND TASTY RECIPES</h1>
-            <p className="small-pic-text">
-              A recipe is soulless. The essence of the recipe must come from
-              you, the cook.
-            </p>
-          </div>
-        </div>
-      </div>
+      <MainPageRSection />
     </div>
   );
 }
