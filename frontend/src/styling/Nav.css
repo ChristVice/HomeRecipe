@@ -34,7 +34,7 @@
 }
 
 .web-icon {
-  width: 40px;
+  width: 32px;
   height: 40px;
 }
 
@@ -220,6 +220,9 @@
   );
   z-index: 2; /* Ensure it's above the content */
   pointer-events: none; /* Allows clicks to go through the gradient */
+
+  width: 83.2%;
+  margin-left: 16.8%;
 }
 
 .hamburger-icon {

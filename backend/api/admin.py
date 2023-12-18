@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
+from .models import CustomUser, Favorites
 
 class CustomUserAdmin(UserAdmin):
     # Define the order of fields for the add and change forms
@@ -13,3 +13,4 @@ class CustomUserAdmin(UserAdmin):
 
 # Register your CustomUser model with the custom admin class
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register( Favorites)

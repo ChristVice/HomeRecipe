@@ -26,6 +26,7 @@ function LoginIn() {
           // If the token exists in the response data, log it to the console
           console.log("Success!!");
           localStorage.setItem("token", response.data);
+          console.log(response.data);
           navigate("/d/"); // Redirect to the dashboard page
         } else {
           console.log("Login failed:", response.data.error);

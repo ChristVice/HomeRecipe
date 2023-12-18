@@ -1,7 +1,7 @@
 import React from "react";
 import "../styling/HomePage.css";
 import LoginIn from "./LoginIn";
-import Logo from "../images/webicon.png";
+import Logo from "../images/homerecipelogo1.png";
 import { useNavigate } from "react-router-dom";
 import MainPageRSection from "./MainPageRSection";
 import "../styling/HomePage.css";

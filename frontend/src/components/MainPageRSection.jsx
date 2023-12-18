@@ -1,6 +1,12 @@
 import React, { useEffect, useState, useMemo } from "react";
 import "../styling/HomePage.css";
 
+import FoodImage1 from "../images/food pictures/Cooking by Maarten van den Heuvel.jpg";
+import FoodImage2 from "../images/food pictures/Cooking by Calum Lewis.jpg";
+import FoodImage3 from "../images/food pictures/Delicious Food by Sam Moghadam.jpg";
+import FoodImage4 from "../images/food pictures/Delicious Recipes Rirri.jpg";
+import FoodImage5 from "../images/food pictures/Recipes by Taylor Kiser.jpg";
+
 function MainPageRSection() {
   const images = useMemo(
     () => [
@@ -13,12 +19,17 @@ function MainPageRSection() {
       "https://images.unsplash.com/photo-1548940740-204726a19be3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1Mzg5OTN8MHwxfHNlYXJjaHw1fHxkZWxpY2lvdXMlMjBmb29kJTIwZGlzaGVzfGVufDB8fHx8MTcwMjE4MDE0NXww&ixlib=rb-4.0.3&q=85",
       "https://images.unsplash.com/photo-1518736114810-3f3bedfec66a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1Mzg5OTN8MHwxfHNlYXJjaHw4fHxjb2xvcmZ1bCUyMGZvb2QlMjBzcGljZXN8ZW58MHx8fHwxNzAyMTgzNzQ5fDA&ixlib=rb-4.0.3&q=85",
       "https://images.unsplash.com/photo-1601063458289-77247ba485ec?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1Mzg5OTN8MHwxfHNlYXJjaHwxMHx8Y29sb3JmdWwlMjBmb29kJTIwc3BpY2VzfGVufDB8fHx8MTcwMjE4Mzc0OXww&ixlib=rb-4.0.3&q=85",
+      FoodImage1,
+      FoodImage2,
+      FoodImage3,
+      FoodImage4,
+      FoodImage5,
     ],
     []
   );
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const intervalTime = 5000; // every 10 seconds
+  const intervalTime = 15000; // every 10 seconds
 
   useEffect(() => {
     const interval = setInterval(() => {

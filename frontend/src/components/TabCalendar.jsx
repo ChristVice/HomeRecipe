@@ -9,7 +9,7 @@ function TabCalendar() {
   return (
     <div className="dashboard-page">
       {/* Right Side Content */}
-      <Nav currentTab={2} />
+      <Nav currentTab={3} />
       <div className="right-side-panel">
         <div className="top-gradient" />
         <div className="app">

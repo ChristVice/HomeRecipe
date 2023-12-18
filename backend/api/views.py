@@ -3,9 +3,13 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserSerializer, NewUserSerializer
-from .models import CustomUser
-# from django.contrib.auth.models import User
+from .serializers import UserSerializer, NewUserSerializer, FavoritesSerializer
+from .models import CustomUser, Favorites
+
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+
 
 class UserLoginView(APIView):
     def post(self, request):
@@ -74,4 +78,40 @@ class NewUserLoginView(APIView):
                 # user.save()
             message = f'User :: {username}, registered successfully'
             return Response({'message': message}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class FavoritesView(APIView):
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = None
+        user_token = request.headers.get('Authorization')
+
+        if user_token:
+            try:
+                token = Token.objects.get(key=user_token)
+                user = token.user
+            except Token.DoesNotExist:
+                pass
+
+        serializer = FavoritesSerializer(data=request.data, context={'request': request})
+        print(f"User token :: {user_token}\n")
+        print(f"User :: {user}\n")
+        print(serializer.is_valid())
+
+        if serializer.is_valid():
+            if user and isinstance(user, CustomUser):  # Ensure user is a CustomUser instance
+                favorites_data = serializer.validated_data
+                favorites_data['user'] = user  # Assign user to the data before saving
+
+                # Create the favorites instance explicitly
+                favorites_instance = Favorites.objects.create(**favorites_data)
+
+                return Response({'message': 'successful favorite'}, status=status.HTTP_201_CREATED)
+            else:
+                return Response({'error': 'Invalid user'}, status=status.HTTP_400_BAD_REQUEST)
+
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
