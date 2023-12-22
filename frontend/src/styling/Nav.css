@@ -146,6 +146,28 @@
   line-height: normal;
 }
 
+.bottom-nav-content {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+}
+
+.loggedin-username-label {
+  color: #000;
+  font-family: Work Sans;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.loggedin-username-label div {
+  font-weight: 600;
+}
+
 .logout-button {
   color: #fff;
   text-align: center;
@@ -167,19 +189,18 @@
 
   cursor: pointer;
 
+  /*
+  
   box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.25);
-
-  position: absolute;
-  bottom: 20px;
+  
+  */
 }
 
 .logout-button:hover {
-  background-color: white;
+  background-color: #dedede;
 
   color: black;
-  border: 1px solid #000;
-
-  background: #fff;
+  border: 1px solid #dedede;
 
   transition: 0.3s;
 }

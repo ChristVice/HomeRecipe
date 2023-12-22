@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../styling/LoginSignForm.css";
 
@@ -16,26 +15,31 @@ function LoginIn() {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post("http://localhost:8000/api/login/", {
-        username,
-        password,
+      const response = await fetch("http://localhost:8000/api/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
       });
       if (response && response.status === 200) {
-        // Handle successful login
-        if (response.data.token) {
-          // If the token exists in the response data, log it to the console
-          console.log("Success!!");
-          localStorage.setItem("token", response.data);
-          console.log(response.data);
-          navigate("/d/"); // Redirect to the dashboard page
+        const responseData = await response.json(); // Parse response to JSON
+        if (responseData.token) {
+          // Check for token in responseData
+          localStorage.setItem("token", JSON.stringify(responseData));
+          navigate("/d/");
         } else {
-          console.log("Login failed:", response.data.error);
+          console.log("Login failed:", responseData.error);
         }
       } else {
         console.error("Invalid response received");
-        console.error(response.data);
+        console.error(response);
       }
     } catch (error) {
+      console.log("are we here??");
       if (error.response && error.response.data) {
         console.error(error.response.data); // Handle the error response here
       } else {

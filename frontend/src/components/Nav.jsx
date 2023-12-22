@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Squash as Hamburger } from "hamburger-react";
 import Icon from "../images/homerecipelogo1.png";
@@ -9,6 +9,29 @@ function Nav({ currentTab }) {
   const navigate = useNavigate();
 
   const [isMenuClicked, setIsMenuClicked] = useState(true);
+  const [loggedInUser, setLoggedInUser] = useState("");
+
+  useEffect(() => {
+    handleGettingUsername();
+  }, []);
+
+  const handleGettingUsername = async () => {
+    const authToken = JSON.parse(localStorage.getItem("token"))["token"];
+    const response = await fetch("http://localhost:8000/api/login/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authToken, // Include the token in the Authorization header
+      },
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      setLoggedInUser(responseData["success"]);
+    } else {
+      throw new Error("Failed to send favorite");
+    }
+  };
 
   const handleLogOut = () => {
     console.log("Logging out");
@@ -116,6 +139,11 @@ function Nav({ currentTab }) {
           </li>
         </ul>
         {/* Logout Button */}
+      </div>
+      <div className="bottom-nav-content">
+        <div className="loggedin-username-label">
+          Signed in as <div>{loggedInUser}</div>
+        </div>
         <button className="logout-button" onClick={handleLogOut}>
           Logout
         </button>

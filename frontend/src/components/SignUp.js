@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../styling/SignUp.css";
 import "../styling/LoginSignForm.css";
@@ -18,7 +17,7 @@ function SignUp() {
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
-      handleSignUpAndLogin();
+      handleRegisterAndLogin();
     }
   };
 
@@ -39,36 +38,19 @@ function SignUp() {
     setIsFocused(false);
   };
 
-  async function handleSignUpAndLogin() {
+  const handleRegisterAndLogin = async () => {
     try {
-      const signUpResponse = await handleSignUp();
-
-      if (signUpResponse && signUpResponse.success) {
-        const loginResponse = await handleLogin(email, password);
-
-        if (loginResponse && loginResponse.success) {
-          console.log("Logged in successfully!");
-          localStorage.setItem("token", loginResponse.data);
-          navigate("/d/"); // Redirect to the dashboard newPasswordpage
-        } else {
-          console.error("Login failed");
-        }
-      } else {
-        console.error("Sign up failed");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  }
-
-  const handleSignUp = async () => {
-    try {
-      const response = await axios.post("http://localhost:8000/api/signup/", {
-        email,
-        username,
-        password,
+      const response = await fetch("http://localhost:8000/api/signup/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          username: username,
+          password: password,
+        }),
       });
-
       if (password !== password_confirmation) {
         setErrorHandling({
           email: errorHandling["email"],
@@ -82,9 +64,16 @@ function SignUp() {
           username: false,
           passwordMatch: true,
         });
-
         if (response && response.status === 201) {
-          return { success: true, data: response.data }; // Return success
+          const responseData = await response.json();
+          if (responseData["token"]) {
+            // If the token exists in the response data, log it to the console
+            localStorage.setItem(
+              "token",
+              JSON.stringify(responseData["token"])
+            );
+            navigate("/d/"); // Redirect to the dashboard page
+          }
         } else {
           console.error("Invalid response received");
           console.error(response.data);
@@ -101,33 +90,6 @@ function SignUp() {
       } else {
         console.error("An error occurred while processing the request");
         return { success: false, error: "Error signing up" }; // Return failure
-      }
-    }
-  };
-
-  const handleLogin = async () => {
-    try {
-      const response = await axios.post("http://localhost:8000/api/login/", {
-        username,
-        password,
-      });
-      if (response && response.status === 200) {
-        // Handle successful login
-        if (response.data.token) {
-          // If the token exists in the response data, log it to the console
-          return { success: true, data: response.data }; // Return success
-        } else {
-          console.log("Login failed:", response.data.error);
-        }
-      } else {
-        console.error("Invalid response received");
-        console.error(response.data);
-      }
-    } catch (error) {
-      if (error.response && error.response.data) {
-        console.error(error.response.data); // Handle the error response here
-      } else {
-        console.error("An error occurred while processing the request");
       }
     }
   };
@@ -296,7 +258,7 @@ function SignUp() {
         value={password_confirmation}
         onChange={(e) => setPasswordConfirmation(e.target.value)}
       />
-      <button className="login-button" onClick={handleSignUpAndLogin}>
+      <button className="login-button" onClick={handleRegisterAndLogin}>
         Sign Up
       </button>
     </div>
