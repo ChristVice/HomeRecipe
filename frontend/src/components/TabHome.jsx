@@ -3,7 +3,7 @@ import OpenLinkButton from "./OpenLinkButton";
 import "../styling/TabHome.css";
 import Nav from "./Nav";
 // import { removeLikedRecipe } from "./LikedButton";
-import LikedButton from "./LikedButton";
+import HeartButton from "./HeartButton";
 
 function TabHome() {
   const [text, setText] = useState("");
@@ -13,8 +13,6 @@ function TabHome() {
   const appID = process.env.REACT_APP_APP_ID;
   const appKEY = process.env.REACT_APP_APP_KEY;
   const numberOfRecipes = 20; // Set the number of recipes you want to retrieve
-
-  const [heartAnimate, setHeartAnimate] = useState([]);
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
@@ -45,27 +43,6 @@ function TabHome() {
     return apiURL.images.SMALL.url;
   };
 
-  const handleLikesClick = (currentCardIndex) => {
-    console.log("something");
-    let result = false;
-    const updatedAnimations = [...heartAnimate];
-    updatedAnimations[currentCardIndex] = !updatedAnimations[currentCardIndex];
-
-    if (updatedAnimations[currentCardIndex] === true) {
-      //   sendLikedRecipe(data.hits[index]);
-      // something like calling the liked function in the LikedRecipe
-      result = true;
-    } else {
-      // removeLikedRecipe(data.hits[index]);
-      result = false;
-    }
-
-    setHeartAnimate(updatedAnimations);
-    console.log(result);
-    console.log("current arr :: ", heartAnimate);
-    return result;
-  };
-
   const fetchData = async () => {
     try {
       const response = await fetch(
@@ -77,7 +54,6 @@ function TabHome() {
         console.log(data);
         setData(data);
         setDisplayTxt(text);
-        setHeartAnimate(Array(numberOfRecipes).fill(false));
       } else {
         console.error("Failed to fetch data");
       }
@@ -86,7 +62,7 @@ function TabHome() {
     }
   };
 
-  const Card = ({ index, information }) => {
+  const Card = ({ information }) => {
     return (
       <div className={`results-content`}>
         <div
@@ -117,7 +93,7 @@ function TabHome() {
         </div>
         <div className="result-buttons">
           <OpenLinkButton url={information.url} buttonText={"Show Recipe"} />
-          <LikedButton isTurningLiked={false} information={information} />
+          <HeartButton recipeData={information} />
           <div className="save-cookbook"></div>
         </div>
       </div>
@@ -162,14 +138,7 @@ function TabHome() {
               </h1>
               <div className="data-content">
                 {data.hits.map((item, index) => {
-                  return (
-                    <Card
-                      key={index}
-                      delay={(index + 0.0001) * 100}
-                      information={item.recipe}
-                      index={index}
-                    />
-                  );
+                  return <Card key={index} information={item.recipe} />;
                 })}
               </div>
             </div>

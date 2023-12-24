@@ -1,7 +1,9 @@
-import React from "react";
-import "../styling/LikedButton.css";
+import React, { useState } from "react";
+import "../styling/HeartButton.css";
 
-function LikedRecipe({ isTurningLiked, information }) {
+function HeartButton({ recipeData }) {
+  const [toggle, setToggle] = useState(false);
+
   const getImageURL = (apiURL) => {
     if (apiURL && apiURL.images) {
       if (apiURL.images.LARGE && apiURL.images.LARGE.url) {
@@ -12,32 +14,52 @@ function LikedRecipe({ isTurningLiked, information }) {
     }
     return apiURL.images.SMALL.url;
   };
-  const removeLikedRecipe = () => {
-    console.log("this is a removed log :: ", information);
 
-    if (information && information.label) {
-      return "unliked recipe :: " + information.label;
+  const removeLikedRecipe = () => {
+    console.log("this is a removed log :: ", recipeData);
+
+    if (recipeData && recipeData.label) {
+      return "unliked recipe :: " + recipeData.label;
     }
-    return "unliked recipe :: " + information.label;
+    return "unliked recipe :: " + recipeData.label;
   };
 
   const sendLikedRecipe = () => {
-    console.log("this is a send log :: ", information);
-
     const data = {
-      recipeLabel: "",
       calories: "",
+      recipeLabel: "",
+      cuisineType: "",
+      mealType: "",
+      timeMin: 0,
+      ingredients: "",
       imageURL: "",
+      websiteURL: "",
     };
 
-    if (information) {
-      data["imageURL"] = getImageURL(information);
-    }
-    if (information && information.label) {
-      data["recipeLabel"] = information.label;
-    }
-    if (information && information.calories) {
-      data["calories"] = information.calories;
+    if (recipeData) {
+      data["imageURL"] = getImageURL(recipeData);
+
+      if (recipeData.calories !== null) {
+        data["calories"] = recipeData.calories;
+      }
+      if (recipeData.label !== null) {
+        data["recipeLabel"] = recipeData.label;
+      }
+      if (recipeData.cuisineType[0] !== null) {
+        data["cuisineType"] = recipeData.cuisineType[0];
+      }
+      if (recipeData.mealType[0] !== null) {
+        data["mealType"] = recipeData.mealType[0];
+      }
+      if (recipeData.totalTime !== null) {
+        data["timeMin"] = recipeData.totalTime;
+      }
+      if (recipeData.ingredientLines !== null) {
+        data["ingredients"] = recipeData.ingredientLines.join("&");
+      }
+      if (recipeData.url !== null) {
+        data["websiteURL"] = recipeData.url;
+      }
     }
 
     handleLikesBackend(data);
@@ -45,10 +67,14 @@ function LikedRecipe({ isTurningLiked, information }) {
 
   const handleLikesBackend = async (info) => {
     const data = {
-      recipe_label: info["recipeLabel"],
       calories: parseFloat(info["calories"].toFixed(2)),
-      //imageURL: information["imageURL"],
-      // Add other fields if required by your serializer
+      recipe_label: info["recipeLabel"],
+      cuisine_type: info["cuisineType"],
+      meal_type: info["mealType"],
+      time_in_minutes: info["timeMin"],
+      ingredient_lines: info["ingredients"],
+      image_url: info["imageURL"],
+      website_url: info["websiteURL"],
     };
 
     const authToken = JSON.parse(localStorage.getItem("token"))["token"];
@@ -75,6 +101,7 @@ function LikedRecipe({ isTurningLiked, information }) {
       // Handle errors here, e.g., show an error message to the user
     }
   };
+
   const getLikedBackend = async () => {
     try {
       const response = await fetch("http://localhost:8000/api/favorites/", {
@@ -112,14 +139,18 @@ function LikedRecipe({ isTurningLiked, information }) {
   };
 
   const handleProperFunction = () => {
-    isTurningLiked ? sendLikedRecipe() : removeLikedRecipe();
+    toggle ? removeLikedRecipe() : sendLikedRecipe();
+    setToggle((prevToggle) => {
+      const newToggle = !prevToggle;
+      return newToggle;
+    });
   };
 
   return (
     <div>
       <div className="saving-buttons">
         <svg
-          className={`heart-icon ${isTurningLiked ? "liked-heart-icon" : ""}`}
+          className={`heart-icon ${toggle ? "liked-heart-icon" : ""}`}
           onClick={handleProperFunction}
           width="233"
           height="200"
@@ -137,4 +168,4 @@ function LikedRecipe({ isTurningLiked, information }) {
   );
 }
 
-export default LikedRecipe;
+export default HeartButton;

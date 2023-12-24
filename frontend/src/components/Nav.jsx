@@ -17,19 +17,26 @@ function Nav({ currentTab }) {
 
   const handleGettingUsername = async () => {
     const authToken = JSON.parse(localStorage.getItem("token"))["token"];
-    const response = await fetch("http://localhost:8000/api/login/", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: authToken, // Include the token in the Authorization header
-      },
-    });
 
-    if (response.ok) {
-      const responseData = await response.json();
-      setLoggedInUser(responseData["success"]);
-    } else {
-      throw new Error("Failed to send favorite");
+    try {
+      const response = await fetch("http://localhost:8000/api/login/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: authToken, // Include the token in the Authorization header
+        },
+      });
+
+      console.log(response);
+
+      if (response.ok) {
+        const responseData = await response.json();
+        setLoggedInUser(responseData["success"]);
+      } else {
+        throw new Error("Failed to send favorite");
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 

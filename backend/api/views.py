@@ -13,12 +13,12 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 
 class UserAuthenticationView(APIView):
     def post(self, request):
+        print(request.data,"\n\n")
 
         if request.data.get('email') is None: # if there is no email found, means we are loggin in someone
             username = request.data.get('username')
             password = request.data.get('password')
 
-            print(f'\n\n{username}, {password}')
             try:
                 user = CustomUser.objects.get(username=username)
             except CustomUser.DoesNotExist:
@@ -60,6 +60,9 @@ class UserAuthenticationView(APIView):
 
         else : # if we are signing a user up, we make new User and log him into the system
             serializer = NewUserSerializer(data=request.data)
+            
+
+            print(f'\n\n{serializer}\n{serializer.is_valid()}\n{serializer.error_messages}')
 
             if serializer.is_valid():
                 email = serializer.validated_data['email']
@@ -73,7 +76,7 @@ class UserAuthenticationView(APIView):
                     return Response({'error': 'Email already in use'}, status=status.HTTP_409_CONFLICT)
 
                 # Create a new user
-                new_user = CustomUser.objects.create_user(username=username, password=password, email=email)
+                new_user = CustomUser.objects.create_user(**serializer.validated_data)
                     # You can add additional fields to the user model if needed
                     # user.first_name = serializer.validated_data['first_name']
                     # user.last_name = serializer.validated_data['last_name']
@@ -89,7 +92,10 @@ class UserAuthenticationView(APIView):
 
                 message = f'User :: {username}, registered and logged in successfully'
                 token, _ = Token.objects.get_or_create(user=new_user)
+
+
                 return Response({'token': token.key, 'message': message}, status=status.HTTP_201_CREATED)
+            
         
         return Response({'error': 'Invalid data provided'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -121,9 +127,6 @@ class FavoritesView(APIView):
         return Response({'message': 'successful deleted recipe'}, status=status.HTTP_201_CREATED)
 
     def post(self, request):
-        return Response({'message': 'successful added favorite'}, status=status.HTTP_201_CREATED)
-
-        '''
         user = None
         user_token = request.headers.get('Authorization')
 
@@ -142,14 +145,12 @@ class FavoritesView(APIView):
                 favorites_data['user'] = user  # Assign user to the data before saving
 
                 # Create the favorites instance explicitly
-                favorites_instance = Favorites.objects.create(**favorites_data)
+                if Favorites.objects.filter(image_url=serializer.validated_data['image_url']).exists() is False:
+                    favorites_instance = Favorites.objects.create(**favorites_data)
 
-                return Response({'message': 'successful favorite'}, status=status.HTTP_201_CREATED)
+                return Response({'message': 'successfully added favorite'}, status=status.HTTP_201_CREATED)
             else:
                 return Response({'error': 'Invalid user'}, status=status.HTTP_400_BAD_REQUEST)
 
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-        
-        '''

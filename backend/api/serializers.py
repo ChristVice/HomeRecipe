@@ -14,5 +14,5 @@ class NewUserSerializer(serializers.ModelSerializer):
 class FavoritesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorites
-        fields = ['recipe_label', 'calories']  # Specify the fields you want to include
-
+        fields = ['calories', 'recipe_label', 'cuisine_type', 'meal_type',
+                  'time_in_minutes', 'ingredient_lines', 'website_url', 'image_url', ]  # Specify the fields you want to include

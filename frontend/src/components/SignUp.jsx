@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../styling/SignUp.css";
 import "../styling/LoginSignForm.css";
 
@@ -17,7 +18,7 @@ function SignUp() {
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
-      handleRegisterAndLogin();
+      handleRegisterAndLogin(event);
     }
   };
 
@@ -38,19 +39,16 @@ function SignUp() {
     setIsFocused(false);
   };
 
-  const handleRegisterAndLogin = async () => {
+  const handleRegisterAndLogin = async (e) => {
+    e.preventDefault();
+
     try {
-      const response = await fetch("http://localhost:8000/api/signup/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          username: username,
-          password: password,
-        }),
+      const response = await axios.post("http://localhost:8000/api/signup/", {
+        email: email,
+        username: username,
+        password: password,
       });
+
       if (password !== password_confirmation) {
         setErrorHandling({
           email: errorHandling["email"],
@@ -64,20 +62,18 @@ function SignUp() {
           username: false,
           passwordMatch: true,
         });
-        if (response && response.status === 201) {
-          const responseData = await response.json();
-          if (responseData["token"]) {
-            // If the token exists in the response data, log it to the console
+        if (response && (response.status === 201 || response.status === 200)) {
+          if (response.data.token) {
             localStorage.setItem(
               "token",
-              JSON.stringify(responseData["token"])
+              JSON.stringify({ token: response.data.token })
             );
-            navigate("/d/"); // Redirect to the dashboard page
+            console.log("Signed in successfully");
+            navigate("/d/");
           }
         } else {
           console.error("Invalid response received");
           console.error(response.data);
-          return { success: false, error: "Sign up failed" }; // Return failure
         }
       }
     } catch (error) {
@@ -88,8 +84,7 @@ function SignUp() {
           passwordMatch: password === password_confirmation,
         });
       } else {
-        console.error("An error occurred while processing the request");
-        return { success: false, error: "Error signing up" }; // Return failure
+        console.error(error);
       }
     }
   };
@@ -140,7 +135,7 @@ function SignUp() {
   };
 
   return (
-    <div className="login-sign-form-section" onKeyDown={handleKeyPress}>
+    <form className="login-sign-form-section" onKeyDown={handleKeyPress}>
       <div className="signup-input-label">
         {errorHandling["email"] ? (
           <h1>
@@ -261,7 +256,7 @@ function SignUp() {
       <button className="login-button" onClick={handleRegisterAndLogin}>
         Sign Up
       </button>
-    </div>
+    </form>
   );
 }
 
