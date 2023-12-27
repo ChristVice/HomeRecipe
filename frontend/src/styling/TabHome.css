@@ -1,3 +1,6 @@
+.recipe-search-content {
+  margin-right: 40px;
+}
 .search-container {
   display: flex;
   justify-content: left;
@@ -190,8 +193,46 @@
   background: rgba(251, 188, 5, 0.2);
   padding: 10px;
 }
+
 .blue-light {
   border-radius: 10px;
   background: rgba(66, 133, 244, 0.2);
   padding: 10px;
+}
+
+.open-recipe-link-btn {
+  color: #fff;
+  text-align: center;
+  font-family: Work Sans;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+  display: flex;
+  padding: 10px 0px 10px 0px;
+  min-width: 120px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 50px;
+  border: 1px solid #000;
+  background: #000;
+
+  cursor: pointer;
+
+  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.25);
+
+  margin-left: auto;
+}
+
+.open-recipe-link-btn:hover {
+  background-color: white;
+
+  color: black;
+  border: 1px solid #000;
+
+  background: #fff;
+
+  transition: 0.3s;
 }

@@ -1,8 +1,6 @@
 import { useState } from "react";
-import OpenLinkButton from "./OpenLinkButton";
 import "../styling/TabHome.css";
 import Nav from "./Nav";
-// import { removeLikedRecipe } from "./LikedButton";
 import HeartButton from "./HeartButton";
 
 function TabHome() {
@@ -63,6 +61,10 @@ function TabHome() {
   };
 
   const Card = ({ information }) => {
+    const handleButtonClick = (url) => {
+      window.open(url, "_blank");
+    };
+
     return (
       <div className={`results-content`}>
         <div
@@ -92,8 +94,16 @@ function TabHome() {
           </div>
         </div>
         <div className="result-buttons">
-          <OpenLinkButton url={information.url} buttonText={"Show Recipe"} />
-          <HeartButton recipeData={information} />
+          <button
+            className="open-recipe-link-btn"
+            onClick={() => handleButtonClick(information.url)}
+          >
+            Show Recipe
+          </button>
+          <HeartButton
+            recipeData={information}
+            heartStyle={{ height: 20, width: 27 }}
+          />
           <div className="save-cookbook"></div>
         </div>
       </div>
@@ -106,7 +116,7 @@ function TabHome() {
       <Nav currentTab={1} />
       <div className="right-side-panel">
         <div className="top-gradient" />
-        <div className="small-api-call">
+        <div className="recipe-search-content">
           <div className="search-container">
             <input
               type="text"

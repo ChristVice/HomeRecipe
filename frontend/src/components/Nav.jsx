@@ -27,8 +27,6 @@ function Nav({ currentTab }) {
         },
       });
 
-      console.log(response);
-
       if (response.ok) {
         const responseData = await response.json();
         setLoggedInUser(responseData["success"]);

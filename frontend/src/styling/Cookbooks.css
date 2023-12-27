@@ -1,0 +1,47 @@
+.tabcookbook-cookbooks-section {
+  margin-top: 75px;
+}
+.tabcookbook-cookbooks-section h1 {
+  margin: 0;
+
+  color: #000;
+  font-family: EB Garamond;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-transform: capitalize;
+}
+
+/*      ADD NEW COOKBOOK        */
+.add-new-folder-btn {
+  margin-top: 20px;
+  cursor: pointer;
+
+  width: 280px;
+  height: 70px;
+  flex-shrink: 0;
+
+  border-radius: 10px;
+  border: 2px dashed #ababab;
+  background: #fff;
+
+  color: #ababab;
+  font-family: Work Sans;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-transform: capitalize;
+
+  transition: 0.2s ease-in;
+}
+
+.add-new-folder-btn:hover {
+  transition: 0.2s ease-in;
+
+  border: 2px dashed #797979;
+  background: #e8e9e8;
+
+  color: #797979;
+}

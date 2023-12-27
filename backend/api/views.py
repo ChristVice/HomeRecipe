@@ -121,10 +121,48 @@ class UserAuthenticationView(APIView):
 class FavoritesView(APIView):
 
     def get(self, request):
-        return Response({'message': 'successful retrieved favorites'}, status=status.HTTP_201_CREATED)
+        if request:
+            user = None
+            user_token = request.headers.get('Authorization')
+
+            if user_token:
+                try:
+                    token = Token.objects.get(key=user_token)
+                    user = token.user
+                except Token.DoesNotExist:
+                    pass
+
+            if user and isinstance(user, CustomUser):  # Ensure user is a CustomUser instance
+                user_favorites = Favorites.objects.filter(user=user)
+
+                if user_favorites:
+                    return Response({'recipes': user_favorites.values()}, status=status.HTTP_200_OK)
+
+        return Response({'error': 'Invalid data provided'}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
-        return Response({'message': 'successful deleted recipe'}, status=status.HTTP_201_CREATED)
+        if request:
+            user = None
+            user_token = request.headers.get('Authorization')
+
+            if user_token:
+                try:
+                    token = Token.objects.get(key=user_token)
+                    user = token.user
+                except Token.DoesNotExist:
+                    pass
+
+            if user and isinstance(user, CustomUser):  # Ensure user is a CustomUser instance
+                image = request.data['imageURL']
+                user_favorite = Favorites.objects.filter(user=user, image_url=image).first()
+
+                if user_favorite:
+                    user_favorite.delete()
+                    return Response({'message': f'successful deleted recipe'}, status=status.HTTP_200_OK)
+                
+                return Response({'message': f'favorite not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response({'error': 'Invalid data provided'}, status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request):
         user = None
@@ -154,3 +192,4 @@ class FavoritesView(APIView):
 
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
