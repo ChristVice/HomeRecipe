@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
+import Logo from "../images/homerecipelogo1.png";
 import "../styling/HomePage.css";
 
 import FoodImage1 from "../images/food pictures/Cooking by Maarten van den Heuvel.jpg";
@@ -7,7 +8,7 @@ import FoodImage3 from "../images/food pictures/Delicious Food by Sam Moghadam.j
 import FoodImage4 from "../images/food pictures/Delicious Recipes Rirri.jpg";
 import FoodImage5 from "../images/food pictures/Recipes by Taylor Kiser.jpg";
 
-function MainPageRSection() {
+function MainPageRightSection() {
   const images = useMemo(
     () => [
       "https://images.unsplash.com/photo-1485921325833-c519f76c4927?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1Mzg5OTN8MHwxfHNlYXJjaHwyfHxkZWxpY2lvdXMlMjBmb29kJTIwZGlzaGVzfGVufDB8fHx8MTcwMjE4MDE0NXww&ixlib=rb-4.0.3&q=85",
@@ -24,12 +25,13 @@ function MainPageRSection() {
       FoodImage3,
       FoodImage4,
       FoodImage5,
+      "https://images.unsplash.com/photo-1485921325833-c519f76c4927?crop=entropy&cs=srgb&fm=jpg&ixid=M3w1Mzg5OTN8MHwxfHNlYXJjaHwyfHxkZWxpY2lvdXMlMjBmb29kJTIwZGlzaGVzfGVufDB8fHx8MTcwMjE4MDE0NXww&ixlib=rb-4.0.3&q=85",
     ],
     []
   );
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const intervalTime = 15000; // every 10 seconds
+  const intervalTime = 15_000; // every 10 seconds
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -43,6 +45,10 @@ function MainPageRSection() {
 
   return (
     <div className="right-section">
+      <div className="right-section-title-logo">
+        <img src={Logo} alt="logo" className="right-section-logo" />
+        <h1 className="right-section-title">HomeRecipe</h1>
+      </div>
       <div className="slideshow-container">
         <div className="slideshow-overlay">
           <div className="image-overlay"></div>
@@ -58,7 +64,14 @@ function MainPageRSection() {
           <div
             key={index}
             className={`slide ${index === currentImageIndex ? "active" : ""}`}
-            style={{ transform: `translateY(-${100 * currentImageIndex}%)` }}
+            style={{
+              transform: `translateY(-${100 * currentImageIndex}%)`,
+              transition: `${
+                currentImageIndex === images.length || currentImageIndex === 0
+                  ? "none"
+                  : "ease-in 1s"
+              }`,
+            }}
           >
             <img
               className="slide-image"
@@ -72,4 +85,4 @@ function MainPageRSection() {
   );
 }
 
-export default MainPageRSection;
+export default MainPageRightSection;

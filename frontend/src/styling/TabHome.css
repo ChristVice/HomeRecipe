@@ -236,3 +236,15 @@
 
   transition: 0.3s;
 }
+
+@media screen and (max-width: 575px) {
+  .recipe-search-content {
+    margin: 0;
+  }
+
+  .data-content {
+    width: 100%;
+    grid-template-columns: 100%;
+    grid-gap: 5px;
+  }
+}

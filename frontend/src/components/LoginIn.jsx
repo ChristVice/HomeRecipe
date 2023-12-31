@@ -25,7 +25,8 @@ function LoginIn() {
           password: password,
         }),
       });
-      if (response && response.status === 200) {
+
+      if (response && (response.status === 201 || response.status === 200)) {
         const responseData = await response.json(); // Parse response to JSON
         if (responseData.token) {
           // Check for token in responseData
@@ -39,7 +40,6 @@ function LoginIn() {
         console.error(response);
       }
     } catch (error) {
-      console.log("are we here??");
       if (error.response && error.response.data) {
         console.error(error.response.data); // Handle the error response here
       } else {
@@ -68,7 +68,7 @@ function LoginIn() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button className="login-button" onClick={handleLogin}>
+      <button type="submit" className="login-button" onClick={handleLogin}>
         Login
       </button>
     </div>

@@ -5,12 +5,14 @@
   top: 0;
   left: 0;
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 100vh;
   overflow: hidden; /* Hide any overflowing content */
 
   background: #ffffff;
+
+  overflow-y: scroll;
 }
 
 .left-section {
@@ -22,12 +24,9 @@
   display: flex;
   align-items: center; /* Center the image vertically */
   box-sizing: border-box;
-
-  position: relative;
 }
+
 .left-content {
-  position: relative;
-  right: 0;
   margin-left: auto;
 
   width: 100%;
@@ -45,7 +44,7 @@
   margin-left: 30px;
 }
 
-.logo img {
+.logo {
   width: 40px;
   height: 50px;
   margin-right: 9px;
@@ -97,6 +96,16 @@
   margin-bottom: 20px;
 }
 
+.centered-content .login-signup-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  width: 70%;
+  height: 100%;
+}
+
 .signup-text {
   color: #000;
   font-family: Work Sans;
@@ -106,6 +115,7 @@
   line-height: normal;
 
   margin-top: 20px;
+  margin-right: auto;
 }
 
 .signup-text span {
@@ -134,8 +144,32 @@
   display: flex;
   align-items: center; /* Center the image vertically */
   box-sizing: border-box;
+}
 
-  position: relative;
+.right-section .right-section-title-logo {
+  display: none;
+
+  justify-content: flex-start;
+  align-items: center;
+
+  margin-top: 30px;
+  margin-left: 30px;
+}
+
+.right-section-logo {
+  width: 40px;
+  height: 50px;
+  margin-right: 9px;
+  object-fit: fill;
+}
+
+.right-section-title {
+  color: #000;
+  font-family: EB Garamond;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .image-overlay {
@@ -148,7 +182,7 @@
     0,
     0,
     0,
-    0.25
+    0.35
   ); /* Adjust the opacity to control the darkness of the shade */
   border-radius: 50px;
 }
@@ -176,13 +210,13 @@
 
 .large-pic-text {
   /* SIMPLE AND TASTY RECIPES */
-  width: 688px;
-  height: 658px;
+  width: 80%;
+  height: 100%;
 
   color: #fff;
   text-align: center;
   font-family: EB Garamond;
-  font-size: 116px;
+  font-size: 106px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
@@ -196,9 +230,9 @@
 .small-pic-text {
   /* A recipe is soulless. The essence of the recipe must come from you, the cook. */
   position: absolute;
-  bottom: 10px;
-  width: 525px;
-  height: 85px;
+  bottom: 30px;
+  width: 80%;
+  max-height: 85px;
 
   color: #fff;
   text-align: center;
@@ -217,17 +251,12 @@
 }
 
 .slideshow-container {
-  position: relative;
   overflow: hidden;
-
-  left: 0;
 
   width: 100%;
   height: 100%;
   max-width: 726px;
   max-height: 922px;
-
-  flex: 1 1;
 
   border-radius: 50px;
 
@@ -235,6 +264,8 @@
   background-position: center;
 
   box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.5);
+
+  position: relative;
 }
 
 .slide {
@@ -245,13 +276,197 @@
   height: 100%;
 }
 
-.active {
+.slide .active {
   opacity: 1;
 }
 
 .slide-image {
-  min-width: 100%;
+  width: 100%;
   height: 100%;
-  display: block;
   object-fit: cover;
+  object-position: center;
+}
+
+@media screen and (max-width: 1200px) {
+  .large-pic-text {
+    font-size: 96px;
+  }
+
+  .small-pic-text {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .large-pic-text {
+    font-size: 86px;
+  }
+
+  .small-pic-text {
+    font-size: 20px;
+  }
+}
+@media screen and (max-width: 980px) {
+  .landing-page {
+    grid-template-columns: 1fr;
+    grid-template-rows: 50% 1fr;
+    height: 100vh;
+  }
+
+  .left-section {
+    margin: 0;
+    padding: 20px;
+    padding-top: 0;
+    grid-row: 2;
+  }
+
+  .left-content {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .left-section .title-logo {
+    display: none;
+  }
+
+  .large-pic-text {
+    font-size: 64px;
+  }
+  .small-pic-text {
+    font-size: 24px;
+  }
+
+  .slideshow-container {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .centered-content .main-title {
+    font-size: 24px;
+    margin-top: 0;
+  }
+
+  .centered-content .main-title-sub {
+    font-size: 16px;
+
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .centered-content .login-signup-section {
+    width: 100%;
+  }
+
+  .signup-text {
+    font-size: 16px;
+  }
+
+  .signup-text span {
+    font-size: 16px;
+  }
+
+  .right-section {
+    margin: 0;
+    padding: 30px;
+    grid-row: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+  }
+
+  .right-section .right-section-title-logo {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    margin: 0;
+    margin-bottom: 10px;
+  }
+
+  .right-section-logo {
+    width: 30px;
+    height: 40px;
+    margin-right: 9px;
+    object-fit: fill;
+  }
+
+  .right-section-title {
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .large-pic-text {
+    font-size: 42px;
+  }
+  .centered-content .main-title {
+    font-size: 20px;
+  }
+  .centered-content .main-title-sub {
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .signup-text {
+    font-size: 10px;
+    margin-top: 5px;
+  }
+  .signup-text span {
+    font-size: 10px;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .large-pic-text {
+    font-size: 32px;
+  }
+}
+
+@media screen and (max-width: 744px) {
+  .small-pic-text {
+    display: none;
+  }
+}
+
+@media screen and (max-height: 500px) {
+  .landing-page {
+    grid-template-rows: auto 1fr;
+  }
+  .left-section {
+    padding: 0;
+  }
+  .right-section {
+    padding: 0;
+    padding-top: 20px;
+  }
+
+  .right-section-title-logo {
+    margin: 0;
+  }
+
+  .slideshow-container {
+    display: none;
+  }
+  .main-title {
+    margin-top: 0px;
+  }
+}
+
+@media screen and (max-height: 800px) {
+  .small-pic-text {
+    font-size: 20px;
+  }
+}
+@media screen and (max-height: 600px) {
+  .large-pic-text {
+    font-size: 42px;
+  }
+}
+
+@media screen and (max-height: 740px) {
+  .small-pic-text {
+    display: none;
+  }
 }

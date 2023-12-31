@@ -13,8 +13,6 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 
 class UserAuthenticationView(APIView):
     def post(self, request):
-        print(request.data,"\n\n")
-
         if request.data.get('email') is None: # if there is no email found, means we are loggin in someone
             username = request.data.get('username')
             password = request.data.get('password')
@@ -61,9 +59,6 @@ class UserAuthenticationView(APIView):
         else : # if we are signing a user up, we make new User and log him into the system
             serializer = NewUserSerializer(data=request.data)
             
-
-            print(f'\n\n{serializer}\n{serializer.is_valid()}\n{serializer.error_messages}')
-
             if serializer.is_valid():
                 email = serializer.validated_data['email']
                 username = serializer.validated_data['username']

@@ -92,3 +92,20 @@ ul {
 .non-error-text {
   display: none;
 }
+
+@media screen and (max-width: 500px) {
+  .signup-input-label h1 {
+    font-size: 10px;
+    margin-top: 9px;
+    margin-bottom: 7px;
+  }
+
+  .password-container h1 {
+    font-size: 10px;
+    margin-top: 9px;
+    margin-bottom: 7px;
+  }
+  .password-container {
+    margin-bottom: 10px;
+  }
+}

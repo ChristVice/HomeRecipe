@@ -1,9 +1,8 @@
 import React from "react";
-import "../styling/HomePage.css";
 import SignUp from "./SignUp";
 import Logo from "../images/homerecipelogo1.png";
 import { useNavigate } from "react-router-dom";
-import MainPageRSection from "./MainPageRSection";
+import MainPageRightSection from "./MainPageRightSection";
 import "../styling/HomePage.css";
 
 function SignUpPage() {
@@ -35,16 +34,14 @@ function SignUpPage() {
       <div className="left-section">
         <div className="left-content">
           <div className="title-logo">
-            <div className="logo">
-              <img src={Logo} alt="logo" />
-            </div>
+            <img src={Logo} alt="logo" className="logo" />
             <h1 className="title">HomeRecipe</h1>
           </div>
           <SignupPage />
         </div>
       </div>
 
-      <MainPageRSection />
+      <MainPageRightSection />
     </div>
   );
 }

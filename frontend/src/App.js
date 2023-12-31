@@ -14,13 +14,41 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
+function CheckToken({ children }) {
+  if (localStorage.getItem("token")) {
+    return <Navigate to="/d/" />;
+  }
+  return children;
+}
+
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/"
+          element={
+            <CheckToken>
+              <LoginPage />
+            </CheckToken>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <CheckToken>
+              <SignUpPage />
+            </CheckToken>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <CheckToken>
+              <LoginPage />
+            </CheckToken>
+          }
+        />
 
         <Route
           path="/d/"
