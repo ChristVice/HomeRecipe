@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styling/SignUp.css";
@@ -16,12 +16,6 @@ function SignUp() {
 
   const [isFocused, setIsFocused] = useState(false);
 
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      handleRegisterAndLogin(event);
-    }
-  };
-
   //ERROR HANDLING
   const [errorHandling, setErrorHandling] = useState({
     email: false,
@@ -29,7 +23,11 @@ function SignUp() {
     passwordMatch: true, // Add passwordMatch to the initial state
   });
 
-  useEffect(() => {}, [errorHandling]);
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleRegisterAndLogin(event);
+    }
+  };
 
   const handleFocus = () => {
     setIsFocused(true);
@@ -92,6 +90,7 @@ function SignUp() {
   const handlePasswordLength = () => {
     return password.length >= 8;
   };
+
   const handlePasswordCommon = () => {
     let commonPasswords = new Set([
       "123456",

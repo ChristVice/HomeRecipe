@@ -23,8 +23,15 @@ class UserAuthenticationView(APIView):
                 return Response({'error': 'User with that username does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
             # Authenticate the user with the provided password
-            user = authenticate(request, username=username, password=password)
+            user = None
+            try:
+                user = authenticate(request, username=username, password=password)
+            except:
+                return Response({'error': 'Invalid username or password'}, status=status.HTTP_404_NOT_FOUND)
+
+
             if user is not None:
+
                 login(request, user)
 
                 try:

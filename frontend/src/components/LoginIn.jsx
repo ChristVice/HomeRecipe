@@ -5,6 +5,7 @@ import "../styling/LoginSignForm.css";
 function LoginIn() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleKeyPress = (event) => {
@@ -14,6 +15,12 @@ function LoginIn() {
   };
 
   const handleLogin = async () => {
+    if (username === "" || password === "") {
+      setError("Please enter both username and password.");
+      return;
+    }
+    // Make API call for login, handle incorrect credentials error
+
     try {
       const response = await fetch("http://localhost:8000/api/login/", {
         method: "POST",
@@ -35,6 +42,10 @@ function LoginIn() {
         } else {
           console.log("Login failed:", responseData.error);
         }
+      } else if (response && response.status === 401) {
+        // unauthorized data ie incorrect username or password
+        console.log("Incorrect username or password");
+        setError("Incorrect username or password. Please try again.");
       } else {
         console.error("Invalid response received");
         console.error(response);
@@ -50,24 +61,22 @@ function LoginIn() {
 
   return (
     <div className="login-sign-form-section" onKeyDown={handleKeyPress}>
-      <h1>
-        Username<span>*</span>
-      </h1>
+      <h1>Username</h1>
       <input
         type="text"
         placeholder="Enter your username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
-      <h1>
-        Password<span>*</span>
-      </h1>
+      <h1>Password</h1>
       <input
         type="password"
         placeholder="Enter your password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
+      {error && <p className="error-message">{error}</p>}
+
       <button type="submit" className="login-button" onClick={handleLogin}>
         Login
       </button>
