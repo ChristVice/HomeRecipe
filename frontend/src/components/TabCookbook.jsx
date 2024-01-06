@@ -4,34 +4,35 @@ import "../styling/TabCookbook.css"; // Import your CSS file for styling
 import Cookbooks from "./Cookbooks";
 import PlaceholderImage from "../images/tabcookbook-default.png";
 import HeartButton from "./HeartButton";
+import axios from "axios";
 
 function TabCookbook() {
   const [likedRecipes, setLikedRecipes] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // New loading state
 
   useEffect(() => {
-    handleGetLikedBackend();
+    handleGetLikesBackend();
   }, []);
 
   /**
    *
    * @returns All Favorite items by current user logged in
    */
-  const handleGetLikedBackend = async () => {
+  const handleGetLikesBackend = async () => {
     const authToken = JSON.parse(localStorage.getItem("token"))["token"];
 
     try {
-      const response = await fetch("http://localhost:8000/api/favorites/", {
+      const response = await fetch("http://localhost:8000/api/folder/Likes", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: authToken, // Include the token in the Authorization header
+          Authorization: `${authToken}`, // Include the token in the Authorization header
         },
       });
 
       if (response.ok) {
         const responseData = await response.json();
-        setLikedRecipes(responseData["recipes"]);
+        setLikedRecipes(responseData["result"]["Likes"]);
         setIsLoading(false); // Set loading to false after fetching recipes
         return responseData;
       } else {
@@ -39,7 +40,7 @@ function TabCookbook() {
       }
     } catch (error) {
       setIsLoading(false); // Set loading to false after fetching recipes
-      console.error("Error sending favorite:", error);
+      console.error("Error getting Likes folder :: ", error);
       // Handle errors here, e.g., show an error message to the user
     }
   };
@@ -47,8 +48,9 @@ function TabCookbook() {
   const truncateString = (inputString) => {
     const words = inputString.split(" ");
 
-    if (words.length > 3) {
-      const truncatedString = words.slice(0, 3).join(" ");
+    const maxWords = 3;
+    if (words.length > maxWords) {
+      const truncatedString = words.slice(0, maxWords).join(" ");
       // Check if the last character of the truncated string is a comma
       if (truncatedString.endsWith(",")) {
         // Remove the comma before adding '...'
@@ -94,6 +96,9 @@ function TabCookbook() {
               borderRadius: "4px",
               width: "220px", // Adjust this value as needed
               whiteSpace: "pre-wrap",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             {text}

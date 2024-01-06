@@ -82,6 +82,7 @@ function HeartButton({ recipeData, heartStyle, initialToggle = false }) {
    */
   const handleLikedBackend = async (info) => {
     const data = {
+      folder: "Likes",
       calories: parseFloat(info["calories"].toFixed(2)),
       recipe_label: info["recipeLabel"],
       cuisine_type: info["cuisineType"],
@@ -95,7 +96,7 @@ function HeartButton({ recipeData, heartStyle, initialToggle = false }) {
     const authToken = JSON.parse(localStorage.getItem("token"))["token"];
 
     try {
-      const response = await fetch("http://localhost:8000/api/favorites/", {
+      const response = await fetch("http://localhost:8000/api/recipe/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -125,12 +126,13 @@ function HeartButton({ recipeData, heartStyle, initialToggle = false }) {
   const handleUnlikedBackend = async (info) => {
     const data = {
       imageURL: info["imageURL"],
+      fromFolder: "Likes",
     };
 
     const authToken = JSON.parse(localStorage.getItem("token"))["token"];
 
     try {
-      const response = await fetch("http://localhost:8000/api/favorites/", {
+      const response = await fetch("http://localhost:8000/api/recipe/", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -159,7 +161,7 @@ function HeartButton({ recipeData, heartStyle, initialToggle = false }) {
     const authToken = JSON.parse(localStorage.getItem("token"))["token"];
 
     try {
-      const response = await fetch("http://localhost:8000/api/favorites/", {
+      const response = await fetch("http://localhost:8000/api/folder/", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

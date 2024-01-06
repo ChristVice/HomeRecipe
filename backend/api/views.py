@@ -3,12 +3,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserSerializer, NewUserSerializer, FavoritesSerializer
-from .models import CustomUser, Favorites
-
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from .serializers import UserSerializer, NewUserSerializer, RecipeSerializer, FolderSerializer
+from .models import CustomUser, Recipe, Folder
 
 
 class UserAuthenticationView(APIView):
@@ -64,12 +60,13 @@ class UserAuthenticationView(APIView):
 
 
         else : # if we are signing a user up, we make new User and log him into the system
-            serializer = NewUserSerializer(data=request.data)
-            
+            serializer = NewUserSerializer(data=request.data, context={'request': request})
+
             if serializer.is_valid():
                 email = serializer.validated_data['email']
                 username = serializer.validated_data['username']
                 password = serializer.validated_data['password']
+
                 
                 # Check if a user with the same username already exists
                 if CustomUser.objects.filter(username=username).exists():
@@ -78,11 +75,15 @@ class UserAuthenticationView(APIView):
                     return Response({'error': 'Email already in use'}, status=status.HTTP_409_CONFLICT)
 
                 # Create a new user
+
                 new_user = CustomUser.objects.create_user(**serializer.validated_data)
                     # You can add additional fields to the user model if needed
                     # user.first_name = serializer.validated_data['first_name']
                     # user.last_name = serializer.validated_data['last_name']
                     # user.save()
+
+                # create a default folder named Likes (will hold all the likes of the user)
+                default_likes_folder = Folder.objects.create(user=new_user, folder_name='Likes')
 
                 # Log in the newly created user
                 login(request, new_user)
@@ -98,7 +99,10 @@ class UserAuthenticationView(APIView):
 
                 return Response({'token': token.key, 'message': message}, status=status.HTTP_201_CREATED)
             
-        
+            else:
+                return Response({'error': serializer.error_messages}, status=status.HTTP_400_BAD_REQUEST)
+
+            
         return Response({'error': 'Invalid data provided'}, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
@@ -118,11 +122,30 @@ class UserAuthenticationView(APIView):
 
         return Response({'error': 'Invalid data provided'}, status=status.HTTP_400_BAD_REQUEST)
 
+    def delete(self, request):
+        user = None
+        user_token = request.headers.get('Authorization')
+
+        if user_token:
+            try:
+                token = Token.objects.get(key=user_token)
+                user = token.user
+            except Token.DoesNotExist:
+                pass
+
+            if user and isinstance(user, CustomUser):  # Ensure user is a CustomUser instance
+                _user = user
+                delete_user_instance = CustomUser.objects.filter(username=user).delete()
+                return Response(
+                    {'success': f'deleted {_user}'}, status=status.HTTP_200_OK)
+
+        return Response({'error': 'Invalid data provided'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class FavoritesView(APIView):
 
+class RecipeView(APIView):
     def get(self, request):
+        # will need to redo, extract from specific folder or ALL folders
         if request:
             user = None
             user_token = request.headers.get('Authorization')
@@ -135,10 +158,17 @@ class FavoritesView(APIView):
                     pass
 
             if user and isinstance(user, CustomUser):  # Ensure user is a CustomUser instance
-                user_favorites = Favorites.objects.filter(user=user)
+                user_recipe = Recipe.objects.filter(user=user)
 
-                if user_favorites:
-                    return Response({'recipes': user_favorites.values()}, status=status.HTTP_200_OK)
+                serializer = RecipeSerializer(user_recipe, many=True)
+
+                # get all the recipes data and loop through the list
+                for recipe in serializer.data:
+                    # replace the folder id with the actual name
+                    folder_id = recipe["folder"] 
+                    recipe["folder"] = Folder.objects.get(pk=folder_id).folder_name
+
+                return Response({'recipes': serializer.data}, status=status.HTTP_200_OK)
 
         return Response({'error': 'Invalid data provided'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -156,15 +186,109 @@ class FavoritesView(APIView):
 
             if user and isinstance(user, CustomUser):  # Ensure user is a CustomUser instance
                 image = request.data['imageURL']
-                user_favorite = Favorites.objects.filter(user=user, image_url=image).first()
+                from_folder = request.data['fromFolder']
+                folder = Folder.objects.get(user=user, folder_name=from_folder).pk
+                recipe = Recipe.objects.filter(user=user, image_url=image, folder=folder).first()
 
-                if user_favorite:
-                    user_favorite.delete()
-                    return Response({'message': f'successful deleted recipe'}, status=status.HTTP_200_OK)
+                if recipe:
+                    recipe.delete()
+                    return Response({'message': f'successful deleted Recipe'}, status=status.HTTP_200_OK)
                 
-                return Response({'message': f'favorite not found'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({'message': f'recipe not found'}, status=status.HTTP_404_NOT_FOUND)
 
         return Response({'error': 'Invalid data provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+    def post(self, request):
+        user = None
+        user_token = request.headers.get('Authorization')
+
+        # finds the user from Token, return error if not found
+        if user_token:
+            try:
+                token = Token.objects.get(key=user_token)
+                user = token.user
+            except Token.DoesNotExist:
+                pass
+
+        if user and isinstance(user, CustomUser) is False:  # Ensure user is a CustomUser instance
+            return Response({'error': 'User not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        # Find the folder and assign it, return error if not found
+        folder_name = request.data.get('folder')
+        try:
+            find_folder = Folder.objects.get(user=user, folder_name=folder_name)
+        except Folder.DoesNotExist:
+            return Response({'error': f'Folder "{folder_name}" not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        request.data['folder'] = find_folder.pk # resets the folder var to the primary key of model
+
+        # create serializer of recipe, validate it, if good set the variables
+        serializer = RecipeSerializer(data=request.data, context={'request': request})
+
+        if serializer.is_valid():
+            if user and isinstance(user, CustomUser):  # Ensure user is a CustomUser instance
+                recipe_data = serializer.validated_data
+                recipe_data['user'] = user  # Assign user to the data 
+                recipe_data['folder'] = find_folder  # Assign folder to the data
+
+                # if image url not exist within same folder, add it 
+                if Recipe.objects.filter(user=user, folder=recipe_data['folder'], image_url=recipe_data['image_url']).exists() is False:
+                    recipe_instance = Recipe.objects.create(**recipe_data)
+
+                return Response({'message': 'successfully added recipe to folder'}, status=status.HTTP_201_CREATED)
+
+        return Response({'Invalid data provided' : f'{serializer.errors}'}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+
+class FoldersView(APIView):
+    def get(self, request, folder_name, format=None):
+        # gets the user
+        user = None
+        user_token = request.headers.get('Authorization')
+
+        if user_token:
+            try:
+                token = Token.objects.get(key=user_token)
+                user = token.user
+            except Token.DoesNotExist:
+                pass
+
+        if user and isinstance(user, CustomUser):  # Ensure user is a CustomUser instance
+            # gets the folder name 
+            
+            if folder_name:
+                if folder_name.upper() == "ALL": # getting all folders and their recipes
+                    results = {}
+                    # get all the folders associated to the user
+                    for folders in CustomUser.objects.get(username=user).folders.all():
+                        # get recipe(s) from that folder
+                        recipe_folders = Recipe.objects.filter(folder=folders)
+                        # get its data add it to result
+                        results[folders.folder_name] = RecipeSerializer(recipe_folders, many=True).data 
+
+                    return Response({"results" : results}, status=status.HTTP_200_OK)
+                
+                else: # get just folder and its items
+                    try:
+                        Folder.objects.get(user=user, folder_name=folder_name)
+                    except Folder.DoesNotExist:
+                        return Response({'error': f'Folder "{folder_name}" not found'}, status=status.HTTP_404_NOT_FOUND)
+
+                    folder = Folder.objects.filter(folder_name=folder_name, user=user).first()
+                    if folder:
+                        # Retrieve all recipes associated with the specified folder
+                        recipes = Recipe.objects.filter(folder=folder)
+                        # get all data
+                        serializer = RecipeSerializer(recipes, many=True)
+                        return Response({"result" : {folder.folder_name : serializer.data}}, status=status.HTTP_200_OK)
+                    else:
+                        return Response({"message": "Folder not found"}, status=status.HTTP_404_NOT_FOUND)
+
+            return Response({'error' : 'Invalid data provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({'error': 'User not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
+
 
     def post(self, request):
         user = None
@@ -177,21 +301,95 @@ class FavoritesView(APIView):
             except Token.DoesNotExist:
                 pass
 
-        serializer = FavoritesSerializer(data=request.data, context={'request': request})
+        if user and isinstance(user, CustomUser):  # Ensure user is a CustomUser instance
+            # gets the folder name 
+            folder_name = request.data['folder_name']
+            if folder_name == "":
+                return Response({'error': 'Folder name not provided'}, status=status.HTTP_404_NOT_FOUND)
 
-        if serializer.is_valid():
-            if user and isinstance(user, CustomUser):  # Ensure user is a CustomUser instance
-                favorites_data = serializer.validated_data
-                favorites_data['user'] = user  # Assign user to the data before saving
+            # check if folder already exists
+            existing_folders = Folder.objects.filter(user=user, folder_name=folder_name)
+            if len (existing_folders) > 0:
+                return Response({"error":f'Folder {folder_name} already exists for user ({user})'}, status=status.HTTP_409_CONFLICT)
 
-                # Create the favorites instance explicitly
-                if Favorites.objects.filter(image_url=serializer.validated_data['image_url']).exists() is False:
-                    favorites_instance = Favorites.objects.create(**favorites_data)
+            # create the folder if all else is good
+            serializer = FolderSerializer(data=request.data, context={'request': request})
+            if folder_name and serializer.is_valid():
+                folder_instance = Folder.objects.create(user=user, folder_name=folder_name)
+                return Response({"succesful":f'Folder {folder_name} created for user :: {user}'}, status=status.HTTP_200_OK)
 
-                return Response({'message': 'successfully added favorite'}, status=status.HTTP_201_CREATED)
-            else:
-                return Response({'error': 'Invalid user'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error' : 'Invalid data provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({'error': 'User not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
+    
+
+    def put(self, request):
+        user = None
+        user_token = request.headers.get('Authorization')
+
+        if user_token:
+            try:
+                token = Token.objects.get(key=user_token)
+                user = token.user
+            except Token.DoesNotExist:
+                pass
+
+        if user and isinstance(user, CustomUser):  # Ensure user is a CustomUser instance
+            # gets the folder name 
+            folder_name = request.data['folder_name']
+            try:
+                Folder.objects.get(user=user, folder_name=folder_name)
+            except Folder.DoesNotExist:
+                return Response({'error': f'Folder "{folder_name}" not found'}, status=status.HTTP_404_NOT_FOUND)
+
+            new_name = request.data['new_folder_name']
+            if new_name == "":
+                return Response({'error': 'New name not provided'}, status=status.HTTP_404_NOT_FOUND)
+
+            # check if new name folder already exists
+            existing_folders = Folder.objects.filter(user=user, folder_name=new_name)
+            if len(existing_folders) > 0:
+                return Response({"error":f'Folder {new_name} already exists for user :: {user}'}, status=status.HTTP_409_CONFLICT)
 
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+            folder = Folder.objects.filter(user=user, folder_name=folder_name).first()
+            if folder:
+                # rename folder
+                folder.folder_name = new_name
+                folder.save()
+                return Response({"success" : f"Succesfully renamed {folder_name} to {new_name}"}, status=status.HTTP_200_OK)
+
+            return Response({'error' : 'Invalid data provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({'error': 'User not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+    def delete(self, request):
+        user = None
+        user_token = request.headers.get('Authorization')
+
+        if user_token:
+            try:
+                token = Token.objects.get(key=user_token)
+                user = token.user
+            except Token.DoesNotExist:
+                pass
+
+        if user and isinstance(user, CustomUser):  # Ensure user is a CustomUser instance
+            folder_name = request.data['folder_name']
+            try:
+                Folder.objects.get(user=user, folder_name=folder_name)
+            except Folder.DoesNotExist:
+                return Response({'error': f'Folder "{folder_name}" not found'}, status=status.HTTP_404_NOT_FOUND)
+
+            folder = Folder.objects.filter(folder_name=folder_name, user=user).first()
+            if folder:
+                # delete folder
+                folder.delete()
+                return Response({"success" : f"Succesfully deleted {folder_name}"}, status=status.HTTP_200_OK)
+
+            return Response({'error' : 'Invalid data provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({'error': 'User not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
