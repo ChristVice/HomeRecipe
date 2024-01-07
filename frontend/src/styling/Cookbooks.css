@@ -3,6 +3,7 @@
 }
 .tabcookbook-cookbooks-section h1 {
   margin: 0;
+  margin-bottom: 10px;
 
   color: #000;
   font-family: EB Garamond;
@@ -15,7 +16,6 @@
 
 /*      ADD NEW COOKBOOK        */
 .add-new-folder-btn {
-  margin-top: 20px;
   cursor: pointer;
 
   width: 280px;

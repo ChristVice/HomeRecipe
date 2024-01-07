@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../styling/HeartButton.css";
 
 function HeartButton({ recipeData, heartStyle, initialToggle = false }) {
-  const [toggle, setToggle] = useState(initialToggle);
+  const [isActive, setIsActive] = useState(initialToggle);
 
   /*
   
@@ -183,14 +183,28 @@ function HeartButton({ recipeData, heartStyle, initialToggle = false }) {
   };
 
   const handleProperFunction = () => {
-    toggle ? removeLikedRecipe() : sendLikedRecipe();
-    setToggle((prevToggle) => {
+    isActive ? removeLikedRecipe() : sendLikedRecipe();
+    setIsActive((prevToggle) => {
       const newToggle = !prevToggle;
       return newToggle;
     });
   };
 
   return (
+    <div className="stage" style={heartStyle}>
+      <div
+        className={`heart ${isActive ? "is-active" : ""}`}
+        onClick={() => {
+          handleProperFunction();
+        }}
+      ></div>
+    </div>
+  );
+}
+
+export default HeartButton;
+
+/*
     <svg
       className={`heart-icon ${toggle ? "liked-heart-icon" : ""}`}
       style={heartStyle}
@@ -206,7 +220,7 @@ function HeartButton({ recipeData, heartStyle, initialToggle = false }) {
         strokeWidth="10"
       />
     </svg>
-  );
-}
 
-export default HeartButton;
+
+
+*/

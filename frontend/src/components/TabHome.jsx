@@ -1,7 +1,7 @@
 import { useState } from "react";
-import "../styling/TabHome.css";
 import Nav from "./Nav";
 import HeartButton from "./HeartButton";
+import "../styling/TabHome.css";
 
 function TabHome() {
   const [text, setText] = useState("");
@@ -83,7 +83,7 @@ function TabHome() {
           <div className="label-details">
             <h3>{parseFloat(information.calories).toFixed(2)} calories</h3>
             {information.totalTime < 1 ? (
-              <h3 className="green-light">{"< "}1 minute</h3>
+              <h3 className="green-light">1 minute</h3>
             ) : information.totalTime <= 10 ? (
               <h3 className="green-light">{information.totalTime} minutes</h3>
             ) : information.totalTime > 10 && information.totalTime <= 30 ? (
@@ -100,11 +100,10 @@ function TabHome() {
           >
             Show Recipe
           </button>
-          <HeartButton
-            recipeData={information}
-            heartStyle={{ height: 20, width: 27 }}
-          />
-          <div className="save-cookbook"></div>
+          <div className="save-folder-btns">
+            <HeartButton recipeData={information} heartStyle={{ top: "50%" }} />
+            <button className="save-cookbook">save folder</button>
+          </div>
         </div>
       </div>
     );

@@ -4,7 +4,6 @@ import "../styling/TabCookbook.css"; // Import your CSS file for styling
 import Cookbooks from "./Cookbooks";
 import PlaceholderImage from "../images/tabcookbook-default.png";
 import HeartButton from "./HeartButton";
-import axios from "axios";
 
 function TabCookbook() {
   const [likedRecipes, setLikedRecipes] = useState([]);
@@ -132,7 +131,7 @@ function TabCookbook() {
             <HeartButton
               className="testing-heart-resizing"
               initialToggle={true}
-              heartStyle={{ height: 15, width: 22, marginTop: "1px" }}
+              heartStyle={{ top: "2%" }}
             />
           </div>
         </div>
@@ -155,7 +154,7 @@ function TabCookbook() {
               <p>
                 <span>
                   {recipeData.time_in_minutes < 1
-                    ? "< 1"
+                    ? "1"
                     : recipeData.time_in_minutes}
                 </span>{" "}
                 minutes
