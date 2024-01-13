@@ -64,13 +64,20 @@
   display: flex;
   align-items: center;
 
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 
   height: 45px;
   width: 100%;
   border-radius: 15px 0px 0px 15px;
 
   padding-left: 20px;
+}
+
+.side-tabs li:hover {
+  background-color: #dedede;
+
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .side-tabs li p {
@@ -89,22 +96,6 @@
   width: 15px;
   height: 15px;
   fill: white;
-}
-
-.side-tabs li:hover {
-  display: flex;
-  align-items: center;
-
-  margin-bottom: 5px;
-
-  height: 45px;
-  width: 100%;
-  border-radius: 15px 0px 0px 15px;
-
-  background-color: #dedede;
-
-  cursor: pointer;
-  transition: 0.3s;
 }
 
 .side-tabs li:hover svg path {
@@ -242,11 +233,11 @@
     rgba(247, 249, 247, 0) 0.01%,
     #f7f9f7 76.04%
   );
-  z-index: 2; /* Ensure it's above the content */
   pointer-events: none; /* Allows clicks to go through the gradient */
-
   width: 83.2%;
   margin-left: 16.8%;
+
+  z-index: 1;
 }
 
 .hamburger-icon {

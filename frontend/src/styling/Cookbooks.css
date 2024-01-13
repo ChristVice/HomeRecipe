@@ -1,7 +1,7 @@
 .tabcookbook-cookbooks-section {
   margin-top: 75px;
 }
-.tabcookbook-cookbooks-section h1 {
+.tabcookbook-cookbooks-section .cookbook-subtitle {
   margin: 0;
   margin-bottom: 10px;
 
@@ -14,34 +14,14 @@
   text-transform: capitalize;
 }
 
-/*      ADD NEW COOKBOOK        */
-.add-new-folder-btn {
-  cursor: pointer;
+.cookbook-folders {
+  width: auto;
+  height: auto;
 
-  width: 280px;
-  height: 70px;
-  flex-shrink: 0;
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  flex-wrap: wrap;
 
-  border-radius: 10px;
-  border: 2px dashed #ababab;
-  background: #fff;
-
-  color: #ababab;
-  font-family: Work Sans;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  text-transform: capitalize;
-
-  transition: 0.2s ease-in;
-}
-
-.add-new-folder-btn:hover {
-  transition: 0.2s ease-in;
-
-  border: 2px dashed #797979;
-  background: #e8e9e8;
-
-  color: #797979;
+  gap: 5px;
 }

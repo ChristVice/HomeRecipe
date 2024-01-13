@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser, Recipe, Folder
+from .models import CustomUser, Recipes, Folders, Favorites
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,11 +13,19 @@ class NewUserSerializer(serializers.ModelSerializer):
 
 class RecipeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Recipe
-        fields = ['folder', 'calories', 'recipe_label', 'cuisine_type', 'meal_type',
+        model = Recipes
+        # fields = ['folder', 'calories', 'recipe_label', 'cuisine_type', 'meal_type', 'time_in_minutes', 'ingredient_lines', 'website_url', 'image_url', ]  # Specify the fields you want to include
+
+        fields = ['calories', 'recipe_label', 'cuisine_type', 'meal_type',
                   'time_in_minutes', 'ingredient_lines', 'website_url', 'image_url', ]  # Specify the fields you want to include
+
 
 class FolderSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Folder
+        model = Folders
         fields = ['folder_name']  # Specify the fields you want to include
+
+class FavoritesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Favorites
+        fields = ['recipe']  # Specify the fields you want to include

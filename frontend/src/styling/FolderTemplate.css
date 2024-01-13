@@ -1,0 +1,85 @@
+/*    USER FOLDERS STYLING    */
+.cookbook-icon {
+  width: 18px;
+}
+
+.cookbook-user-folder {
+  width: 200px;
+
+  display: flex;
+  justify-content: left;
+  align-items: center;
+
+  padding: 12px 20px;
+
+  border-radius: 10px;
+  border: 1px solid #4a4a4a;
+  background: #fff;
+
+  cursor: pointer;
+}
+.cookbook-active-content {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 100%;
+}
+
+.cookbook-user-foldername {
+  color: #000;
+  text-align: center;
+  font-family: Work Sans;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  margin: 0;
+  margin-left: 15px;
+}
+
+.cookbook-user-items-count {
+  color: #ababab;
+  text-align: center;
+  font-family: Work Sans;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: capitalize;
+
+  margin: 0;
+  margin-left: auto;
+}
+
+.cookbook-user-dots {
+  width: 4px;
+
+  margin: 0;
+  margin-left: 20px;
+
+  cursor: pointer;
+}
+
+/*  FOLDER IS HOVERED   */
+.cookbook-user-folder:hover {
+  background-color: #dedede;
+  border: 1px solid #000;
+
+  transition: ease-in 0.1s;
+
+  .cookbook-icon path {
+    fill: #fff;
+    fill: #000;
+  }
+
+  .cookbook-user-foldername {
+    color: #fff;
+    color: #000;
+  }
+
+  .cookbook-user-dots path {
+    fill: #fff;
+    fill: #000;
+  }
+}

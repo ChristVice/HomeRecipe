@@ -1,24 +1,4 @@
-.save-cookbook {
-  border: 1px solid black;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-}
-
 .heart-icon {
-  cursor: pointer;
-}
-
-.heart-icon path {
-  fill: #bebcbc;
-}
-
-.heart-icon.liked-heart-icon path {
-  fill: #dc2100;
-}
-
-/*  UNSAVED CODE  */
-.heart {
   position: absolute;
 
   width: 50px;
@@ -35,13 +15,13 @@
   align-items: center;
   background-size: cover;
 
-  &.is-active {
+  &.heart-btn-is-active {
     transition-duration: 0.8s;
     background-position: -1400px 0;
   }
 }
 
-.stage {
+.heart-btn-stage {
   position: relative;
 
   /*top: 50% for search hearts  top: 2% for likes hearts in cookbook*/

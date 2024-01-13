@@ -114,7 +114,6 @@ function TabHome() {
       {/* Right Side Content */}
       <Nav currentTab={1} />
       <div className="right-side-panel">
-        <div className="top-gradient" />
         <div className="recipe-search-content">
           <div className="search-container">
             <input

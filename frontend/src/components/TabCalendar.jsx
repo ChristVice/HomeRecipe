@@ -11,7 +11,6 @@ function TabCalendar() {
       {/* Right Side Content */}
       <Nav currentTab={3} />
       <div className="right-side-panel">
-        <div className="top-gradient" />
         <div className="app">
           <h1 className="header">React Calendar</h1>
           <div className="calendar-container">

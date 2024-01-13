@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Squash as Hamburger } from "hamburger-react";
 import Icon from "../images/homerecipelogo1.png";
 import "../styling/Nav.css";
+import { handleGetUsername } from "./BackendMethods";
 
 function Nav({ currentTab }) {
   const navigate = useNavigate();
@@ -12,31 +13,14 @@ function Nav({ currentTab }) {
   const [loggedInUser, setLoggedInUser] = useState("");
 
   useEffect(() => {
-    handleGettingUsername();
-  }, []);
-
-  const handleGettingUsername = async () => {
-    const authToken = JSON.parse(localStorage.getItem("token"))["token"];
-
-    try {
-      const response = await fetch("http://localhost:8000/api/login/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: authToken, // Include the token in the Authorization header
-        },
+    handleGetUsername()
+      .then((data) => {
+        setLoggedInUser(data["success"]);
+      })
+      .catch((error) => {
+        console.error("Error getting username:", error);
       });
-
-      if (response.ok) {
-        const responseData = await response.json();
-        setLoggedInUser(responseData["success"]);
-      } else {
-        throw new Error("Failed to send favorite");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  }, []);
 
   const handleLogOut = () => {
     console.log("Logging out");

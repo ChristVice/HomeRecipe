@@ -4,45 +4,22 @@ import "../styling/TabCookbook.css"; // Import your CSS file for styling
 import Cookbooks from "./Cookbooks";
 import PlaceholderImage from "../images/tabcookbook-default.png";
 import HeartButton from "./HeartButton";
+import { handleGetFavorites } from "./BackendMethods";
 
 function TabCookbook() {
   const [likedRecipes, setLikedRecipes] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // New loading state
 
   useEffect(() => {
-    handleGetLikesBackend();
-  }, []);
-
-  /**
-   *
-   * @returns All Favorite items by current user logged in
-   */
-  const handleGetLikesBackend = async () => {
-    const authToken = JSON.parse(localStorage.getItem("token"))["token"];
-
-    try {
-      const response = await fetch("http://localhost:8000/api/folder/Likes", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${authToken}`, // Include the token in the Authorization header
-        },
+    handleGetFavorites()
+      .then((data) => {
+        setLikedRecipes(data["Favorites"]);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error getting favorites:", error);
       });
-
-      if (response.ok) {
-        const responseData = await response.json();
-        setLikedRecipes(responseData["result"]["Likes"]);
-        setIsLoading(false); // Set loading to false after fetching recipes
-        return responseData;
-      } else {
-        throw new Error("Failed to send favorite");
-      }
-    } catch (error) {
-      setIsLoading(false); // Set loading to false after fetching recipes
-      console.error("Error getting Likes folder :: ", error);
-      // Handle errors here, e.g., show an error message to the user
-    }
-  };
+  }, []);
 
   const truncateString = (inputString) => {
     const words = inputString.split(" ");
@@ -192,7 +169,6 @@ function TabCookbook() {
     <div className="dashboard-page">
       <Nav currentTab={2} />
       <div className="right-side-panel">
-        <div className="top-gradient" />
         <div className="cookbook-canvas">
           {isLoading ? ( // Check if loading, show loading state if true
             <p>{/* LOADING PLACEHOLDER */}</p>

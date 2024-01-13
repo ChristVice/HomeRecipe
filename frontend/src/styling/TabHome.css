@@ -25,7 +25,7 @@
   font-weight: 400;
   line-height: normal;
 
-  border-radius: 50px 0px 0px 50px;
+  border-radius: 15px 0px 0px 15px;
   border: 1px solid rgba(171, 171, 171, 0.3);
   background: #fff;
 }
@@ -39,7 +39,7 @@
   width: 70px;
   height: 41px;
 
-  border-radius: 0px 50px 50px 0px;
+  border-radius: 0px 15px 15px 0px;
   background: #000;
 
   cursor: pointer;
