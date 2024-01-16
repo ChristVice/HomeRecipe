@@ -1,13 +1,9 @@
 .cookbook-folders-content-container {
-  width: auto;
-  height: auto;
-
-  display: flex;
-  justify-content: left;
-  align-items: flex-start;
-  flex-wrap: wrap;
-
   gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-rows: auto;
+  width: 100%;
 }
 /*      ADD NEW COOKBOOK        */
 .add-new-folder-btn {
@@ -30,7 +26,6 @@
   transition: 0.2s ease-in;
 
   padding: 17px 27px;
-  width: 242px;
 }
 
 .add-new-folder-btn:hover {
@@ -66,7 +61,7 @@
 
 .new-folder-info-modal-content {
   background-color: white;
-  padding: 20px;
+  padding: 24px;
   border-radius: 20px;
 }
 
@@ -95,7 +90,7 @@
   font-weight: 400;
   line-height: normal;
 
-  width: 220px;
+  width: 300px;
   padding: 10px;
 
   margin: 0;
@@ -121,7 +116,7 @@
   font-weight: 400;
   line-height: normal;
 
-  padding: 6px 20px;
+  padding: 10px 20px;
 
   cursor: pointer;
 }

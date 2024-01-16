@@ -63,8 +63,8 @@
   overflow-x: auto; /* Enable horizontal scrolling */
   white-space: nowrap; /* Prevent list items from wrapping */
 
-  height: 100%;
   margin-right: 10px;
+  height: 100%;
 }
 .tabcookbook-show-liked-recipes .scrollable-wrapper {
   width: fit-content; /* Ensures the wrapper fits its content */
@@ -73,6 +73,7 @@
 .recipe-cards-horizontal-list {
   display: inline-flex; /* Display list items in a row */
   gap: 10px;
+  padding: 5px;
 }
 
 /*      RECIPE CARDS ACTUAL CONTENT        */
@@ -84,6 +85,13 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
+  transition: 0.2s ease;
+}
+
+.recipe-card-canvas:hover {
+  transition: 0.2s ease;
+  transform: translateY(-4px);
 }
 
 .recipe-card-image-box {

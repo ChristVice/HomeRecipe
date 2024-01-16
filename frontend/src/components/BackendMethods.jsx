@@ -1,3 +1,4 @@
+// HANDLE USER MODEL BACKEND *****************************************************
 export const handleGetUsername = async () => {
   const authToken = JSON.parse(localStorage.getItem("token"))["token"];
 
@@ -18,6 +19,52 @@ export const handleGetUsername = async () => {
     }
   } catch (error) {
     console.error(error);
+  }
+};
+
+// HANDLE FOLDER MODEL BACKEND *****************************************************
+/**
+ *
+ * @param folderName Folder which will be return its associated recipes, "ALL" will return all folders
+ * @param recipeData Recipe data
+ * @returns HTTP response
+ */
+export const handlePutFoldersBackend = async (folderName, recipeData) => {
+  const authToken = JSON.parse(localStorage.getItem("token"))["token"];
+  const data = {
+    recipeID: recipeData["recipeID"],
+    calories: parseFloat(recipeData["calories"].toFixed(2)),
+    recipe_label: recipeData["recipeLabel"],
+    cuisine_type: recipeData["cuisineType"],
+    meal_type: recipeData["mealType"],
+    time_in_minutes: recipeData["timeMin"],
+    ingredient_lines: recipeData["ingredients"],
+    image_url: recipeData["imageURL"],
+    website_url: recipeData["websiteURL"],
+  };
+
+  try {
+    const response = await fetch(
+      `http://localhost:8000/api/folder/${folderName}/`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${authToken}`, // Include the token in the Authorization header
+        },
+        body: JSON.stringify(data),
+      }
+    );
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return responseData;
+    } else {
+      throw new Error("Failed to post folder");
+    }
+  } catch (error) {
+    return "Error posting folder :: " + error;
+    // Handle errors here, e.g., show an error message to the user
   }
 };
 
@@ -85,23 +132,24 @@ export const handlePostFolderBackend = async (folderName) => {
   }
 };
 
-// HANDLE FAVORITES MODEL BACKEND
+// HANDLE FAVORITES MODEL BACKEND *****************************************************
 /**
  *
- * @param {Takes info data points to send to the backend}
+ * @param recipeData Takes info data points to send to the backend
  * @returns
  */
-export const handlePostFavorites = async (info) => {
+export const handlePostFavorites = async (recipeData) => {
   const authToken = JSON.parse(localStorage.getItem("token"))["token"];
   const data = {
-    calories: parseFloat(info["calories"].toFixed(2)),
-    recipe_label: info["recipeLabel"],
-    cuisine_type: info["cuisineType"],
-    meal_type: info["mealType"],
-    time_in_minutes: info["timeMin"],
-    ingredient_lines: info["ingredients"],
-    image_url: info["imageURL"],
-    website_url: info["websiteURL"],
+    recipeID: recipeData["recipeID"],
+    calories: parseFloat(recipeData["calories"].toFixed(2)),
+    recipe_label: recipeData["recipeLabel"],
+    cuisine_type: recipeData["cuisineType"],
+    meal_type: recipeData["mealType"],
+    time_in_minutes: recipeData["timeMin"],
+    ingredient_lines: recipeData["ingredients"],
+    image_url: recipeData["imageURL"],
+    website_url: recipeData["websiteURL"],
   };
 
   try {
@@ -128,13 +176,13 @@ export const handlePostFavorites = async (info) => {
 
 /**
  *
- * @param {Takes imageURL as key indicator for recipe being deleted} info
+ * @param imageURL Takes imageURL as key indicator for recipe being deleted
  * @returns
  */
-export const handleDeleteFavorite = async (imageURL) => {
+export const handleDeleteFavorite = async (recipeID) => {
   const authToken = JSON.parse(localStorage.getItem("token"))["token"];
   const data = {
-    imageURL: imageURL,
+    recipeID: recipeID,
   };
 
   try {

@@ -11,6 +11,7 @@ class CustomUser(AbstractUser):
 
 class Recipes(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    recipeID = models.CharField(max_length=100, unique=True, default='')
     recipe_label = models.CharField(max_length=255)
     calories = models.DecimalField(max_digits=10, decimal_places=2) 
     cuisine_type = models.CharField(max_length=100, default=None)

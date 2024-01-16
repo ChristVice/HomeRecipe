@@ -1,7 +1,10 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Nav from "./Nav";
 import HeartButton from "./HeartButton";
 import "../styling/TabHome.css";
+import SaveToFolderButton from "./SaveToFolderButton";
+import { handleGetFoldersBackend } from "./BackendMethods";
+import ProcessRecipeData from "./ProcessRecipeData";
 
 function TabHome() {
   const [text, setText] = useState("");
@@ -11,6 +14,21 @@ function TabHome() {
   const appID = process.env.REACT_APP_APP_ID;
   const appKEY = process.env.REACT_APP_APP_KEY;
   const numberOfRecipes = 20; // Set the number of recipes you want to retrieve
+
+  //to send to SaveToFolder button component
+  const [folderOptions, setFolderOptions] = useState([]);
+
+  useEffect(() => {
+    handleGetFoldersBackend("ALL")
+      .then((data) => {
+        if (data && data["folders"]) {
+          setFolderOptions((prevList) => [...prevList, ...data["folders"]]);
+        }
+      })
+      .catch((error) => {
+        console.log("error occurred getting folders", error);
+      });
+  }, []);
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
@@ -30,17 +48,6 @@ function TabHome() {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
-  const getImageURL = (apiURL) => {
-    if (apiURL && apiURL.images) {
-      if (apiURL.images.LARGE && apiURL.images.LARGE.url) {
-        return apiURL.images.LARGE.url;
-      } else if (apiURL.images.REGULAR && apiURL.images.REGULAR.url) {
-        return apiURL.images.REGULAR.url;
-      }
-    }
-    return apiURL.images.SMALL.url;
-  };
-
   const fetchData = async () => {
     try {
       const response = await fetch(
@@ -49,7 +56,6 @@ function TabHome() {
       if (response.ok) {
         const data = await response.json();
 
-        console.log(data);
         setData(data);
         setDisplayTxt(text);
       } else {
@@ -60,7 +66,9 @@ function TabHome() {
     }
   };
 
-  const Card = ({ information }) => {
+  const Card = ({ recipeData }) => {
+    const information = ProcessRecipeData(recipeData);
+
     const handleButtonClick = (url) => {
       window.open(url, "_blank");
     };
@@ -70,39 +78,51 @@ function TabHome() {
         <div
           className="result-pic"
           style={{
-            backgroundImage: `url(${getImageURL(information)})`,
+            backgroundImage: `url(${information.imageURL})`,
           }}
         />
         <div className="results-labels">
-          <h1>{information.label}</h1>
+          <h1>{information.recipeLabel}</h1>
           <div className="label-details">
-            <h3> {capitalizeFirstLetter(information.cuisineType[0])}</h3>
-            <h3>{capitalizeFirstLetter(information.mealType[0])}</h3>
+            <h3> {capitalizeFirstLetter(information.cuisineType)}</h3>
+            <h3>{capitalizeFirstLetter(information.mealType)}</h3>
           </div>
 
           <div className="label-details">
-            <h3>{parseFloat(information.calories).toFixed(2)} calories</h3>
-            {information.totalTime < 1 ? (
+            <h3>{information.calories} calories</h3>
+            {information.timeMin < 1 ? (
               <h3 className="green-light">1 minute</h3>
-            ) : information.totalTime <= 10 ? (
-              <h3 className="green-light">{information.totalTime} minutes</h3>
-            ) : information.totalTime > 10 && information.totalTime <= 30 ? (
-              <h3 className="blue-light">{information.totalTime} minutes</h3>
+            ) : information.timeMin <= 10 ? (
+              <h3 className="green-light">{information.timeMin} minutes</h3>
+            ) : information.timeMin > 10 && information.timeMin <= 30 ? (
+              <h3 className="blue-light">{information.timeMin} minutes</h3>
             ) : (
-              <h3 className="yellow-light">{information.totalTime} minutes</h3>
+              <h3 className="yellow-light">{information.timeMin} minutes</h3>
             )}
           </div>
         </div>
         <div className="result-buttons">
           <button
             className="open-recipe-link-btn"
-            onClick={() => handleButtonClick(information.url)}
+            onClick={() => handleButtonClick(information.websiteURL)}
           >
             Show Recipe
           </button>
+
           <div className="save-folder-btns">
-            <HeartButton recipeData={information} heartStyle={{ top: "50%" }} />
-            <button className="save-cookbook">save folder</button>
+            <div className="heart-btn-search-results-card">
+              <HeartButton
+                recipeData={information}
+                heartStyle={{
+                  top: "50%",
+                }}
+              />
+            </div>
+
+            <SaveToFolderButton
+              folders={[...new Set(folderOptions)]}
+              recipeData={information}
+            />
           </div>
         </div>
       </div>
@@ -125,8 +145,6 @@ function TabHome() {
             />
             <button className="search-btn" onClick={fetchData}>
               <svg
-                width="20"
-                height="20"
                 viewBox="0 0 18 18"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -145,9 +163,9 @@ function TabHome() {
                 Searched: <span>{displayTxt}</span>
               </h1>
               <div className="data-content">
-                {data.hits.map((item, index) => {
-                  return <Card key={index} information={item.recipe} />;
-                })}
+                {data.hits.map((item, index) => (
+                  <Card key={index} recipeData={item.recipe} />
+                ))}
               </div>
             </div>
           )}

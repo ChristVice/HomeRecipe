@@ -28,3 +28,5 @@ class CustomUserAdmin(UserAdmin):
 
 # Register your CustomUser model with the custom admin class
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(Recipes)
+admin.site.register(Folders)

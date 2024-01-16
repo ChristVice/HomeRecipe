@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import UserSerializer, NewUserSerializer, RecipeSerializer, FolderSerializer, FavoritesSerializer
 from .models import CustomUser, Recipes, Folders, Favorites
 
+import re
 
 
 @api_view(['POST'])
@@ -66,8 +67,6 @@ def user_methods(request):
 
 @api_view(['POST'])
 def register_user(request):
-    user = request.user
-
     try:
         serializer = NewUserSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
@@ -106,7 +105,7 @@ def register_user(request):
         return Response({'error': f'Invalid data provided :: {e}'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated])
 def specific_folder(request, folder_name):
     user = request.user
@@ -159,18 +158,32 @@ def specific_folder(request, folder_name):
 
     elif request.method == "PUT":
         if user and isinstance(user, CustomUser):  # Ensure user is a CustomUser instance
-            image_url = request.data['imageURL']
+            recipe_data = request.data  # Assuming recipe data is included
+            recipeID = recipe_data['recipeID'] 
 
             try:
-                # Find the Recipe based on the imageURL
-                recipe = Recipes.objects.get(user=user, image_url=image_url)
+                # Check if the recipe with the given recipeID already exists, if not make one
+                recipe = None
+                if  Recipes.objects.filter(user=user, recipeID=recipeID).exists() is False:
+                    # If it doesn't exist, create a new recipe
+                    serializer = RecipeSerializer(data=recipe_data, context={'request': request})
 
-                # Get or create the folder named "insert_into_folder"
-                if Folders.objects.filter(user=user, folder_name=folder_name).exists() is False:
-                    return Response({'error' : 'Folder does not exist'}, status=status.HTTP_404_NOT_FOUND)
+                    if serializer.is_valid():
+                        recipe_data = serializer.validated_data
+                        recipe_data['user'] = user
+                        recipe = Recipes.objects.create(**recipe_data)
+                    else:
+                        return Response({'Invalid recipe data': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+                else:
+                    recipe = Recipes.objects.filter(user=user, recipeID=recipeID).first()
                 
+                # check if folder exists
+                if Folders.objects.filter(user=user, folder_name=folder_name).exists() is False:
+                    return Response({"detail": f"Folder '{folder_name}' not found."}, status=status.HTTP_404_NOT_FOUND)
+
+                # check if recipe already exists in folder
                 if Folders.objects.filter(user=user, folder_name=folder_name, recipes=recipe).exists():
-                    return Response({'error': 'Recipe is already in the folder'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'error': 'Recipe is already in the folder'}, status=status.HTTP_409_CONFLICT)
 
                 folder = Folders.objects.filter(user=user, folder_name=folder_name).first()
                 # Add the recipe to the folder
@@ -180,8 +193,8 @@ def specific_folder(request, folder_name):
                 folder_serializer = FolderSerializer(folder)
                 return Response({f"Successfully put recipe into folder {folder_name}"}, status=status.HTTP_200_OK)
 
-            except Recipes.DoesNotExist:
-                return Response({"detail": f"Recipe with imageURL '{image_url}' not found."}, status=status.HTTP_404_NOT_FOUND)
+            except Folders.DoesNotExist:
+                return Response({"detail": f"Folder '{folder_name}' not found."}, status=status.HTTP_404_NOT_FOUND)
             except Exception as e:
                 return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -261,8 +274,8 @@ def recipes_view(request):
                 recipe_data = serializer.validated_data
                 recipe_data['user'] = user  # Assign user to the data 
 
-                # if image url not exist within same folder, add it 
-                if Recipes.objects.filter(user=user, image_url=recipe_data['image_url']).exists() is False:
+                # if recipeID not exist within same folder, add it 
+                if Recipes.objects.filter(user=user, recipeID=recipe_data['recipeID']).exists() is False:
                     recipe_instance = Recipes.objects.create(**recipe_data)
 
                 return Response({'message': 'successfully added recipe'}, status=status.HTTP_201_CREATED)
@@ -271,8 +284,8 @@ def recipes_view(request):
     
     elif request.method == 'DELETE':
         if request and user and isinstance(user, CustomUser):  # Ensure user is a CustomUser instance
-            image = request.data['imageURL']
-            recipe = Recipes.objects.filter(user=user, image_url=image).first()
+            recipeID = request.data['recipeID']
+            recipe = Recipes.objects.filter(user=user, recipeID=recipeID).first()
 
             if recipe:
                 recipe.delete()
@@ -288,8 +301,8 @@ def recipes_view(request):
 def favorites_view(request):
     user = request.user
 
-    def get_recipe_by_imageURL(image_url):
-        return Recipes.objects.filter(user=user, image_url=image_url).first() 
+    def get_recipe_by_recipeID(recipeID):
+        return Recipes.objects.filter(user=user, recipeID=recipeID).first() 
 
 
     if request.method == 'GET':
@@ -306,15 +319,16 @@ def favorites_view(request):
         return Response({"Favorites" : results}, status=status.HTTP_200_OK)
 
 
+
     elif request.method == 'POST':
         if request:
             # Extract data from the request
             recipe_data = request.data  # Assuming recipe data is included
 
-            # Check if the recipe with the given image URL already exists
-            recipe = get_recipe_by_imageURL(recipe_data['image_url'])
+            # Check if the recipe with the given recipeID already exists
+            recipe = get_recipe_by_recipeID(recipe_data['recipeID'])
 
-            if not recipe:
+            if recipe == None:
                 # If it doesn't exist, create a new recipe
                 serializer = RecipeSerializer(data=recipe_data, context={'request': request})
 
@@ -339,12 +353,16 @@ def favorites_view(request):
     elif request.method == 'DELETE':
         # Remove a favorite for the current user
         try:
-            image_url = request.data['imageURL']
-            recipe_id = get_recipe_by_imageURL(image_url).pk
-            favorite = Favorites.objects.get(user=user, recipe=recipe_id)
+            recipeID = request.data['recipeID']
+            recipe_pk = get_recipe_by_recipeID(recipeID)
+            favorite = Favorites.objects.get(user=user, recipe=recipe_pk.pk)
             favorite.delete()
+            recipe_pk.delete()
             return Response({"message": "Favorite deleted successfully"}, status=status.HTTP_200_OK)
         except Favorites.DoesNotExist:
             return Response({"error": "Favorite not found"}, status=status.HTTP_404_NOT_FOUND)
         except Favorites.MultipleObjectsReturned:
             return Response({"error": "Multiple favorite recipes found"}, status=status.HTTP_409_CONFLICT)
+        except Exception as e:
+            print(e)
+            return Response({"error": f"Error :: {e}"}, status=status.HTTP_400_BAD_REQUEST)

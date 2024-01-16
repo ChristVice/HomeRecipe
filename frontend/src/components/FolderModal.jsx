@@ -114,6 +114,7 @@ function FolderModal() {
               type="text"
               value={folderName}
               onChange={handleInputChange}
+              autoFocus
             />
             <div className="modal-folder-action-btns">
               <button className="new-folder-action-btn" onClick={handleCancel}>

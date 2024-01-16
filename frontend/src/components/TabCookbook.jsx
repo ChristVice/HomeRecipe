@@ -35,6 +35,7 @@ function TabCookbook() {
         return truncatedString + "...";
       }
     }
+
     return inputString;
   };
 
@@ -107,8 +108,9 @@ function TabCookbook() {
           <div className="heart-btn-bkg">
             <HeartButton
               className="testing-heart-resizing"
-              initialToggle={true}
+              isHearted={true}
               heartStyle={{ top: "2%" }}
+              recipeData={recipeData}
             />
           </div>
         </div>
