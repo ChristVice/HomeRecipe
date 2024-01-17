@@ -143,7 +143,7 @@
   color: #000;
   font-family: Work Sans;
   font-family: EB Garamond;
-  font-size: 26px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
@@ -159,7 +159,7 @@
 .results-labels h3 {
   color: #000;
   font-family: Work Sans;
-  font-size: 14px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 300;
   line-height: normal;
@@ -200,7 +200,7 @@
 
 .results-content .result-buttons {
   margin-left: auto;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .open-recipe-link-btn {

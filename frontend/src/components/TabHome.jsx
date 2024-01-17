@@ -142,6 +142,7 @@ function TabHome() {
               onChange={handleChange}
               className="search-txt"
               onKeyDown={handleKeyPress}
+              autoFocus
             />
             <button className="search-btn" onClick={fetchData}>
               <svg
