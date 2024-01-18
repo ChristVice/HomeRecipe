@@ -1,13 +1,15 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Squash as Hamburger } from "hamburger-react";
 import Icon from "../images/homerecipelogo1.png";
 import "../styling/Nav.css";
 import { handleGetUsername } from "./BackendMethods";
 
-function Nav({ currentTab }) {
+function Nav() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [currentTab, setCurrentTab] = useState(1);
 
   const [isMenuClicked, setIsMenuClicked] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState("");
@@ -21,6 +23,18 @@ function Nav({ currentTab }) {
         console.error("Error getting username:", error);
       });
   }, []);
+
+  useEffect(() => {
+    // Extract the current tab from the pathname
+    const currentPath = location.pathname;
+    if (currentPath === "/d/home") {
+      setCurrentTab(1);
+    } else if (currentPath === "/d/cookbook") {
+      setCurrentTab(2);
+    } else if (currentPath === "/d/calendar") {
+      setCurrentTab(3);
+    }
+  }, [location.pathname]);
 
   const handleLogOut = () => {
     console.log("Logging out");
@@ -127,6 +141,7 @@ function Nav({ currentTab }) {
             <p>Meal Calendar</p>
           </li>
         </ul>
+
         {/* Logout Button */}
         <div className="bottom-nav-content">
           <div className="loggedin-username-label">

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Nav from "./Nav";
 import "../styling/TabCookbook.css"; // Import your CSS file for styling
 import Cookbooks from "./Cookbooks";
 import PlaceholderImage from "../images/tabcookbook-default.png";
@@ -168,45 +167,42 @@ function TabCookbook() {
   };
 
   return (
-    <div className="dashboard-page">
-      <Nav currentTab={2} />
-      <div className="right-side-panel">
-        <div className="cookbook-canvas">
-          {isLoading ? ( // Check if loading, show loading state if true
-            <p>{/* LOADING PLACEHOLDER */}</p>
-          ) : likedRecipes.length > 0 ? ( // Check if there are liked recipes
-            <div className="cookbook-content">
-              <div className="tabcookbook-show-liked-recipes">
-                <h1>Liked Recipes</h1>
+    <div className="right-side-panel">
+      <div className="cookbook-canvas">
+        {isLoading ? ( // Check if loading, show loading state if true
+          <p>{/* LOADING PLACEHOLDER */}</p>
+        ) : likedRecipes.length > 0 ? ( // Check if there are liked recipes
+          <div className="cookbook-content">
+            <div className="tabcookbook-show-liked-recipes">
+              <h1>Liked Recipes</h1>
 
-                <div className="cards-container">
-                  <div className="scrollable-wrapper">
-                    <div className="recipe-cards-horizontal-list">
-                      {likedRecipes.map((recipe, index) => {
-                        return <RecipeCard key={index} recipeData={recipe} />;
-                      })}
-                    </div>
+              <div className="cards-container">
+                <div className="scrollable-wrapper">
+                  <div className="recipe-cards-horizontal-list">
+                    {likedRecipes.map((recipe, index) => {
+                      return <RecipeCard key={index} recipeData={recipe} />;
+                    })}
                   </div>
                 </div>
               </div>
-
-              <Cookbooks />
             </div>
-          ) : (
-            <div className="cookbook-content">
-              <div className="tabcookbook-no-recipes-default">
-                <h2>Looks like you haven't found any favorite recipes yet!</h2>
-                <img src={PlaceholderImage} alt="no-recipes-default" />
-                <h2>
-                  Explore our dishes and start liking recipes to build your
-                  collection!
-                </h2>
-              </div>
 
-              <Cookbooks />
+            <Cookbooks />
+          </div>
+        ) : (
+          <div className="cookbook-content">
+            <div className="tabcookbook-no-recipes-default">
+              <h2>Looks like you haven't found any favorite recipes yet!</h2>
+              <img src={PlaceholderImage} alt="no-recipes-default" />
+              <h2>
+                Explore our dishes and start liking recipes to build your
+                collection!
+              </h2>
             </div>
-          )}
-        </div>
+
+            <Cookbooks />
+          </div>
+        )}
       </div>
     </div>
   );

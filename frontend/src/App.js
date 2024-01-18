@@ -6,6 +6,8 @@ import SignUpPage from "./components/SignUpPage";
 import TabHome from "./components/TabHome";
 import TabCalendar from "./components/TabCalendar";
 import TabCookbook from "./components/TabCookbook";
+import Nav from "./components/Nav";
+import "./styling/Nav.css";
 
 function ProtectedRoute({ children }) {
   if (!localStorage.getItem("token")) {
@@ -51,35 +53,20 @@ function App() {
         />
 
         <Route
-          path="/d/"
+          path="/d/*"
           element={
-            <ProtectedRoute>
-              <TabHome />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/d/home"
-          element={
-            <ProtectedRoute>
-              <TabHome />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/d/calendar"
-          element={
-            <ProtectedRoute>
-              <TabCalendar />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/d/cookbook"
-          element={
-            <ProtectedRoute>
-              <TabCookbook />
-            </ProtectedRoute>
+            <div className="dashboard-page">
+              <ProtectedRoute>
+                <Nav /> {/* Render Nav component for all /d/* routes */}
+                <Routes>
+                  {/* Render protected routes */}
+                  <Route index element={<TabHome />} />
+                  <Route path="home" element={<TabHome />} />
+                  <Route path="calendar" element={<TabCalendar />} />
+                  <Route path="cookbook" element={<TabCookbook />} />
+                </Routes>
+              </ProtectedRoute>
+            </div>
           }
         />
       </Routes>

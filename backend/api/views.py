@@ -137,7 +137,7 @@ def specific_folder(request, folder_name):
                         folder = Folders.objects.filter(user=user, folder_name=folder_name).first()
                         if folder:
                             # Retrieve all recipes associated with the specified folder
-                            recipes = Folders.objects.filter(user=user).recipes 
+                            recipes = folder.recipes 
                             # get all data
                             serializer = RecipeSerializer(recipes, many=True)
                             return Response({"result" : {folder.folder_name : serializer.data}}, status=status.HTTP_200_OK)
