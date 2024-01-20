@@ -29,8 +29,8 @@ function FolderTemplate({ folderData }) {
     return inputString;
   };
 
-  const handleFolderActivate = () => {
-    console.log("folder clicked");
+  const handleFolderActivate = (folderName) => {
+    console.log(`${folderName} folder clicked`);
   };
 
   const handleFolderEtc = () => {
@@ -39,15 +39,16 @@ function FolderTemplate({ folderData }) {
 
   return (
     <div className="cookbook-user-folder">
-      <div className="cookbook-active-content" onClick={handleFolderActivate}>
+      <div
+        className="cookbook-active-content"
+        onClick={() => handleFolderActivate(folderData.folderName)}
+      >
         <CookbookIcon className="cookbook-icon" />
 
         <p className="cookbook-user-foldername">
           {truncateString(folderData.folderName)}
         </p>
-        <h1 className="cookbook-user-items-count">
-          {"" + folderData.folderLength}
-        </h1>
+        <h1 className="cookbook-user-items-count">{folderData.folderLength}</h1>
       </div>
       <button className="cookbook-user-dots" onClick={handleFolderEtc}>
         <svg viewBox="0 0 5 19" fill="none" xmlns="http://www.w3.org/2000/svg">

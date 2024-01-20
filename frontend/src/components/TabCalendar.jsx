@@ -1,12 +1,14 @@
 import { React, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import DND from "./DND";
 
 function TabCalendar() {
   const [date, setDate] = useState(new Date());
-
   return (
     <div className="right-side-panel">
+      <DND />
+
       <div className="app">
         <h1 className="header">React Calendar</h1>
         <div className="calendar-container">

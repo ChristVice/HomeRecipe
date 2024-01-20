@@ -5,6 +5,8 @@ import PlaceholderImage from "../images/tabcookbook-default.png";
 import HeartButton from "./HeartButton";
 import { handleGetFavorites } from "./BackendMethods";
 
+import { motion } from "framer-motion";
+
 function TabCookbook() {
   const [likedRecipes, setLikedRecipes] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // New loading state
@@ -166,6 +168,26 @@ function TabCookbook() {
     );
   };
 
+  const likedRecipesMotionContainer = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.1,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const likedRecipesMotionItem = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
+
   return (
     <div className="right-side-panel">
       <div className="cookbook-canvas">
@@ -178,11 +200,22 @@ function TabCookbook() {
 
               <div className="cards-container">
                 <div className="scrollable-wrapper">
-                  <div className="recipe-cards-horizontal-list">
-                    {likedRecipes.map((recipe, index) => {
-                      return <RecipeCard key={index} recipeData={recipe} />;
-                    })}
-                  </div>
+                  <motion.div
+                    variants={likedRecipesMotionContainer}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    <div className="recipe-cards-horizontal-list">
+                      {likedRecipes.map((recipe, index) => (
+                        <motion.div
+                          key={index}
+                          variants={likedRecipesMotionItem}
+                        >
+                          <RecipeCard key={index} recipeData={recipe} />
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
                 </div>
               </div>
             </div>

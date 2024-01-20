@@ -4,6 +4,7 @@ import "../styling/TabHome.css";
 import SaveToFolderButton from "./SaveToFolderButton";
 import { handleGetFoldersBackend } from "./BackendMethods";
 import ProcessRecipeData from "./ProcessRecipeData";
+import { motion } from "framer-motion";
 
 function TabHome() {
   const [text, setText] = useState("");
@@ -74,11 +75,10 @@ function TabHome() {
 
     return (
       <div className={`results-content`}>
-        <div
+        <img
           className="result-pic"
-          style={{
-            backgroundImage: `url(${information.imageURL})`,
-          }}
+          src={information.imageURL}
+          alt={information.recipeLabel}
         />
         <div className="results-labels">
           <h1>{information.recipeLabel}</h1>
@@ -159,9 +159,12 @@ function TabHome() {
             <h1 className="search-looking">
               Searched: <span>{displayTxt}</span>
             </h1>
+
             <div className="data-content">
               {data.hits.map((item, index) => (
-                <Card key={index} recipeData={item.recipe} />
+                <motion.div key={index} whileHover={{ scale: 1.02 }}>
+                  <Card key={index} recipeData={item.recipe} />
+                </motion.div>
               ))}
             </div>
           </div>

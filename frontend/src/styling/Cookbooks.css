@@ -2,6 +2,7 @@
   margin-top: 75px;
   margin-right: 40px;
 }
+
 .tabcookbook-cookbooks-section .cookbook-subtitle {
   margin: 0;
   margin-bottom: 15px;
@@ -25,4 +26,10 @@
   flex-wrap: wrap;
 
   gap: 5px;
+}
+
+@media screen and (max-width: 980px) {
+  .tabcookbook-cookbooks-section {
+    margin-right: 0;
+  }
 }
