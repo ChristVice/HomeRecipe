@@ -1,8 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { ReactComponent as CookbookIcon } from "../images/dashboard/cookbook-icon.svg";
 import "../styling/FolderTemplate.css";
 
-function FolderTemplate({ folderData }) {
+import { useDrop } from "react-dnd";
+import { handlePutFoldersBackend } from "./BackendMethods";
+
+function FolderTemplate({ folderData: initialFolderData }) {
+  // Make a copy of folderData using the spread operator
+  const [folderData, setFolderData] = useState({ ...initialFolderData });
+
+  const [, drop] = useDrop({
+    accept: "RECIPE CARD",
+    drop: (item) => {
+      // Handle the drop event, and access the recipeID from the dragged item
+      const droppedRecipeID = item.id;
+      const droppedFolder = folderData.folderName;
+
+      handlePutFoldersBackend(droppedFolder, droppedRecipeID).then((data) => {
+        if (data["success"]) {
+          //if drop is successful
+          setFolderData({
+            ...folderData,
+            folderLength: folderData.folderLength + 1,
+          });
+        }
+      });
+    },
+  });
+
   const truncateString = (inputString, maxCharacters = 15) => {
     if (inputString.length > maxCharacters) {
       const truncatedString = inputString.slice(0, maxCharacters);
@@ -38,7 +63,7 @@ function FolderTemplate({ folderData }) {
   };
 
   return (
-    <div className="cookbook-user-folder">
+    <div className="cookbook-user-folder" ref={drop}>
       <div
         className="cookbook-active-content"
         onClick={() => handleFolderActivate(folderData.folderName)}
@@ -58,6 +83,8 @@ function FolderTemplate({ folderData }) {
           />
         </svg>
       </button>
+
+      {/* HOVER LABEL */}
       <p className="cookbook-user-complete-foldername">
         {folderData.folderName}
       </p>

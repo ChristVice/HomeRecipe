@@ -161,42 +161,75 @@ def specific_folder(request, folder_name):
             recipe_data = request.data  # Assuming recipe data is included
             recipeID = recipe_data['recipeID'] 
 
-            try:
-                # Check if the recipe with the given recipeID already exists, if not make one
-                recipe = None
-                if  Recipes.objects.filter(user=user, recipeID=recipeID).exists() is False:
-                    # If it doesn't exist, create a new recipe
-                    serializer = RecipeSerializer(data=recipe_data, context={'request': request})
+            # If 'recipe_label' is not in the recipe_data dictionary
+            if 'recipe_label' not in recipe_data:
+                # write code for cookbook to just send recipeID and nothing else
+                try:
 
-                    if serializer.is_valid():
-                        recipe_data = serializer.validated_data
-                        recipe_data['user'] = user
-                        recipe = Recipes.objects.create(**recipe_data)
-                    else:
-                        return Response({'Invalid recipe data': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-                else:
                     recipe = Recipes.objects.filter(user=user, recipeID=recipeID).first()
-                
-                # check if folder exists
-                if Folders.objects.filter(user=user, folder_name=folder_name).exists() is False:
+
+                    # check if recipe exists
+                    if recipe is None:
+                        return Response({"detail": f"Recipe by ID not found."}, status=status.HTTP_404_NOT_FOUND)
+
+                    # check if folder exists
+                    if Folders.objects.filter(user=user, folder_name=folder_name).exists() is False:
+                        return Response({"detail": f"Folder '{folder_name}' not found."}, status=status.HTTP_404_NOT_FOUND)
+
+                    # check if recipe already exists in folder
+                    if Folders.objects.filter(user=user, folder_name=folder_name, recipes=recipe).exists():
+                        return Response({'error': 'Recipe by ID is already in the folder'}, status=status.HTTP_409_CONFLICT)
+
+                    folder = Folders.objects.filter(user=user, folder_name=folder_name).first()
+                    # Add the recipe to the folder
+                    folder.recipes.add(recipe)
+
+                    # Serialize the updated folder and respond
+                    folder_serializer = FolderSerializer(folder)
+                    return Response({f"Successfully put recipe by ID into folder {folder_name} :: {folder_serializer}"}, status=status.HTTP_200_OK)
+                    
+
+                except Folders.DoesNotExist:
                     return Response({"detail": f"Folder '{folder_name}' not found."}, status=status.HTTP_404_NOT_FOUND)
+                except Exception as e:
+                    return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            else:
+                try:
+                    # Check if the recipe with the given recipeID already exists, if not make one
+                    recipe = None
+                    if  Recipes.objects.filter(user=user, recipeID=recipeID).exists() is False:
+                        # If it doesn't exist, create a new recipe
+                        serializer = RecipeSerializer(data=recipe_data, context={'request': request})
 
-                # check if recipe already exists in folder
-                if Folders.objects.filter(user=user, folder_name=folder_name, recipes=recipe).exists():
-                    return Response({'error': 'Recipe is already in the folder'}, status=status.HTTP_409_CONFLICT)
+                        if serializer.is_valid():
+                            recipe_data = serializer.validated_data
+                            recipe_data['user'] = user
+                            recipe = Recipes.objects.create(**recipe_data)
+                        else:
+                            return Response({'Invalid recipe data': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+                    else:
+                        recipe = Recipes.objects.filter(user=user, recipeID=recipeID).first()
+                    
+                    # check if folder exists
+                    if Folders.objects.filter(user=user, folder_name=folder_name).exists() is False:
+                        return Response({"detail": f"Folder '{folder_name}' not found."}, status=status.HTTP_404_NOT_FOUND)
 
-                folder = Folders.objects.filter(user=user, folder_name=folder_name).first()
-                # Add the recipe to the folder
-                folder.recipes.add(recipe)
+                    # check if recipe already exists in folder
+                    if Folders.objects.filter(user=user, folder_name=folder_name, recipes=recipe).exists():
+                        return Response({'error': 'Recipe is already in the folder'}, status=status.HTTP_409_CONFLICT)
 
-                # Serialize the updated folder and respond
-                folder_serializer = FolderSerializer(folder)
-                return Response({f"Successfully put recipe into folder {folder_name}"}, status=status.HTTP_200_OK)
+                    folder = Folders.objects.filter(user=user, folder_name=folder_name).first()
+                    # Add the recipe to the folder
+                    folder.recipes.add(recipe)
 
-            except Folders.DoesNotExist:
-                return Response({"detail": f"Folder '{folder_name}' not found."}, status=status.HTTP_404_NOT_FOUND)
-            except Exception as e:
-                return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                    # Serialize the updated folder and respond
+                    folder_serializer = FolderSerializer(folder)
+                    return Response({f"Successfully put recipe into folder {folder_name}"}, status=status.HTTP_200_OK)
+
+                except Folders.DoesNotExist:
+                    return Response({"detail": f"Folder '{folder_name}' not found."}, status=status.HTTP_404_NOT_FOUND)
+                except Exception as e:
+                    return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response({'error' : 'Invalid data provided'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -357,7 +390,6 @@ def favorites_view(request):
             recipe_pk = get_recipe_by_recipeID(recipeID)
             favorite = Favorites.objects.get(user=user, recipe=recipe_pk.pk)
             favorite.delete()
-            recipe_pk.delete()
             return Response({"message": "Favorite deleted successfully"}, status=status.HTTP_200_OK)
         except Favorites.DoesNotExist:
             return Response({"error": "Favorite not found"}, status=status.HTTP_404_NOT_FOUND)

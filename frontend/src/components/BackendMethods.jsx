@@ -31,17 +31,29 @@ export const handleGetUsername = async () => {
  */
 export const handlePutFoldersBackend = async (folderName, recipeData) => {
   const authToken = JSON.parse(localStorage.getItem("token"))["token"];
-  const data = {
-    recipeID: recipeData["recipeID"],
-    calories: parseFloat(recipeData["calories"].toFixed(2)),
-    recipe_label: recipeData["recipeLabel"],
-    cuisine_type: recipeData["cuisineType"],
-    meal_type: recipeData["mealType"],
-    time_in_minutes: recipeData["timeMin"],
-    ingredient_lines: recipeData["ingredients"],
-    image_url: recipeData["imageURL"],
-    website_url: recipeData["websiteURL"],
-  };
+
+  let data = null;
+
+  if (typeof recipeData === "object" && recipeData !== null) {
+    data = {
+      recipeID: recipeData["recipeID"],
+      calories: parseFloat(recipeData["calories"].toFixed(2)),
+      recipe_label: recipeData["recipeLabel"],
+      cuisine_type: recipeData["cuisineType"],
+      meal_type: recipeData["mealType"],
+      time_in_minutes: recipeData["timeMin"],
+      ingredient_lines: recipeData["ingredients"],
+      image_url: recipeData["imageURL"],
+      website_url: recipeData["websiteURL"],
+    };
+  } else if (typeof recipeData === "string" && recipeData !== null) {
+    data = {
+      recipeID: recipeData, //will just be recipeID
+    };
+  } else {
+    console.error("Recipe data not proper type of either string or dictionary");
+    return;
+  }
 
   try {
     const response = await fetch(
@@ -58,7 +70,7 @@ export const handlePutFoldersBackend = async (folderName, recipeData) => {
 
     if (response.ok) {
       const responseData = await response.json();
-      return responseData;
+      return { success: responseData };
     } else {
       throw new Error("Failed to post folder");
     }
