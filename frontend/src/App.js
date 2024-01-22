@@ -3,11 +3,13 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
 import SignUpPage from "./components/SignUpPage";
+import MainPageRightSection from "./components/MainPageRightSection";
 import TabHome from "./components/TabHome";
 import TabCalendar from "./components/TabCalendar";
 import TabCookbook from "./components/TabCookbook";
 import Nav from "./components/Nav";
 import "./styling/Nav.css";
+import "./styling/HomePage.css";
 
 function ProtectedRoute({ children }) {
   if (!localStorage.getItem("token")) {
@@ -28,27 +30,18 @@ function App() {
     <Router>
       <Routes>
         <Route
-          path="/"
+          path="/*"
           element={
-            <CheckToken>
-              <LoginPage />
-            </CheckToken>
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            <CheckToken>
-              <SignUpPage />
-            </CheckToken>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <CheckToken>
-              <LoginPage />
-            </CheckToken>
+            <div className="landing-page">
+              <CheckToken>
+                <Routes>
+                  <Route index element={<LoginPage />} />
+                  <Route path="login" element={<LoginPage />} />
+                  <Route path="signup" element={<SignUpPage />} />
+                </Routes>
+                <MainPageRightSection />
+              </CheckToken>
+            </div>
           }
         />
 

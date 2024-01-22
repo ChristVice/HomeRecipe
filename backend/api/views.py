@@ -5,10 +5,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
-from .serializers import UserSerializer, NewUserSerializer, RecipeSerializer, FolderSerializer, FavoritesSerializer
+from .serializers import NewUserSerializer, RecipeSerializer, FolderSerializer, FavoritesSerializer
 from .models import CustomUser, Recipes, Folders, Favorites
-
-import re
 
 
 @api_view(['POST'])
@@ -69,16 +67,32 @@ def user_methods(request):
 def register_user(request):
     try:
         serializer = NewUserSerializer(data=request.data, context={'request': request})
-        if serializer.is_valid():
+
+        if serializer.is_valid() is False:
+            email = request.data['email']
+            username = request.data['username']
+
+            if CustomUser.objects.filter(email=email).exists() and CustomUser.objects.filter(username=username).exists():
+                return Response('Email and Username already taken', status=status.HTTP_409_CONFLICT)
+            elif CustomUser.objects.filter(email=email).exists():
+                return Response('Email already taken', status=status.HTTP_409_CONFLICT)
+            elif CustomUser.objects.filter(username=username).exists():
+                return Response('Username already taken', status=status.HTTP_409_CONFLICT)
+
+            elif request.data['username'] is None or request.data['email'] is None or request.data['password'] is None:
+                return Response('Invalid data given', status=status.HTTP_400_BAD_REQUEST)
+
+        elif serializer.is_valid():
             email = serializer.validated_data['email']
             username = serializer.validated_data['username']
             password = serializer.validated_data['password']
 
+            print(serializer.validated_data)
             # Check if a user with the same username already exists
             if CustomUser.objects.filter(username=username).exists():
-                return Response({'error': 'Username already taken'}, status=status.HTTP_409_CONFLICT)
+                return Response('Username already taken', status=status.HTTP_409_CONFLICT)
             elif CustomUser.objects.filter(email=email).exists():
-                return Response({'error': 'Email already in use'}, status=status.HTTP_409_CONFLICT)
+                return Response('Email already in use', status=status.HTTP_409_CONFLICT)
 
             # Create a new user
             new_user = CustomUser.objects.create_user(**serializer.validated_data)

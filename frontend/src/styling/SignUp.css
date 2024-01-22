@@ -108,4 +108,12 @@ ul {
   .password-container {
     margin-bottom: 10px;
   }
+
+  .error-input {
+    font-size: 10px;
+  }
+
+  .login-sign-form-section h1 span {
+    font-size: 10px;
+  }
 }

@@ -31,7 +31,7 @@ function MainPageRightSection() {
   );
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const intervalTime = 15_000; // every 10 seconds
+  const intervalTime = 10_000; // every 10 seconds
 
   useEffect(() => {
     const interval = setInterval(() => {

@@ -49,6 +49,7 @@ function LoginIn() {
       } else {
         console.error("Invalid response received");
         console.error(response);
+        setError("Incorrect username or password. Please try again.");
       }
     } catch (error) {
       if (error.response && error.response.data) {
@@ -56,6 +57,7 @@ function LoginIn() {
       } else {
         console.error("An error occurred while processing the request");
       }
+      setError("Server error, please try again later");
     }
   };
 

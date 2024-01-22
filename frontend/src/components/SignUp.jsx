@@ -11,7 +11,7 @@ function SignUp() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [password_confirmation, setPasswordConfirmation] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const navigate = useNavigate();
 
   const [isFocused, setIsFocused] = useState(false);
@@ -29,36 +29,24 @@ function SignUp() {
     }
   };
 
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
-
-  const handleBlur = () => {
-    setIsFocused(false);
-  };
-
   const handleRegisterAndLogin = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.post("http://localhost:8000/api/signup/", {
-        email: email,
-        username: username,
-        password: password,
-      });
+    console.log(errorHandling.email);
+    console.log(errorHandling.username);
+    console.log(errorHandling.passwordMatch);
 
-      if (password !== password_confirmation) {
+    try {
+      if (password !== passwordConfirmation) {
         setErrorHandling({
-          email: errorHandling["email"],
-          username: errorHandling["username"],
-          passwordMatch: !errorHandling["passwordMatch"],
+          ...errorHandling,
+          passwordMatch: !errorHandling.passwordMatch,
         });
-        console.log("Password mismatch error");
       } else {
-        setErrorHandling({
-          email: false,
-          username: false,
-          passwordMatch: true,
+        const response = await axios.post("http://localhost:8000/api/signup/", {
+          email: email,
+          username: username,
+          password: password,
         });
         if (response && (response.status === 201 || response.status === 200)) {
           if (response.data.token) {
@@ -77,9 +65,9 @@ function SignUp() {
     } catch (error) {
       if (error.response && error.response.data) {
         setErrorHandling({
-          email: error.response.data.hasOwnProperty("email"),
-          username: error.response.data.hasOwnProperty("username"),
-          passwordMatch: password === password_confirmation,
+          email: error.response.data.includes("Email"),
+          username: error.response.data.includes("Username"),
+          passwordMatch: password === passwordConfirmation,
         });
       } else {
         console.error(error);
@@ -87,11 +75,11 @@ function SignUp() {
     }
   };
 
-  const handlePasswordLength = () => {
+  const handlePasswordLength = (password) => {
     return password.length >= 8;
   };
 
-  const handlePasswordCommon = () => {
+  const handlePasswordCommon = (password) => {
     let commonPasswords = new Set([
       "123456",
       "123456789",
@@ -116,14 +104,16 @@ function SignUp() {
     ]);
     return password.length >= 8 && !commonPasswords.has(password);
   };
-  const handlePasswordSimilar = () => {
+
+  const handlePasswordSimilar = (password) => {
     return (
       password.length >= 8 &&
       !password.includes(username) &&
       !password.includes(email)
     );
   };
-  const handlePasswordNumeric = () => {
+
+  const handlePasswordNumeric = (password) => {
     const hasLetters = /[a-zA-Z]/.test(password);
     const hasNumbers = /\d/.test(password);
     const isNotEntirelyNumeric = !/^\d+$/.test(password);
@@ -145,10 +135,7 @@ function SignUp() {
             </p>
           </h1>
         ) : (
-          <h1 className="no-error-input">
-            Email
-            <span>*</span>
-          </h1>
+          <h1 className="no-error-input">Email</h1>
         )}
       </div>
       <input
@@ -162,15 +149,11 @@ function SignUp() {
           <h1>
             Username
             <p className="error-input">
-              {" "}
               A user with that username already exists.<span>*</span>
             </p>
           </h1>
         ) : (
-          <h1 className="no-error-input">
-            Username
-            <span>*</span>
-          </h1>
+          <h1 className="no-error-input">Username</h1>
         )}
       </div>
       <input
@@ -180,17 +163,19 @@ function SignUp() {
         onChange={(e) => setUsername(e.target.value)}
       />
       <div className="password-container">
-        <h1>
-          Password<span>*</span>
-        </h1>
+        <h1>Password</h1>
         <input
           type="password"
           placeholder="Enter your password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="password-input"
-          onFocus={handleFocus}
-          onBlur={handleBlur}
+          onFocus={() => {
+            setIsFocused(!isFocused);
+          }}
+          onBlur={() => {
+            setIsFocused(!isFocused);
+          }}
         />
         {isFocused && (
           <div className="requirements-box">
@@ -199,28 +184,36 @@ function SignUp() {
               <ul>
                 <li>
                   <img
-                    src={handlePasswordLength() ? CheckMarkImg : BulletImg}
+                    src={
+                      handlePasswordLength(password) ? CheckMarkImg : BulletImg
+                    }
                     alt=""
                   />
                   Be at least 8 characters long
                 </li>
                 <li>
                   <img
-                    src={handlePasswordSimilar() ? CheckMarkImg : BulletImg}
+                    src={
+                      handlePasswordSimilar(password) ? CheckMarkImg : BulletImg
+                    }
                     alt=""
                   />
                   Not be similar to other personal information
                 </li>
                 <li>
                   <img
-                    src={handlePasswordCommon() ? CheckMarkImg : BulletImg}
+                    src={
+                      handlePasswordCommon(password) ? CheckMarkImg : BulletImg
+                    }
                     alt=""
                   />
                   Not be a commonly used password
                 </li>
                 <li>
                   <img
-                    src={handlePasswordNumeric() ? CheckMarkImg : BulletImg}
+                    src={
+                      handlePasswordNumeric(password) ? CheckMarkImg : BulletImg
+                    }
                     alt=""
                   />
                   Not be entirely numeric
@@ -240,16 +233,13 @@ function SignUp() {
             </p>
           </h1>
         ) : (
-          <h1 className="no-error-input">
-            Confirm Password
-            <span>*</span>
-          </h1>
+          <h1 className="no-error-input">Confirm Password</h1>
         )}
       </div>
       <input
         type="password"
         placeholder="Retype your password"
-        value={password_confirmation}
+        value={passwordConfirmation}
         onChange={(e) => setPasswordConfirmation(e.target.value)}
       />
       <button className="login-button" onClick={handleRegisterAndLogin}>
