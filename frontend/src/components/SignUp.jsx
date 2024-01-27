@@ -32,10 +32,6 @@ function SignUp() {
   const handleRegisterAndLogin = async (e) => {
     e.preventDefault();
 
-    console.log(errorHandling.email);
-    console.log(errorHandling.username);
-    console.log(errorHandling.passwordMatch);
-
     try {
       if (password !== passwordConfirmation) {
         setErrorHandling({
@@ -106,6 +102,10 @@ function SignUp() {
   };
 
   const handlePasswordSimilar = (password) => {
+    if (username.length === 0 || email.length === 0) {
+      return password.length >= 8;
+    }
+
     return (
       password.length >= 8 &&
       !password.includes(username) &&
@@ -177,6 +177,7 @@ function SignUp() {
             setIsFocused(!isFocused);
           }}
         />
+
         {isFocused && (
           <div className="requirements-box">
             <div className="checklist">
@@ -187,36 +188,36 @@ function SignUp() {
                     src={
                       handlePasswordLength(password) ? CheckMarkImg : BulletImg
                     }
-                    alt=""
+                    alt="default-checkmark"
                   />
                   Be at least 8 characters long
                 </li>
                 <li>
                   <img
                     src={
+                      handlePasswordNumeric(password) ? CheckMarkImg : BulletImg
+                    }
+                    alt="default-checkmark"
+                  />
+                  Must have some numbers
+                </li>
+                <li>
+                  <img
+                    src={
                       handlePasswordSimilar(password) ? CheckMarkImg : BulletImg
                     }
-                    alt=""
+                    alt="default-checkmark"
                   />
-                  Not be similar to other personal information
+                  Not be similar to username or email
                 </li>
                 <li>
                   <img
                     src={
                       handlePasswordCommon(password) ? CheckMarkImg : BulletImg
                     }
-                    alt=""
+                    alt="default-checkmark"
                   />
                   Not be a commonly used password
-                </li>
-                <li>
-                  <img
-                    src={
-                      handlePasswordNumeric(password) ? CheckMarkImg : BulletImg
-                    }
-                    alt=""
-                  />
-                  Not be entirely numeric
                 </li>
               </ul>
             </div>

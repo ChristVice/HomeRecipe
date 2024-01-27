@@ -80,8 +80,6 @@ function Nav() {
         </div>
       </div>
 
-      <hr className="title-line" />
-
       {/* Tab Menu */}
       <div className={isMenuClicked ? "menu-panel" : "menu-panel-closed"}>
         <motion.div

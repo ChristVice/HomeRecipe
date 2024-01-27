@@ -94,9 +94,9 @@ function TabHome() {
             ) : information.timeMin <= 10 ? (
               <h3 className="green-light">{information.timeMin} minutes</h3>
             ) : information.timeMin > 10 && information.timeMin <= 30 ? (
-              <h3 className="blue-light">{information.timeMin} minutes</h3>
-            ) : (
               <h3 className="yellow-light">{information.timeMin} minutes</h3>
+            ) : (
+              <h3 className="red-light">{information.timeMin} minutes</h3>
             )}
           </div>
         </div>

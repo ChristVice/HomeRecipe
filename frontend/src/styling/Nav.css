@@ -19,6 +19,8 @@
 .top-title {
   display: flex;
   align-items: center;
+
+  margin-bottom: 30px;
 }
 
 .icon-text-main {
@@ -47,12 +49,6 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-}
-
-.title-line {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-right: 20px;
 }
 
 .side-tabs {
@@ -202,7 +198,6 @@
 /*=========== RIGHT SIDE CONTENT ===========*/
 
 .right-side-panel {
-  border-radius: 50px 0px 0px 50px;
   background: #f7f9f7;
   box-shadow: -5px 0px 20px 0px rgba(0, 0, 0, 0.1);
 
@@ -334,11 +329,6 @@
     display: none;
   }
 
-  .title-line {
-    margin-right: 0;
-    margin-bottom: 0;
-  }
-
   .dashboard-page {
     grid-template-rows: auto 1fr; /* Two rows */
     grid-template-columns: 1fr; /* One column */
@@ -353,6 +343,7 @@
 
   .top-title {
     position: relative;
+    margin-bottom: 10px;
   }
 
   .icon-text-main {

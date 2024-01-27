@@ -15,31 +15,29 @@
 
 .requirements-box {
   display: none;
+}
+
+.password-input:focus + .requirements-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   position: absolute;
   top: calc(100% + 5px);
   left: 0;
   width: 95.5%;
   padding: 10px;
-  border-radius: 10px;
   font-size: 14px;
 
   background-color: #f7f9f7;
-  border: 2px solid rgba(0, 0, 0, 0.2);
-}
-
-.password-input:focus + .requirements-box {
-  display: block;
-}
-
-.checklist {
-  margin-left: 60px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
 }
 
 .checklist p,
 ul {
   color: #000;
   font-family: Work Sans;
-  font-size: 14px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -55,12 +53,13 @@ ul {
   justify-content: flex-start;
   align-items: center;
 
-  margin-left: 30px;
+  margin-left: 20px;
   margin-bottom: 10px;
 }
 
 .checklist ul li img {
   margin-right: 5px;
+  height: 15px;
 }
 
 .signup-input-label h1 {
