@@ -17,7 +17,6 @@ class RecipeSerializer(serializers.ModelSerializer):
         fields = ['recipeID', 'calories', 'recipe_label', 'cuisine_type', 'meal_type',
                   'time_in_minutes', 'ingredient_lines', 'website_url', 'image_url', ]  # Specify the fields you want to include
 
-
 class FolderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Folders
@@ -26,4 +25,4 @@ class FolderSerializer(serializers.ModelSerializer):
 class FavoritesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorites
-        fields = ['recipe']  # Specify the fields you want to include
+        fields = ['recipes']  # Specify the fields you want to include

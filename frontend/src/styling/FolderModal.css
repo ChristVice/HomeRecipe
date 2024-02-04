@@ -94,7 +94,7 @@
   padding: 10px;
 
   margin: 0;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .modal-folder-action-btns {
@@ -116,7 +116,7 @@
   font-weight: 400;
   line-height: normal;
 
-  padding: 10px 20px;
+  padding: 8px 15px;
 
   cursor: pointer;
 }

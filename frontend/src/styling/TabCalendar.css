@@ -1,0 +1,112 @@
+.calendar-app {
+  padding: 0px 40px 0px 0px;
+}
+
+.recipe-event-div {
+  background-color: #000;
+  border: none;
+
+  padding: 4px;
+  border-radius: 5px;
+
+  color: #fff;
+  font-family: "Work Sans";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.recipe-event-div:hover {
+  background: hsla(5, 82%, 56%, 1);
+
+  background: linear-gradient(
+    360deg,
+    hsla(5, 82%, 56%, 1) 0%,
+    hsla(0, 0%, 0%, 1) 50%
+  );
+
+  background: -moz-linear-gradient(
+    360deg,
+    hsla(5, 82%, 56%, 1) 0%,
+    hsla(0, 0%, 0%, 1) 50%
+  );
+
+  background: -webkit-linear-gradient(
+    360deg,
+    hsla(5, 82%, 56%, 1) 0%,
+    hsla(0, 0%, 0%, 1) 50%
+  );
+
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#EB4335", endColorstr="#000000", GradientType=1 );
+}
+
+.tabcalendar-event-title-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+}
+
+.tabcalendar-event-title-container img {
+  height: clamp(10px, 4vw, 30px);
+  border-radius: 5px;
+}
+
+.tabcalendar-event-title-container p {
+  margin: 0;
+  font-size: clamp(8px, 4vw, 12px);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+:root {
+  --fc-today-bg-color: #ffdcd5;
+
+  .fc {
+    height: 535px;
+  }
+  .fc table {
+    font-size: clamp(10px, 4vw, 12px);
+    font-family: "Work Sans";
+  }
+
+  .fc .fc-toolbar-title {
+    color: #000;
+    text-align: center;
+    font-family: "Work Sans";
+    font-size: clamp(16px, 4vw, 20px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  .fc .fc-button-primary:hover {
+    background-color: #ababab;
+    transition: 0.2s ease;
+  }
+
+  .fc .fc-button {
+    text-align: center;
+    font-family: "Work Sans";
+    font-size: clamp(10px, 4vw, 14px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+
+    height: 35px;
+
+    background-color: black;
+    border: none;
+  }
+
+  .fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 7px;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .calendar-app {
+    padding: 0px 0px 0px 0px;
+  }
+}
