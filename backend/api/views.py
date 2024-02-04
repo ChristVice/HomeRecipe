@@ -356,6 +356,10 @@ def favorites_view(request):
     def get_recipe_by_recipeID(recipeID):
         return Recipes.objects.filter(recipeID=recipeID).first() 
 
+    def extract_recipe_values(data):
+        if len(data[0]['recipes']) == 0:
+            return None
+        return [item['recipes'][0] for item in data]
 
     if request.method == 'GET':
         # Retrieve all favorites for the current user
@@ -363,14 +367,13 @@ def favorites_view(request):
         serializer = FavoritesSerializer(favorites, many=True)
 
         results  = []
-        if serializer.data:
-            for recipe_key in serializer.data[0]['recipes']:
+        if serializer.data and extract_recipe_values(serializer.data):
+            for recipe_key in extract_recipe_values(serializer.data):
                 recipe = Recipes.objects.get(pk=recipe_key) 
                 recipe_serial = RecipeSerializer(recipe).data
                 results.append(recipe_serial)
 
         return Response({"Favorites" : results}, status=status.HTTP_200_OK)
-
 
 
     elif request.method == 'POST':
