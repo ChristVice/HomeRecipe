@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "../styling/TabCalendar.css";
 import "../styling/EventPopup.css";
 import TabCalendarHeader from "./TabCalendarHeader";
@@ -14,6 +14,8 @@ function TabCalendar() {
   const [events, setEvents] = useState([]);
   const [clickedEvent, setClickedEvent] = useState({});
   const [isEventClicked, setIsEventClicked] = useState(false);
+
+  const calendarRef = useRef(null);
 
   const [inputText, setInputText] = useState("");
   const [calendarKey, setCalendarKey] = useState(1);
@@ -57,6 +59,14 @@ function TabCalendar() {
     setIsEventClicked(!isEventClicked);
     setInputText("");
     handleUpdateEvents();
+
+    // after the event is updated, we want to change the view to the day of the event
+    // otherwise it will send user back to the current day
+    setTimeout(() => {
+      calendarRef.current
+        .getApi()
+        .changeView("dayGridMonth", clickedEvent.start);
+    }, 1);
   };
 
   const handleCancel = () => {
@@ -162,6 +172,7 @@ function TabCalendar() {
       <section className="calendar-app">
         <FullCalendar
           key={calendarKey}
+          ref={calendarRef}
           plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
           initialView="dayGridMonth"
           weekends={true}
