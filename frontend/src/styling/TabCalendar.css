@@ -3,42 +3,8 @@
 }
 
 .recipe-event-div {
-  background-color: #000;
-  border: none;
-
-  padding: 4px;
+  border: None;
   border-radius: 5px;
-
-  color: #fff;
-  font-family: "Work Sans";
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-}
-
-.recipe-event-div:hover {
-  background: hsla(5, 82%, 56%, 1);
-
-  background: linear-gradient(
-    360deg,
-    hsla(5, 82%, 56%, 1) 0%,
-    hsla(0, 0%, 0%, 1) 50%
-  );
-
-  background: -moz-linear-gradient(
-    360deg,
-    hsla(5, 82%, 56%, 1) 0%,
-    hsla(0, 0%, 0%, 1) 50%
-  );
-
-  background: -webkit-linear-gradient(
-    360deg,
-    hsla(5, 82%, 56%, 1) 0%,
-    hsla(0, 0%, 0%, 1) 50%
-  );
-
-  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#EB4335", endColorstr="#000000", GradientType=1 );
 }
 
 .tabcalendar-event-title-container {
@@ -46,18 +12,59 @@
   justify-content: flex-start;
   align-items: center;
   gap: 5px;
+
+  padding: 4px;
+  border-radius: 5px;
+
+  background-color: #000;
+
+  border: 2px solid;
+}
+
+.tabcalendar-event-title-container.active {
+  border: 2px solid #dc2100;
+}
+
+.tabcalendar-event-title-container:hover {
+  background: hsla(9, 100%, 43%, 1);
+
+  background: linear-gradient(
+    0deg,
+    hsla(9, 100%, 43%, 1) 0%,
+    hsla(0, 0%, 0%, 1) 100%
+  );
+
+  background: -moz-linear-gradient(
+    0deg,
+    hsla(9, 100%, 43%, 1) 0%,
+    hsla(0, 0%, 0%, 1) 100%
+  );
+
+  background: -webkit-linear-gradient(
+    0deg,
+    hsla(9, 100%, 43%, 1) 0%,
+    hsla(0, 0%, 0%, 1) 100%
+  );
+
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#DC2100", endColorstr="#000000", GradientType=1 );
 }
 
 .tabcalendar-event-title-container img {
   height: clamp(10px, 4vw, 30px);
-  border-radius: 5px;
+  border-radius: 3px;
 }
 
 .tabcalendar-event-title-container p {
   margin: 0;
-  font-size: clamp(8px, 4vw, 12px);
   white-space: nowrap;
   overflow: hidden;
+
+  text-align: center;
+  font-family: "Work Sans";
+  font-size: clamp(10px, 4vw, 12px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 :root {
@@ -102,6 +109,11 @@
 
   .fc .fc-toolbar.fc-header-toolbar {
     margin-bottom: 7px;
+  }
+
+  .fc-event .fc-event-main {
+    position: relative;
+    z-index: auto;
   }
 }
 

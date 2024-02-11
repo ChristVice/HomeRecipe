@@ -367,6 +367,11 @@ def favorites_view(request):
         serializer = FavoritesSerializer(favorites, many=True)
 
         results  = []
+        print()
+        print()
+        print(serializer.data)
+        print()
+        print()
         if serializer.data and extract_recipe_values(serializer.data):
             for recipe_key in extract_recipe_values(serializer.data):
                 recipe = Recipes.objects.get(pk=recipe_key) 
