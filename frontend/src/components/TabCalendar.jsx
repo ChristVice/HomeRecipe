@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import "../styling/TabCalendar.css";
 import "../styling/EventPopup.css";
 import TabCalendarHeader from "./TabCalendarHeader";
@@ -16,13 +16,22 @@ function TabCalendar() {
   const [isEventClicked, setIsEventClicked] = useState(false);
 
   const [inputText, setInputText] = useState("");
+  const [calendarKey, setCalendarKey] = useState(1);
 
-  const calendarRef = useRef(null);
+  // this method serves to update the calendar when an event is added or removed, thats it
+  const handleUpdateEvents = () => {
+    setCalendarKey(calendarKey + 1);
+    setCalendarKey(calendarKey - 1);
+    if (calendarKey >= 100 || calendarKey < 0) {
+      setCalendarKey(1);
+    }
+    console.log(calendarKey);
+  };
 
   const generateUniqueId = () => {
     return uuidv4();
   };
-  //handle key presses on the modal when open
+
   const handleKeyPress = (event) => {
     if (event.key === "Escape") {
       handleCancel();
@@ -47,6 +56,7 @@ function TabCalendar() {
 
     setIsEventClicked(!isEventClicked);
     setInputText("");
+    handleUpdateEvents();
   };
 
   const handleCancel = () => {
@@ -151,7 +161,7 @@ function TabCalendar() {
 
       <section className="calendar-app">
         <FullCalendar
-          ref={calendarRef}
+          key={calendarKey}
           plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
           initialView="dayGridMonth"
           weekends={true}
