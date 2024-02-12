@@ -170,6 +170,18 @@ function TabCalendar() {
       />
 
       <p>{title}</p>
+      <span
+        className="active-event-glow-span"
+        style={
+          isEventClicked && id === clickedEvent.id
+            ? {
+                display: "block",
+              }
+            : {
+                display: "none",
+              }
+        }
+      ></span>
     </div>
   );
 

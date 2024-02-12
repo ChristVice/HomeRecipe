@@ -25,6 +25,43 @@
   border: 2px solid #dc2100;
 }
 
+.tabcalendar-event-title-container.active:before,
+.tabcalendar-event-title-container.active:after,
+.active-event-glow-span {
+  position: absolute;
+  z-index: -100;
+
+  content: "";
+  height: 100%;
+  width: 85%;
+  top: 0%;
+  right: 7.5%;
+  border-radius: 5px;
+  box-shadow: 0 0 15px #dc2100;
+  animation: glow-grow 2s ease-out infinite;
+  scale: 0.7;
+}
+.tabcalendar-event-title-container.active:after {
+  animation-delay: 0.06s;
+}
+
+.active-event-glow-span {
+  animation-delay: 0.73s;
+}
+@keyframes glow-grow {
+  0% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
 .tabcalendar-event-title-container:hover {
   background: hsla(9, 100%, 43%, 1);
 
