@@ -46,6 +46,7 @@
 /*       CHOICES CONTENT     */
 .event-popup-choices {
   height: 100%;
+  width: 30%;
 
   background: #ffffff;
   border: 1px solid #ababab;
@@ -61,7 +62,7 @@
 
   color: #ababab;
 
-  padding: 5px 10px 5px 20px;
+  padding: 5px;
 
   overflow: hidden;
   text-align: center;

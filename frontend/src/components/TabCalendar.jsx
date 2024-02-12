@@ -1,7 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "../styling/TabCalendar.css";
 import "../styling/EventPopup.css";
 import TabCalendarHeader from "./TabCalendarHeader";
+import { handleGetFoldersBackend } from "./BackendMethods";
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
@@ -14,11 +15,18 @@ function TabCalendar() {
   const [events, setEvents] = useState([]);
   const [clickedEvent, setClickedEvent] = useState({});
   const [isEventClicked, setIsEventClicked] = useState(false);
+  const [folders, setFolders] = useState([]);
 
   const calendarRef = useRef(null);
 
   const [inputText, setInputText] = useState("");
   const [calendarKey, setCalendarKey] = useState(1);
+
+  useEffect(() => {
+    handleGetFoldersBackend("ALL").then((data) => {
+      setFolders(["Any", ...data.folders]);
+    });
+  }, []);
 
   // this method serves to update the calendar when an event is added or removed, thats it
   const handleUpdateEvents = () => {
@@ -155,11 +163,11 @@ function TabCalendar() {
           : {}
       }
     >
-      {title === "(New event)" ? (
-        <img src={imageURL} alt="recipe food" style={{ width: "0px" }} />
-      ) : (
-        <img src={imageURL} alt="recipe food" />
-      )}
+      <img
+        src={imageURL}
+        alt="recipe food"
+        style={title === "(New event)" ? { width: "0px" } : {}}
+      />
 
       <p>{title}</p>
     </div>
@@ -208,9 +216,12 @@ function TabCalendar() {
           >
             <h1 className="event-popup-title">Change the event’s recipe</h1>
             <div className="event-popup-labels">
-              <select className="event-popup-choices">
-                <option value="option1">Any</option>
-                <option value="option2">Option 2</option>
+              <select className="event-popup-choices" defaultValue="0">
+                {folders.map((folder, index) => (
+                  <option key={index} value={folder}>
+                    {folder}
+                  </option>
+                ))}
               </select>
               <input
                 className="event-popup-input"
