@@ -1,0 +1,37 @@
+.event-search-options {
+  position: absolute;
+
+  background-color: #fff;
+
+  width: 70%;
+
+  box-sizing: border-box;
+  border: 1px solid #ababab;
+  margin-top: -1px;
+  margin-left: -1px;
+}
+
+.unordered-search-options-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.unordered-search-options-list > li {
+  padding: 5px;
+  cursor: pointer;
+
+  font-family: "Work Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+
+  color: #000000;
+}
+
+.unordered-search-options-list > li:hover {
+  background-color: #ffe6d8;
+}

@@ -25,40 +25,34 @@
   border: 2px solid #dc2100;
 }
 
-.tabcalendar-event-title-container.active:before,
-.tabcalendar-event-title-container.active:after,
-.active-event-glow-span {
+.active-event-blob-div {
   position: absolute;
-  z-index: -100;
+  inset: 0;
 
-  content: "";
-  height: 100%;
-  width: 85%;
-  top: 0%;
-  right: 7.5%;
+  background: none;
   border-radius: 5px;
-  box-shadow: 0 0 15px #dc2100;
-  animation: glow-grow 2s ease-out infinite;
-  scale: 0.7;
-}
-.tabcalendar-event-title-container.active:after {
-  animation-delay: 0.06s;
+  height: 100%;
+  width: 100%;
+
+  box-shadow: 0 0 0 0 rgba(220, 33, 0, 0);
+  transform: scale(1);
+  animation: pulse 2s infinite;
 }
 
-.active-event-glow-span {
-  animation-delay: 0.73s;
-}
-@keyframes glow-grow {
+@keyframes pulse {
   0% {
-    opacity: 0;
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(220, 33, 0, 0.7);
+  }
+
+  70% {
     transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(220, 33, 0, 0);
   }
-  80% {
-    opacity: 1;
-  }
+
   100% {
-    transform: scale(2);
-    opacity: 0;
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(220, 33, 0, 0);
   }
 }
 
@@ -95,6 +89,7 @@
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 
   text-align: center;
   font-family: "Work Sans";

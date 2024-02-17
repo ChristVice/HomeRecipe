@@ -64,16 +64,26 @@
 
   padding: 5px;
 
-  overflow: hidden;
   text-align: center;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .event-popup-choices:focus {
   outline: none;
 }
 
+/*       SEARCH CONTENT     */
+.event-pop-up-search {
+  width: 100%;
+  height: 100%;
+}
+
 /*       INPUT CONTENT     */
 .event-popup-input {
+  position: relative;
+
   width: 100%;
   height: 100%;
 

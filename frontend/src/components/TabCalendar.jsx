@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../styling/TabCalendar.css";
 import "../styling/EventPopup.css";
+import "../styling/EventSearchOptions.css";
 import TabCalendarHeader from "./TabCalendarHeader";
 import { handleGetFoldersBackend } from "./BackendMethods";
 
@@ -15,18 +16,47 @@ function TabCalendar() {
   const [events, setEvents] = useState([]);
   const [clickedEvent, setClickedEvent] = useState({});
   const [isEventClicked, setIsEventClicked] = useState(false);
-  const [folders, setFolders] = useState([]);
 
-  const calendarRef = useRef(null);
+  const [selectedFolder, setSelectedFolder] = useState("Any");
+  const [filteredOptions, setFilteredOptions] = useState([]);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [folders, setFolders] = useState([]);
+  const [isSearchOptionsVisible, setIsSearchOptionsVisible] = useState(false);
 
   const [inputText, setInputText] = useState("");
+
+  const calendarRef = useRef(null);
   const [calendarKey, setCalendarKey] = useState(1);
 
   useEffect(() => {
-    handleGetFoldersBackend("ALL").then((data) => {
-      setFolders(["Any", ...data.folders]);
-    });
-  }, []);
+    const fetchData = async () => {
+      try {
+        const data = await handleGetFoldersBackend("ALL");
+        setFolders(["Any", ...data.folders]);
+
+        if (selectedFolder === "Any") {
+          let options = [];
+
+          data.folders.forEach((folder) => {
+            const newRecipes = data.results[folder].filter((recipe) => {
+              return !options.some(
+                (optionRecipe) => optionRecipe.recipeID === recipe.recipeID
+              );
+            });
+            options = [...options, ...newRecipes];
+          });
+
+          setFilteredOptions(options);
+        } else {
+          setFilteredOptions(data.results[selectedFolder]);
+        }
+      } catch (error) {
+        console.error("Error fetching user data for calendar:", error);
+      }
+    };
+
+    fetchData();
+  }, [selectedFolder]);
 
   // this method serves to update the calendar when an event is added or removed, thats it
   const handleUpdateEvents = () => {
@@ -64,6 +94,7 @@ function TabCalendar() {
       }
     }
 
+    console.log(selectedFolder);
     setIsEventClicked(!isEventClicked);
     setInputText("");
     handleUpdateEvents();
@@ -149,29 +180,40 @@ function TabCalendar() {
     setInputText(e.target.value);
   };
 
-  const EventTitleWithImage = ({ title, imageURL, id }) => (
-    <div
-      className={`tabcalendar-event-title-container ${
-        isEventClicked && id === clickedEvent.id ? "active" : ""
-      }`}
-      style={
-        isEventClicked && id === clickedEvent.id
-          ? {
-              position: "relative",
-              zIndex: 1000,
-            }
-          : {}
-      }
-    >
-      <img
-        src={imageURL}
-        alt="recipe food"
-        style={title === "(New event)" ? { width: "0px" } : {}}
-      />
+  const handleSelectChange = (event) => {
+    const selectedValue = event.target.value;
+    setSelectedFolder(selectedValue);
+  };
 
-      <p>{title}</p>
-      <span
-        className="active-event-glow-span"
+  const handleOptionClick = (option) => {
+    setSelectedOption(option);
+  };
+
+  const EventTitleWithImage = ({ title, imageURL, id }) => (
+    <>
+      <div
+        className={`tabcalendar-event-title-container ${
+          isEventClicked && id === clickedEvent.id ? "active" : ""
+        }`}
+        style={
+          isEventClicked && id === clickedEvent.id
+            ? {
+                position: "relative",
+                zIndex: 1000,
+              }
+            : {}
+        }
+      >
+        <img
+          src={imageURL}
+          alt="recipe food"
+          style={title === "(New event)" ? { width: "0px" } : {}}
+        />
+
+        <p>{title}</p>
+      </div>
+      <div
+        className="active-event-blob-div"
         style={
           isEventClicked && id === clickedEvent.id
             ? {
@@ -181,10 +223,9 @@ function TabCalendar() {
                 display: "none",
               }
         }
-      ></span>
-    </div>
+      ></div>
+    </>
   );
-
   return (
     <div className="right-side-panel" style={{ position: "relative" }}>
       <TabCalendarHeader isCalendarEmpty={true} />
@@ -228,21 +269,53 @@ function TabCalendar() {
           >
             <h1 className="event-popup-title">Change the event’s recipe</h1>
             <div className="event-popup-labels">
-              <select className="event-popup-choices" defaultValue="0">
+              <select
+                className="event-popup-choices"
+                value={selectedFolder}
+                onChange={handleSelectChange}
+              >
                 {folders.map((folder, index) => (
                   <option key={index} value={folder}>
                     {folder}
                   </option>
                 ))}
               </select>
-              <input
-                className="event-popup-input"
-                type="text"
-                placeholder={"Search your recipes..."}
-                value={inputText}
-                onChange={handleInputChange}
-                autoFocus
-              />
+              <div className="event-pop-up-search">
+                <input
+                  className="event-popup-input"
+                  type="text"
+                  placeholder={"Search your recipes..."}
+                  value={inputText}
+                  onChange={handleInputChange}
+                  onFocus={() =>
+                    setIsSearchOptionsVisible(!isSearchOptionsVisible)
+                  }
+                  onBlur={() =>
+                    setIsSearchOptionsVisible(!isSearchOptionsVisible)
+                  }
+                />
+
+                {isSearchOptionsVisible && filteredOptions.length > 0 && (
+                  <div className="event-search-options">
+                    <ul className="unordered-search-options-list">
+                      {filteredOptions
+                        .filter((option) =>
+                          option.recipe_label
+                            .toLowerCase()
+                            .includes(inputText.toLowerCase())
+                        )
+                        .map((option, index) => (
+                          <li
+                            onClick={() => handleOptionClick(option)}
+                            key={index}
+                          >
+                            {option.recipe_label}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
             </div>
             <div className="event-popup-bttns">
               <button className="cancel" onClick={handleCancel}>
