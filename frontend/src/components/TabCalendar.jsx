@@ -3,7 +3,12 @@ import "../styling/TabCalendar.css";
 import "../styling/EventPopup.css";
 import "../styling/EventSearchOptions.css";
 import TabCalendarHeader from "./TabCalendarHeader";
-import { handleGetFavorites, handleGetFoldersBackend } from "./BackendMethods";
+import {
+  handleGetFavorites,
+  handleGetFoldersBackend,
+  handleGetMealDates,
+  handlePostMealDates,
+} from "./BackendMethods";
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
@@ -28,6 +33,40 @@ function TabCalendar() {
 
   const calendarRef = useRef(null);
   const [calendarKey, setCalendarKey] = useState(1);
+
+  const generateUniqueId = () => {
+    return uuidv4();
+  };
+
+  useEffect(() => {
+    handleGetMealDates()
+      .then((data) => {
+        console.log(data);
+
+        const newEvents = [];
+
+        data.forEach((mealDate) => {
+          mealDate.recipes.forEach((recipe) => {
+            const newEvent = {
+              className: "recipe-event-div",
+              title: recipe.recipe_label,
+              start: mealDate.date,
+              allDay: true,
+              editable: true,
+              id: generateUniqueId(),
+              imageURL: recipe.image_url,
+            };
+
+            newEvents.push(newEvent);
+          });
+        });
+
+        setEvents((prevEvents) => [...prevEvents, ...newEvents]);
+      })
+      .catch((error) => {
+        console.error("Error getting favorites:", error);
+      });
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,10 +117,6 @@ function TabCalendar() {
     }
   };
 
-  const generateUniqueId = () => {
-    return uuidv4();
-  };
-
   const handleKeyPress = (event) => {
     if (event.key === "Escape") {
       handleCancel();
@@ -104,9 +139,14 @@ function TabCalendar() {
         setEvents(updatedEvents);
       }
 
-      setIsEventClicked(!isEventClicked);
+      handlePostMealDates({
+        date: clickedEvent.start,
+        recipeID: selectedOption.recipeID,
+      });
+      setIsEventClicked(false);
       setInputText("");
       handleUpdateEvents();
+      console.log(clickedEvent);
 
       // after the event is updated, we want to change the view to the day of the event
       // otherwise it will send user back to the current day
@@ -122,7 +162,6 @@ function TabCalendar() {
 
   const handleCancel = () => {
     console.log("cancel");
-    setIsEventClicked(!isEventClicked);
 
     const eventIndex = events.findIndex(
       (event) => event.id === clickedEvent.id
@@ -135,7 +174,7 @@ function TabCalendar() {
       setEvents(updatedEvents);
     }
 
-    setIsEventClicked(!isEventClicked);
+    setIsEventClicked(false);
     setInputText("");
   };
 
@@ -152,7 +191,7 @@ function TabCalendar() {
     };
 
     setEvents([...events, newEvent]);
-    setIsEventClicked(!isEventClicked);
+    setIsEventClicked(true);
     setClickedEvent(newEvent);
   };
 

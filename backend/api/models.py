@@ -49,3 +49,15 @@ class Folders(models.Model):
     def __str__(self):
         return self.folder_name
 
+
+class MealDates(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='meal_plans')
+    recipes = models.ManyToManyField(Recipes, related_name='meal_plans', blank=True)
+
+    date = models.DateField()
+
+    class Meta:
+        verbose_name_plural = "Meal Dates"
+
+    def __str__(self):
+        return self.user.username + ' ' + str(self.date)

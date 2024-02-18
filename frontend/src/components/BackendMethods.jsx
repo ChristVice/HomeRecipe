@@ -245,3 +245,92 @@ export const handleGetFavorites = async () => {
     // Handle errors here, e.g., show an error message to the user
   }
 };
+
+// HANDLE MEAL DATES MODEL BACKEND *****************************************************
+
+/**
+ *
+ * @returns All meal dates by current user logged in
+ */
+export const handleGetMealDates = async () => {
+  const authToken = JSON.parse(localStorage.getItem("token"))["token"];
+
+  try {
+    const response = await fetch("http://localhost:8000/api/mealdates/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${authToken}`, // Include the token in the Authorization header
+      },
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return responseData;
+    } else {
+      throw new Error("Failed to get meal dates");
+    }
+  } catch (error) {
+    console.error("Error sending meal dates:", error);
+    // Handle errors here, e.g., show an error message to the user
+  }
+};
+
+/**
+ * @param info Takes date and recipeID to send to the backend
+ * @returns All meal dates by current user logged in
+ */
+export const handlePostMealDates = async (info) => {
+  const authToken = JSON.parse(localStorage.getItem("token"))["token"];
+
+  console.log(info);
+  try {
+    const response = await fetch("http://localhost:8000/api/mealdates/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${authToken}`, // Include the token in the Authorization header
+      },
+      body: JSON.stringify(info),
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return responseData;
+    } else {
+      throw new Error("Failed to post meal dates");
+    }
+  } catch (error) {
+    console.error("Error sending post meal date:", error);
+    // Handle errors here, e.g., show an error message to the user
+  }
+};
+
+/**
+ * @param info Takes date and recipeID to send to the backend
+ * @returns All meal dates by current user logged in
+ */
+export const handleDeleteMealDates = async (info) => {
+  const authToken = JSON.parse(localStorage.getItem("token"))["token"];
+
+  try {
+    const response = await fetch("http://localhost:8000/api/mealdates/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${authToken}`, // Include the token in the Authorization header
+      },
+      body: JSON.stringify(info),
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return responseData;
+    } else {
+      throw new Error("Failed to delete meal dates");
+    }
+  } catch (error) {
+    console.error("Error sending delete meal date:", error);
+    // Handle errors here, e.g., show an error message to the user
+  }
+};

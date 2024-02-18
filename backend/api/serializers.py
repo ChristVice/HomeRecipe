@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser, Recipes, Folders, Favorites
+from .models import CustomUser, Recipes, Folders, Favorites, MealDates
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,3 +26,8 @@ class FavoritesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorites
         fields = ['recipes']  # Specify the fields you want to include
+
+class MealDatesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MealDates
+        fields = ['date', 'recipes']  # Specify the fields you want to include

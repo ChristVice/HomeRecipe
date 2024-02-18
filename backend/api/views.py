@@ -5,8 +5,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
-from .serializers import NewUserSerializer, RecipeSerializer, FolderSerializer, FavoritesSerializer
-from .models import CustomUser, Recipes, Folders, Favorites
+from .serializers import NewUserSerializer, RecipeSerializer, FolderSerializer, FavoritesSerializer, MealDatesSerializer
+from .models import CustomUser, Recipes, Folders, Favorites, MealDates
 
 
 @api_view(['POST'])
@@ -407,6 +407,8 @@ def favorites_view(request):
             # Create a new favorite
             favorite = Favorites.objects.create(user=user)
             favorite.recipes.set([recipe])
+            # need to add recipe not set it
+            # favorite.recipes.add(recipe)
             return Response({"Favorite post successful"}, status=status.HTTP_201_CREATED)
 
         except Exception as e:
@@ -429,3 +431,74 @@ def favorites_view(request):
         except Exception as e:
             print(e)
             return Response({"error": f"Error :: {e}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@api_view(['GET', 'POST', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def meal_dates_view(request):
+    user = request.user
+
+    if request.method == 'GET':
+        # Retrieve all meal dates for the current user
+        meal_dates = MealDates.objects.filter(user=user)
+        serializer = MealDatesSerializer(meal_dates, many=True)
+
+        for meal_date in serializer.data:
+            recipes = []
+            for recipe_id in meal_date['recipes']:
+                recipe = Recipes.objects.get(pk=recipe_id)
+                if recipe:
+                     recipes.append(RecipeSerializer(recipe).data)
+
+            meal_date['recipes'] = recipes
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    if request.method == 'POST':
+        # Extract data from the request
+        print(request.data)
+
+        try:
+
+            print(request.data)
+
+            date = request.data.get('date')
+            recipeID = request.data.get('recipeID')
+
+            if date and recipeID:
+                recipe = Recipes.objects.get(users=user, recipeID=recipeID)
+
+                if MealDates.objects.filter(user=user, date=date).exists():
+                    meal_date = MealDates.objects.filter(user=user, date=date).first()
+                    meal_date.recipes.add(recipe)
+                else:
+                    meal_date = MealDates.objects.create(user=user, date=date)
+                    meal_date.recipes.set([recipe])
+                return Response({"Meal date created successfully"}, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            return Response({"error": f"Invalid data provided :: {e}"}, status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method == 'DELETE':
+        try:
+            date = request.data.get('date')
+            recipeID = request.data.get('recipeID')
+
+            # Create a new meal date
+            if date and recipeID:
+                recipe = Recipes.objects.get(users=user, recipeID=recipeID)
+
+                if MealDates.objects.filter(user=user, date=date).exists():
+                    meal_date = MealDates.objects.filter(user=user, date=date).first()
+
+                    if recipe in meal_date.recipes.all():
+                        meal_date.recipes.remove(recipe)
+                        return Response({"Meal date DELETED successfully"}, status=status.HTTP_201_CREATED)
+                    
+                    return Response({"error": "Recipe not found in meal date"}, status=status.HTTP_404_NOT_FOUND)
+
+                return Response({"error": f"Invalid data provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response({"error": f"Invalid data provided :: {e}"}, status=status.HTTP_400_BAD_REQUEST)
