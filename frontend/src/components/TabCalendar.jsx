@@ -24,6 +24,7 @@ function TabCalendar() {
   const [isSearchOptionsVisible, setIsSearchOptionsVisible] = useState(false);
 
   const [inputText, setInputText] = useState("");
+  const inputRef = useRef(null);
 
   const calendarRef = useRef(null);
   const [calendarKey, setCalendarKey] = useState(1);
@@ -98,14 +99,11 @@ function TabCalendar() {
 
       if (eventIndex !== -1) {
         const updatedEvents = [...events];
-        if (inputText !== "") {
-          updatedEvents[eventIndex].title = inputText;
-          updatedEvents[eventIndex].imageURL = selectedOption.image_url;
-          setEvents(updatedEvents);
-        }
+        updatedEvents[eventIndex].title = inputText;
+        updatedEvents[eventIndex].imageURL = selectedOption.image_url;
+        setEvents(updatedEvents);
       }
 
-      console.log(selectedFolder);
       setIsEventClicked(!isEventClicked);
       setInputText("");
       handleUpdateEvents();
@@ -142,8 +140,6 @@ function TabCalendar() {
   };
 
   const handleDateClick = (arg) => {
-    console.log(arg);
-
     const newEvent = {
       className: "recipe-event-div",
       title: "(New event)", // Replace with your desired title
@@ -161,7 +157,6 @@ function TabCalendar() {
   };
 
   const handleEventClick = (info) => {
-    console.log("event clicked :: ", info);
     const eventIndex = events.findIndex(
       (event) => event.id === info.event._def.publicId
     );
@@ -202,14 +197,14 @@ function TabCalendar() {
   const handleOptionClick = (option) => {
     setSelectedOption(option);
     setInputText(option.recipe_label);
-    setIsSearchOptionsVisible(!isSearchOptionsVisible);
+    setIsSearchOptionsVisible(false);
 
-    console.log(option);
+    inputRef.current.focus();
   };
 
   const handleSearchOptionsBlur = () => {
     setTimeout(() => {
-      setIsSearchOptionsVisible(!isSearchOptionsVisible);
+      setIsSearchOptionsVisible(false);
     }, 200);
   };
 
@@ -306,6 +301,7 @@ function TabCalendar() {
               </select>
               <div className="event-pop-up-search">
                 <input
+                  ref={inputRef}
                   className="event-popup-input"
                   style={
                     isSearchOptionsVisible
@@ -316,9 +312,7 @@ function TabCalendar() {
                   placeholder={"Search your recipes..."}
                   value={inputText}
                   onChange={handleInputChange}
-                  onFocus={() =>
-                    setIsSearchOptionsVisible(!isSearchOptionsVisible)
-                  }
+                  onFocus={() => setIsSearchOptionsVisible(true)}
                   onBlur={() => handleSearchOptionsBlur()}
                   autoFocus
                 />

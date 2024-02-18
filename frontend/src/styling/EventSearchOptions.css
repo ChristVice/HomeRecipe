@@ -30,7 +30,7 @@
   display: flex;
   align-items: center;
 
-  color: #000000;
+  color: gray;
 }
 
 .unordered-search-options-list > li:hover {
