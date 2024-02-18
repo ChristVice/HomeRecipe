@@ -382,14 +382,14 @@ def favorites_view(request):
 
 
     elif request.method == 'POST':
-        if request:
-            # Extract data from the request
+        # Extract data from the request
+        try:
             recipe_data = request.data  # Assuming recipe data is included
 
             # Check if the recipe with the given recipeID already exists
-            recipe = get_recipe_by_recipeID(recipe_data['recipeID'])
+            recipe = get_recipe_by_recipeID(recipe_data.get('recipeID'))
 
-            if recipe == None:
+            if not recipe:
                 # If it doesn't exist, create a new recipe
                 serializer = RecipeSerializer(data=recipe_data, context={'request': request})
 
@@ -397,7 +397,6 @@ def favorites_view(request):
                     recipe_data = serializer.validated_data
                     recipe = Recipes.objects.create(**recipe_data)
                     recipe.users.set([user])
-
                 else:
                     return Response({'Invalid recipe data': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -410,7 +409,8 @@ def favorites_view(request):
             favorite.recipes.set([recipe])
             return Response({"Favorite post successful"}, status=status.HTTP_201_CREATED)
 
-        return Response({"error":"Invalid data provided"}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": e}, status=status.HTTP_400_BAD_REQUEST)
 
 
     elif request.method == 'DELETE':

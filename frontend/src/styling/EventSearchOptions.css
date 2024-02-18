@@ -1,9 +1,10 @@
 .event-search-options {
   position: absolute;
+  z-index: 999;
 
   background-color: #fff;
 
-  width: 70%;
+  width: 70.2%;
 
   box-sizing: border-box;
   border: 1px solid #ababab;

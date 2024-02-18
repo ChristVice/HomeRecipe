@@ -3,7 +3,7 @@ import "../styling/TabCalendar.css";
 import "../styling/EventPopup.css";
 import "../styling/EventSearchOptions.css";
 import TabCalendarHeader from "./TabCalendarHeader";
-import { handleGetFoldersBackend } from "./BackendMethods";
+import { handleGetFavorites, handleGetFoldersBackend } from "./BackendMethods";
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
@@ -32,6 +32,7 @@ function TabCalendar() {
     const fetchData = async () => {
       try {
         const data = await handleGetFoldersBackend("ALL");
+        const favoriteData = await handleGetFavorites();
         setFolders(["Any", ...data.folders]);
 
         if (selectedFolder === "Any") {
@@ -43,7 +44,16 @@ function TabCalendar() {
                 (optionRecipe) => optionRecipe.recipeID === recipe.recipeID
               );
             });
+
             options = [...options, ...newRecipes];
+          });
+
+          favoriteData["Favorites"].forEach((favorite) => {
+            if (
+              !options.some((recipe) => recipe.recipeID === favorite.recipeID)
+            ) {
+              options.push(favorite);
+            }
           });
 
           setFilteredOptions(options);
@@ -65,7 +75,6 @@ function TabCalendar() {
     if (calendarKey >= 100 || calendarKey < 0) {
       setCalendarKey(1);
     }
-    console.log(calendarKey);
   };
 
   const generateUniqueId = () => {
@@ -82,30 +91,35 @@ function TabCalendar() {
   };
 
   const handleConfirm = () => {
-    const eventIndex = events.findIndex(
-      (event) => event.id === clickedEvent.id
-    );
+    if (clickedEvent.title !== "(New event)" || inputText !== "") {
+      const eventIndex = events.findIndex(
+        (event) => event.id === clickedEvent.id
+      );
 
-    if (eventIndex !== -1) {
-      const updatedEvents = [...events];
-      if (inputText !== "") {
-        updatedEvents[eventIndex].title = inputText;
-        setEvents(updatedEvents);
+      if (eventIndex !== -1) {
+        const updatedEvents = [...events];
+        if (inputText !== "") {
+          updatedEvents[eventIndex].title = inputText;
+          updatedEvents[eventIndex].imageURL = selectedOption.image_url;
+          setEvents(updatedEvents);
+        }
       }
+
+      console.log(selectedFolder);
+      setIsEventClicked(!isEventClicked);
+      setInputText("");
+      handleUpdateEvents();
+
+      // after the event is updated, we want to change the view to the day of the event
+      // otherwise it will send user back to the current day
+      setTimeout(() => {
+        calendarRef.current
+          .getApi()
+          .changeView("dayGridMonth", clickedEvent.start);
+      }, 1);
+    } else {
+      handleCancel();
     }
-
-    console.log(selectedFolder);
-    setIsEventClicked(!isEventClicked);
-    setInputText("");
-    handleUpdateEvents();
-
-    // after the event is updated, we want to change the view to the day of the event
-    // otherwise it will send user back to the current day
-    setTimeout(() => {
-      calendarRef.current
-        .getApi()
-        .changeView("dayGridMonth", clickedEvent.start);
-    }, 1);
   };
 
   const handleCancel = () => {
@@ -180,13 +194,23 @@ function TabCalendar() {
     setInputText(e.target.value);
   };
 
-  const handleSelectChange = (event) => {
+  const handleSelectFolderChange = (event) => {
     const selectedValue = event.target.value;
     setSelectedFolder(selectedValue);
   };
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
+    setInputText(option.recipe_label);
+    setIsSearchOptionsVisible(!isSearchOptionsVisible);
+
+    console.log(option);
+  };
+
+  const handleSearchOptionsBlur = () => {
+    setTimeout(() => {
+      setIsSearchOptionsVisible(!isSearchOptionsVisible);
+    }, 200);
   };
 
   const EventTitleWithImage = ({ title, imageURL, id }) => (
@@ -272,7 +296,7 @@ function TabCalendar() {
               <select
                 className="event-popup-choices"
                 value={selectedFolder}
-                onChange={handleSelectChange}
+                onChange={handleSelectFolderChange}
               >
                 {folders.map((folder, index) => (
                   <option key={index} value={folder}>
@@ -283,6 +307,11 @@ function TabCalendar() {
               <div className="event-pop-up-search">
                 <input
                   className="event-popup-input"
+                  style={
+                    isSearchOptionsVisible
+                      ? { borderRadius: "0px 10px 0px 0px" }
+                      : {}
+                  }
                   type="text"
                   placeholder={"Search your recipes..."}
                   value={inputText}
@@ -290,9 +319,8 @@ function TabCalendar() {
                   onFocus={() =>
                     setIsSearchOptionsVisible(!isSearchOptionsVisible)
                   }
-                  onBlur={() =>
-                    setIsSearchOptionsVisible(!isSearchOptionsVisible)
-                  }
+                  onBlur={() => handleSearchOptionsBlur()}
+                  autoFocus
                 />
 
                 {isSearchOptionsVisible && filteredOptions.length > 0 && (
