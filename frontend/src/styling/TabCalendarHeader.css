@@ -1,10 +1,10 @@
+/*    EMPTY DATES   */
 .emptycalendar {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   gap: 15px;
-
   padding: 0px 40px 30px 0px;
 }
 
@@ -36,6 +36,134 @@
   line-height: normal;
 
   margin: 0;
+}
+
+/*    FULL DATES   */
+.calendar-upcoming-title {
+  font-family: "EB Garamond";
+  font-style: normal;
+  font-weight: 500;
+  font-size: clamp(10px, 8vw, 16px);
+  display: flex;
+  align-items: center;
+
+  color: #000000;
+
+  margin: 0;
+  padding-left: 60px;
+  margin-bottom: 20px;
+}
+
+/*    UPCOMING DATES   */
+.calendar-upcoming-events-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+
+  padding-left: 60px;
+
+  margin-bottom: 60px;
+  gap: 20px;
+}
+
+.calendar-event-slide {
+  display: flex;
+
+  position: relative;
+}
+
+.calendar-event-date {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.calendar-today-subhead {
+  font-family: "Work Sans";
+  font-style: normal;
+  font-weight: 900;
+  font-size: 16px;
+  line-height: 19px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  color: rgba(214, 148, 129, 0.5);
+
+  margin: 0;
+
+  transform: rotate(-90deg);
+
+  position: absolute;
+  left: -15%;
+  top: 40%;
+}
+.calendar-upcoming-day {
+  font-family: "Work Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 38px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  color: #808080;
+
+  margin: 0;
+  margin-bottom: -2px;
+}
+.calendar-upcoming-month {
+  font-family: "Work Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 23px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  color: #808080;
+
+  margin: 0;
+}
+
+.calendar-upcoming-hr {
+  height: 1px;
+  width: 60%;
+  background-color: #808080;
+  border: none;
+
+  margin: 0;
+  margin-top: 8px;
+}
+
+/*    CARDS LIST    */
+.calendar-event-slide .cards-container {
+  overflow-x: auto; /* Enable horizontal scrolling */
+  white-space: nowrap; /* Prevent list items from wrapping */
+
+  height: 100%;
+  margin-right: 10px;
+
+  margin-left: 40px;
+}
+
+.calendar-event-slide .scrollable-wrapper {
+  width: fit-content; /* Ensures the wrapper fits its content */
+}
+
+.upcoming-meals-container {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 15px;
+  list-style-type: none;
+
+  padding: 0;
 }
 
 @media screen and (max-width: 575px) {

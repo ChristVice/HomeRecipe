@@ -144,6 +144,30 @@ export const handlePostFolderBackend = async (folderName) => {
   }
 };
 
+// HANDLE RECIPE MODEL BACKEND *****************************************************
+export const handleGetRecipe = async () => {
+  const authToken = JSON.parse(localStorage.getItem("token"))["token"];
+
+  try {
+    const response = await fetch("http://localhost:8000/api/recipe/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${authToken}`, // Include the token in the Authorization header
+      },
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return responseData;
+    } else {
+      throw new Error("Failed to send favorite");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 // HANDLE FAVORITES MODEL BACKEND *****************************************************
 /**
  *

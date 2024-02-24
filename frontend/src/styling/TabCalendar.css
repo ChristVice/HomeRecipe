@@ -104,7 +104,7 @@
   --fc-today-bg-color: #ffdcd5;
 
   .fc {
-    height: 535px;
+    height: 555px;
   }
   .fc table {
     font-size: clamp(10px, 4vw, 12px);

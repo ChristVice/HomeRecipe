@@ -244,6 +244,7 @@ function TabCalendar() {
 
       setEvents(updatedEvents);
     }
+    setInputText("");
   };
 
   const handleInputChange = (e) => {
@@ -283,6 +284,7 @@ function TabCalendar() {
 
     handleDeleteMealDates({ eventID: clickedEvent.eventID });
     setIsEventClicked(false);
+    setInputText("");
   };
 
   const EventTitleWithImage = ({ title, imageURL, id }) => (
@@ -324,7 +326,7 @@ function TabCalendar() {
   );
   return (
     <div className="right-side-panel" style={{ position: "relative" }}>
-      <TabCalendarHeader isCalendarEmpty={true} />
+      <TabCalendarHeader isCalendarEmpty={false} calendarEvents={events} />
 
       <section className="calendar-app">
         <FullCalendar
