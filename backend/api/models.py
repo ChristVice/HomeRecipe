@@ -54,6 +54,7 @@ class MealDates(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='meal_plans')
     recipes = models.ManyToManyField(Recipes, related_name='meal_plans', blank=True)
 
+    eventID = models.CharField(max_length=255, unique=True, default='')
     date = models.DateField()
 
     class Meta:

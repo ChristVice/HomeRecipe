@@ -315,7 +315,7 @@ export const handleDeleteMealDates = async (info) => {
 
   try {
     const response = await fetch("http://localhost:8000/api/mealdates/", {
-      method: "POST",
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Token ${authToken}`, // Include the token in the Authorization header

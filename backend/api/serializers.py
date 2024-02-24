@@ -30,4 +30,4 @@ class FavoritesSerializer(serializers.ModelSerializer):
 class MealDatesSerializer(serializers.ModelSerializer):
     class Meta:
         model = MealDates
-        fields = ['date', 'recipes']  # Specify the fields you want to include
+        fields = ['eventID', 'date', 'recipes']  # Specify the fields you want to include
