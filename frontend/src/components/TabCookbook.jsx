@@ -16,7 +16,7 @@ function TabCookbook() {
   useEffect(() => {
     handleGetFavorites()
       .then((data) => {
-        setLikedRecipes(data["Favorites"]);
+        setLikedRecipes(data["Favorites"].reverse());
         setIsLoading(false);
       })
       .catch((error) => {

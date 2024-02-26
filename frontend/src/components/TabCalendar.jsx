@@ -326,7 +326,7 @@ function TabCalendar() {
   );
   return (
     <div className="right-side-panel" style={{ position: "relative" }}>
-      <TabCalendarHeader isCalendarEmpty={false} calendarEvents={events} />
+      {events && <TabCalendarHeader calendarEvents={events} />}
 
       <section className="calendar-app">
         <FullCalendar

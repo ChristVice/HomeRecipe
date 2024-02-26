@@ -89,7 +89,7 @@ function RecipeCard({ recipeData }) {
   return (
     <div className="recipe-card-canvas" ref={drag}>
       <div className="recipe-card-image-box">
-        <img src={recipeData.image_url} alt="food-recipe" />
+        <img src={recipeData.image_url} alt={recipeData.recipe_label} />
         <div className="heart-btn-bkg">
           <HeartButton
             className="testing-heart-resizing"

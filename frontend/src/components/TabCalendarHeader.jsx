@@ -5,7 +5,7 @@ import CalendarRecipeCard from "./CalendarRecipeCard";
 import { handleGetRecipe } from "./BackendMethods";
 import { motion } from "framer-motion";
 
-function TabCalendarHeader({ isCalendarEmpty, calendarEvents }) {
+function TabCalendarHeader({ calendarEvents }) {
   const [todayDate, setTodayDate] = useState("");
   const [todayMeals, setTodayMeals] = useState([]);
   const [upcomingMeals, setUpcomingMeals] = useState([]);
@@ -60,13 +60,6 @@ function TabCalendarHeader({ isCalendarEmpty, calendarEvents }) {
     }
   }, [calendarEvents, todayDate]);
 
-  const handleTest = () => {
-    console.log(calendarEvents);
-    console.log("todayMeals", todayMeals);
-    console.log("upcomingMeals", upcomingMeals);
-    console.log("todayDate", todayDate);
-  };
-
   const formatDate = (inputDate) => {
     const date = new Date(inputDate);
     const formattedDate = new Intl.DateTimeFormat("en-US", {
@@ -95,9 +88,16 @@ function TabCalendarHeader({ isCalendarEmpty, calendarEvents }) {
     },
   };
 
+  const handleTest = () => {
+    console.log("calendarEvent", calendarEvents);
+    console.log("todayMeals", todayMeals);
+    console.log("upcomingMeals", upcomingMeals);
+    console.log("todayDate", todayDate);
+  };
+
   return (
     <>
-      {isCalendarEmpty ? (
+      {calendarEvents.length === 0 ? (
         <section className="emptycalendar">
           <h1 className="tabcalendar-start-title">
             Embark on your culinary adventure by clicking on any day on the
@@ -110,11 +110,11 @@ function TabCalendarHeader({ isCalendarEmpty, calendarEvents }) {
           </h1>
         </section>
       ) : (
-        <div>
+        <section>
           <h1 className="calendar-upcoming-title" onClick={handleTest}>
             Upcoming Dishes
           </h1>
-          {todayMeals.length > 0 && (
+          {todayMeals && todayMeals.length > 0 && recipes["recipes"] && (
             <div className="calendar-upcoming-events-container">
               <div className="calendar-event-slide">
                 <div className="calendar-event-date">
@@ -157,49 +157,51 @@ function TabCalendarHeader({ isCalendarEmpty, calendarEvents }) {
                   </div>
                 </div>
               </div>
-              <div className="calendar-event-slide">
-                <div className="calendar-event-date">
-                  <h1 className="calendar-upcoming-day">
-                    {upcomingMeals[0][0].start.slice(-2)}
-                  </h1>
-                  <h1 className="calendar-upcoming-month">
-                    {formatDate(upcomingMeals[0][0].start).toUpperCase()}
-                  </h1>
-                  <hr className="calendar-upcoming-hr" />
-                </div>
+              {upcomingMeals[0] && upcomingMeals[0].length > 0 && (
+                <div className="calendar-event-slide">
+                  <div className="calendar-event-date">
+                    <h1 className="calendar-upcoming-day">
+                      {upcomingMeals[0][0].start.slice(-2)}
+                    </h1>
+                    <h1 className="calendar-upcoming-month">
+                      {formatDate(upcomingMeals[0][0].start).toUpperCase()}
+                    </h1>
+                    <hr className="calendar-upcoming-hr" />
+                  </div>
 
-                <div className="cards-container">
-                  <div className="scrollable-wrapper">
-                    <motion.div
-                      variants={likedRecipesMotionContainer}
-                      initial="hidden"
-                      animate="visible"
-                    >
-                      <ul className="upcoming-meals-container">
-                        {upcomingMeals[0].map((meal, index) => {
-                          const recipeData = recipes["recipes"].find(
-                            (item) => item.recipeID === meal.recipeID
-                          );
-                          return (
-                            <motion.div
-                              key={index}
-                              variants={likedRecipesMotionItem}
-                            >
-                              <CalendarRecipeCard
+                  <div className="cards-container">
+                    <div className="scrollable-wrapper">
+                      <motion.div
+                        variants={likedRecipesMotionContainer}
+                        initial="hidden"
+                        animate="visible"
+                      >
+                        <ul className="upcoming-meals-container">
+                          {upcomingMeals[0].map((meal, index) => {
+                            const recipeData = recipes["recipes"].find(
+                              (item) => item.recipeID === meal.recipeID
+                            );
+                            return (
+                              <motion.div
                                 key={index}
-                                recipe={recipeData}
-                              />
-                            </motion.div>
-                          );
-                        })}
-                      </ul>
-                    </motion.div>
+                                variants={likedRecipesMotionItem}
+                              >
+                                <CalendarRecipeCard
+                                  key={index}
+                                  recipe={recipeData}
+                                />
+                              </motion.div>
+                            );
+                          })}
+                        </ul>
+                      </motion.div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           )}
-        </div>
+        </section>
       )}
     </>
   );
