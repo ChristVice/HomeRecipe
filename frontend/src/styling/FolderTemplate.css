@@ -109,7 +109,7 @@
 .cookbook-user-dots {
   margin: 0;
   margin-left: 20px;
-  padding: 2px;
+  padding: 5px;
 
   cursor: pointer;
 
@@ -123,4 +123,10 @@
 .cookbook-user-dots svg {
   width: 4px;
   height: 19px;
+}
+
+.cookbook-user-dots:hover {
+  background-color: #beccd4;
+  border-radius: 5px;
+  transition: background-color ease-in 0.1s;
 }

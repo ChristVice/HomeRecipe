@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ReactComponent as CookbookIcon } from "../images/dashboard/cookbook-icon.svg";
+import { useNavigate } from "react-router-dom";
 import "../styling/FolderTemplate.css";
 
 import { useDrop } from "react-dnd";
@@ -9,6 +10,7 @@ function FolderTemplate({ folderData: initialFolderData }) {
   // Make a copy of folderData using the spread operator
   const [folderData, setFolderData] = useState({ ...initialFolderData });
   const [isMouseHoveringTitle, setisMouseHoveringTitle] = useState(false);
+  const navigate = useNavigate();
 
   const [{ isHovering }, drop] = useDrop({
     accept: "RECIPE CARD",
@@ -35,9 +37,11 @@ function FolderTemplate({ folderData: initialFolderData }) {
 
   const handleFolderActivate = (folderName) => {
     console.log(`${folderName} folder clicked`);
+    navigate(`/d/cookbook/${folderName}`);
   };
 
-  const handleFolderEtc = () => {
+  const handleFolderEtc = (e) => {
+    e.stopPropagation();
     console.log("etc activated");
   };
 
@@ -56,16 +60,14 @@ function FolderTemplate({ folderData: initialFolderData }) {
   return (
     <div
       className={"cookbook-user-folder"}
+      onClick={() => handleFolderActivate(folderData.folderName)}
       ref={drop}
       style={{
         backgroundColor: isHovering ? "rgba(103, 180, 219, 0.4)" : "#e7ecef",
         transition: "background-color 0.2s ease",
       }}
     >
-      <div
-        className="cookbook-active-content"
-        onClick={() => handleFolderActivate(folderData.folderName)}
-      >
+      <div className="cookbook-active-content">
         <CookbookIcon className="cookbook-icon" />
 
         <p
@@ -82,7 +84,10 @@ function FolderTemplate({ folderData: initialFolderData }) {
           </p>
         )}
         <h1 className="cookbook-user-items-count">{folderData.folderLength}</h1>
-        <button className="cookbook-user-dots" onClick={handleFolderEtc}>
+        <button
+          className="cookbook-user-dots"
+          onClick={(e) => handleFolderEtc(e)}
+        >
           <svg
             viewBox="0 0 5 19"
             fill="none"
