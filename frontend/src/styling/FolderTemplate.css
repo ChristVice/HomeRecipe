@@ -12,11 +12,35 @@
   padding: 12px 20px;
 
   border-radius: 10px;
-  border: 1px solid #4a4a4a;
-  background: #fff;
+  border: 1px solid transparent;
+  background-color: #e7ecef;
 
   cursor: pointer;
 }
+/*  FOLDER IS HOVERED   */
+
+.cookbook-user-folder:hover {
+  background-color: #e7ecef;
+  border: 1px solid #000;
+
+  transition: background-color ease-in 0.2s;
+
+  .cookbook-icon path {
+    fill: #fff;
+    fill: #000;
+  }
+
+  .cookbook-user-foldername {
+    color: #fff;
+    color: #000;
+  }
+
+  .cookbook-user-dots path {
+    fill: #fff;
+    fill: #000;
+  }
+}
+
 .cookbook-active-content {
   display: flex;
   justify-content: left;
@@ -99,27 +123,4 @@
 .cookbook-user-dots svg {
   width: 4px;
   height: 19px;
-}
-
-/*  FOLDER IS HOVERED   */
-.cookbook-user-folder:hover {
-  background-color: #dedede;
-  border: 1px solid #000;
-
-  transition: ease-in 0.1s;
-
-  .cookbook-icon path {
-    fill: #fff;
-    fill: #000;
-  }
-
-  .cookbook-user-foldername {
-    color: #fff;
-    color: #000;
-  }
-
-  .cookbook-user-dots path {
-    fill: #fff;
-    fill: #000;
-  }
 }

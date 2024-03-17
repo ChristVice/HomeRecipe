@@ -57,6 +57,7 @@ function RecipeCard({ recipeData }) {
           <div
             style={{
               position: "absolute",
+              zIndex: 101,
               top: "100%",
               left: -10,
               background: "rgba(0, 0, 0, 0.7)",

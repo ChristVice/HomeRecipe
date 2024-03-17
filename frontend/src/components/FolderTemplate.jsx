@@ -8,9 +8,9 @@ import { handlePutFoldersBackend } from "./BackendMethods";
 function FolderTemplate({ folderData: initialFolderData }) {
   // Make a copy of folderData using the spread operator
   const [folderData, setFolderData] = useState({ ...initialFolderData });
-  const [isMouseHovering, setisMouseHovering] = useState(false);
+  const [isMouseHoveringTitle, setisMouseHoveringTitle] = useState(false);
 
-  const [{ isHovering, canDrop }, drop] = useDrop({
+  const [{ isHovering }, drop] = useDrop({
     accept: "RECIPE CARD",
     collect: (monitor) => ({
       isHovering: monitor.isOver(),
@@ -44,20 +44,23 @@ function FolderTemplate({ folderData: initialFolderData }) {
   let timeoutId;
   const handleMouseEnter = () => {
     timeoutId = setTimeout(() => {
-      setisMouseHovering(true);
+      setisMouseHoveringTitle(true);
     }, 500); // 1000 milliseconds = 1 second
   };
 
   const handleMouseLeave = () => {
     clearTimeout(timeoutId);
-    setisMouseHovering(false);
+    setisMouseHoveringTitle(false);
   };
 
   return (
     <div
-      className="cookbook-user-folder"
+      className={"cookbook-user-folder"}
       ref={drop}
-      style={{ backgroundColor: isHovering ? "lightblue" : "white" }}
+      style={{
+        backgroundColor: isHovering ? "rgba(103, 180, 219, 0.4)" : "#e7ecef",
+        transition: "background-color 0.2s ease",
+      }}
     >
       <div
         className="cookbook-active-content"
@@ -73,7 +76,7 @@ function FolderTemplate({ folderData: initialFolderData }) {
           {folderData.folderName}
         </p>
         {/* HOVER LABEL */}
-        {isMouseHovering && (
+        {isMouseHoveringTitle && (
           <p className="cookbook-user-complete-foldername">
             {folderData.folderName}
           </p>
