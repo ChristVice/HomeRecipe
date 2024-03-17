@@ -1,0 +1,106 @@
+/* Cookbook */
+.bttn-titles {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+
+.bttn-titles .back-bttn,
+.bttn-titles .folder-bttn {
+  font-family: "EB Garamond";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+
+  color: #000000;
+
+  margin: 0;
+
+  background-color: transparent;
+  border: none;
+
+  padding: 10px 15px;
+
+  border-radius: 10px;
+}
+
+.bttn-titles .back-bttn:hover {
+  background-color: #d2dce1;
+  transition: background-color ease-in 0.2s;
+}
+
+.bttn-titles .folder-bttn:hover {
+  background-color: #d2dce1;
+  transition: background-color ease-in 0.2s;
+}
+
+.bttn-titles .arrow-icon {
+  width: 5px;
+}
+
+/*      FOLDER BTTN IS CLICKED       */
+
+.bttn-titles .folder-bttn {
+  position: relative;
+}
+.folder-bttn .folder-options {
+  position: absolute;
+
+  padding: 2px 20px;
+
+  border: 2px solid #d2dce1;
+  background: #fff;
+
+  list-style-type: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  top: 100%;
+  left: 0;
+
+  margin: 0;
+}
+
+.folder-bttn .folder-options li {
+  color: #000;
+  text-align: center;
+  font-family: Work Sans;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  padding: 5px 20px;
+
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+
+  margin: 0;
+  cursor: pointer;
+  white-space: nowrap;
+
+  background: #fff;
+  border: none;
+  border-radius: 0;
+}
+
+.folder-bttn .folder-options li:hover {
+  background: #dedede;
+}
+
+.folder-bttn .folder-options li:active {
+  background: #ababab;
+}
+
+.folder-bttn .folder-options li .rename-icon,
+.folder-bttn .folder-options li .trash-icon {
+  width: 15px;
+  height: auto;
+}

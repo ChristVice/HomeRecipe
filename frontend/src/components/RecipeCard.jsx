@@ -103,7 +103,7 @@ function RecipeCard({ recipeData }) {
       className="recipe-card-canvas"
       ref={drag}
       style={{
-        opacity: isDragging ? 0.4 : 1, // Change opacity when dragging
+        opacity: isDragging ? 0.5 : 1, // Change opacity when dragging
       }}
     >
       <div className="recipe-card-image-box">

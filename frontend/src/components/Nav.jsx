@@ -33,7 +33,10 @@ function Nav() {
     const currentPath = location.pathname;
     if (currentPath === "/d/home") {
       setCurrentTab(1);
-    } else if (currentPath === "/d/cookbook") {
+    } else if (
+      currentPath === "/d/cookbook" ||
+      currentPath.startsWith("/d/cookbook/")
+    ) {
       setCurrentTab(2);
     } else if (currentPath === "/d/calendar") {
       setCurrentTab(3);

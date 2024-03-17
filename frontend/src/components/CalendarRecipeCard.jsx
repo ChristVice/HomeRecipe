@@ -2,9 +2,6 @@ import React from "react";
 import "../styling/CalendarRecipeCard.css";
 
 function CalendarRecipeCard({ recipe }) {
-  const handletest = () => {
-    console.log(recipe);
-  };
   const capitalizeFirstLetter = (string) => {
     if (string.includes("/")) {
       string = string.replace(/\/(.)/g, (_, char) => `/${char.toUpperCase()}`);
@@ -54,7 +51,7 @@ function CalendarRecipeCard({ recipe }) {
           </div>
 
           <div className="calendar-upcoming-recipe-content">
-            <h1 onClick={handletest}>{recipe.recipe_label}</h1>
+            <h1>{recipe.recipe_label}</h1>
             <div className="calendar-upcoming-recipe-subcontent">
               <p>{capitalizeFirstLetter(recipe.cuisine_type)}</p>
               <p>{capitalizeFirstLetter(recipe.meal_type)}</p>
