@@ -53,7 +53,7 @@ function TabCookbook() {
           ) : likedRecipes.length > 0 ? ( // Check if there are liked recipes
             <div className="cookbook-content">
               <div className="tabcookbook-show-liked-recipes">
-                <h1>Liked Recipes</h1>
+                <h1 className="sub-header-title">Liked Recipes</h1>
 
                 <div className="cards-container">
                   <div className="scrollable-wrapper">

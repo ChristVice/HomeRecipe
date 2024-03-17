@@ -68,8 +68,8 @@
 
 .calendar-event-slide {
   display: flex;
-
   position: relative;
+  width: 100%;
 }
 
 .calendar-event-date {

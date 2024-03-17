@@ -1,5 +1,6 @@
 .calendar-app {
-  padding: 0px 40px 0px 0px;
+  padding-right: 40px;
+  height: 65%;
 }
 
 .recipe-event-div {
@@ -103,9 +104,11 @@
 :root {
   --fc-today-bg-color: #ffdcd5;
 
+  /*
   .fc {
-    height: 555px;
   }
+  
+  */
   .fc table {
     font-size: clamp(10px, 4vw, 12px);
     font-family: "Work Sans";

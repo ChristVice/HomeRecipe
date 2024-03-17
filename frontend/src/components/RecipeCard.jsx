@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import HeartButton from "./HeartButton";
 import "../styling/TabCookbook.css"; // Import your CSS file for styling
 
 import { useDrag } from "react-dnd";
 
 function RecipeCard({ recipeData }) {
-  const [, drag] = useDrag({
+  const [{ isDragging }, drag, preview] = useDrag({
     type: "RECIPE CARD",
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
     item: { id: recipeData.recipeID },
   });
 
@@ -86,8 +89,22 @@ function RecipeCard({ recipeData }) {
     window.open(url, "_blank");
   };
 
+  // Initialize the previewRef using useRef
+  const previewRef = useRef(null);
+
+  useEffect(() => {
+    // Attach the previewRef to the preview element after the component mounts
+    preview(previewRef.current);
+  }, [preview]);
+
   return (
-    <div className="recipe-card-canvas" ref={drag}>
+    <div
+      className="recipe-card-canvas"
+      ref={drag}
+      style={{
+        opacity: isDragging ? 0.4 : 1, // Change opacity when dragging
+      }}
+    >
       <div className="recipe-card-image-box">
         <img src={recipeData.image_url} alt={recipeData.recipe_label} />
         <div className="heart-btn-bkg">
@@ -102,8 +119,14 @@ function RecipeCard({ recipeData }) {
 
       <div className="recipe-card-information-box">
         <div className="recipe-card-labels">
+          <h1 ref={previewRef} className="drag-preview-content">
+            {truncateString(recipeData.recipe_label)}
+          </h1>
+
           <HoverLabel text={recipeData.recipe_label}>
-            <h1>{truncateString(recipeData.recipe_label)}</h1>
+            <h1 className="recipe-title">
+              {truncateString(recipeData.recipe_label)}
+            </h1>
           </HoverLabel>
 
           <div className="small-labels">

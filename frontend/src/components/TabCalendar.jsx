@@ -328,10 +328,11 @@ function TabCalendar() {
     <div className="right-side-panel" style={{ position: "relative" }}>
       {events && <TabCalendarHeader calendarEvents={events} />}
 
-      <section className="calendar-app">
+      <div className="calendar-app">
         <FullCalendar
           key={calendarKey}
           ref={calendarRef}
+          height="100%"
           plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
           initialView="dayGridMonth"
           weekends={true}
@@ -353,7 +354,7 @@ function TabCalendar() {
             />
           )}
         />
-      </section>
+      </div>
 
       {isEventClicked && (
         <div
