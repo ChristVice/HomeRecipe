@@ -130,3 +130,68 @@
   border-radius: 5px;
   transition: background-color ease-in 0.1s;
 }
+
+/*  DOTS IS CLICKED   */
+.cookbook-user-dots-content {
+  position: relative;
+}
+.cookbook-user-dots-content .folder-options {
+  position: absolute;
+
+  padding: 2px 20px;
+
+  border: 2px solid #d2dce1;
+  background: #fff;
+
+  list-style-type: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  top: 100%;
+  left: 0;
+
+  margin: 0;
+}
+
+.cookbook-user-dots-content .folder-options li {
+  color: #000;
+  text-align: center;
+  font-family: Work Sans;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  padding: 5px 20px;
+
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+
+  margin: 0;
+  cursor: pointer;
+  white-space: nowrap;
+
+  background: #fff;
+  border: none;
+  border-radius: 0;
+}
+
+.cookbook-user-dots-content .folder-options li:hover {
+  background: #dedede;
+}
+
+.cookbook-user-dots-content .folder-options li:active {
+  background: #ababab;
+}
+
+.cookbook-user-dots-content .folder-options li .rename-icon,
+.cookbook-user-dots-content .folder-options li .trash-icon {
+  width: 15px;
+  height: auto;
+}

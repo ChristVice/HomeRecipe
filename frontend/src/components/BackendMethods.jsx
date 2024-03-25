@@ -25,11 +25,11 @@ export const handleGetUsername = async () => {
 // HANDLE FOLDER MODEL BACKEND *****************************************************
 /**
  *
- * @param folderName Folder which will be return its associated recipes, "ALL" will return all folders
+ * @param folderName Folder which will send its associated recipes to the backend
  * @param recipeData Recipe data
  * @returns HTTP response
  */
-export const handlePutFoldersBackend = async (folderName, recipeData) => {
+export const handlePostToFolderBackend = async (folderName, recipeData) => {
   const authToken = JSON.parse(localStorage.getItem("token"))["token"];
 
   let data = null;
@@ -59,7 +59,7 @@ export const handlePutFoldersBackend = async (folderName, recipeData) => {
     const response = await fetch(
       `http://localhost:8000/api/folder/${folderName}/`,
       {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${authToken}`, // Include the token in the Authorization header
@@ -113,6 +113,42 @@ export const handleGetFoldersBackend = async (folderName) => {
 
 /**
  *
+ * @param folderName Folder that will be renamed
+ * @param newFolderName The new name for the folder
+ */
+export const handleRenameFoldersBackend = async (folderName, newFolderName) => {
+  const authToken = JSON.parse(localStorage.getItem("token"))["token"];
+
+  const data = {
+    folderName: newFolderName, //will just be recipeID
+  };
+  try {
+    const response = await fetch(
+      `http://localhost:8000/api/folder/${folderName}/`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${authToken}`, // Include the token in the Authorization header
+        },
+        body: JSON.stringify(data),
+      }
+    );
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return responseData;
+    } else {
+      throw new Error("Failed to post folder");
+    }
+  } catch (error) {
+    return "Error posting folder :: " + error;
+    // Handle errors here, e.g., show an error message to the user
+  }
+};
+
+/**
+ *
  * @param folderName Folder which will be posted to the backend to current user logged in
  * @returns backend message either successful or failure
  */
@@ -125,6 +161,39 @@ export const handlePostFolderBackend = async (folderName) => {
   try {
     const response = await fetch("http://localhost:8000/api/folder/", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${authToken}`, // Include the token in the Authorization header
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return responseData;
+    } else {
+      throw new Error("Failed to post folder");
+    }
+  } catch (error) {
+    return "Error posting folder :: " + error;
+    // Handle errors here, e.g., show an error message to the user
+  }
+};
+
+/**
+ *
+ * @param folderName Folder which will be DELETED to the backend to current user logged in
+ * @returns backend message either successful or failure
+ */
+export const handleDeleteFolderBackend = async (folderName) => {
+  const authToken = JSON.parse(localStorage.getItem("token"))["token"];
+  const data = {
+    folderName: folderName,
+  };
+
+  try {
+    const response = await fetch("http://localhost:8000/api/folder/", {
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Token ${authToken}`, // Include the token in the Authorization header

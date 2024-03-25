@@ -64,11 +64,11 @@ function RecipeCard({ recipeData }) {
               color: "#fff",
               padding: "4px",
               borderRadius: "4px",
-              width: "220px", // Adjust this value as needed
               whiteSpace: "pre-wrap",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
+              fontSize: "12px",
             }}
           >
             {text}

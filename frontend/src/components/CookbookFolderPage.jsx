@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { handleGetFoldersBackend } from "./BackendMethods";
+import { useNavigate } from "react-router-dom";
+import {
+  handleDeleteFolderBackend,
+  handleGetFoldersBackend,
+  handleRenameFoldersBackend,
+} from "./BackendMethods";
 
 import "../styling/CookbookFolderPage.css";
 
 function CookbookFolderPage() {
+  const navigate = useNavigate();
   const { folderName } = useParams();
   const [folderRecipes, setFolderRecipes] = useState([]);
   const [isFolderOptionsOpen, setIsFolderOptionsOpen] = useState(false);
@@ -18,11 +24,30 @@ function CookbookFolderPage() {
   }, [folderName]);
 
   const handleGoToPrevPage = () => {
-    window.history.back();
+    navigate("/d/cookbook"); // Redirect to the home page
   };
 
   const handleFolderOption = (option) => {
-    console.log("option :: ", option);
+    if (option === "rename") {
+      console.log("rename folder");
+      /*
+      
+      handleRenameFoldersBackend(folderName, "").then((data) => {
+        if (data["success"]) {
+            navigate("/d/cookbook");
+            }
+        });
+      
+      */
+    } else if (option === "trash") {
+      console.log("trash folder");
+      handleDeleteFolderBackend(folderName).then((data) => {
+        if (data["success"]) {
+          navigate("/d/cookbook");
+        }
+      });
+    }
+
     setIsFolderOptionsOpen(false);
   };
 
@@ -93,7 +118,7 @@ function CookbookFolderPage() {
                 </svg>
                 Rename
               </li>
-              <li onClick={() => handleFolderOption("move to trash")}>
+              <li onClick={() => handleFolderOption("trash")}>
                 <svg
                   className="trash-icon"
                   width="58"
