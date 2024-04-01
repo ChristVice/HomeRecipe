@@ -12,13 +12,31 @@ import "../styling/CookbookFolderPage.css";
 function CookbookFolderPage() {
   const navigate = useNavigate();
   const { folderName } = useParams();
+
+  const [copyFolderName, setCopyFolderName] = useState(folderName);
+
   const [folderRecipes, setFolderRecipes] = useState([]);
   const [isFolderOptionsOpen, setIsFolderOptionsOpen] = useState(false);
+
+  const [isRenameOptionOpen, setIsRenameOptionOpen] = useState(false);
+  const [folderRename, setFolderRename] = useState("");
+
+  /*
+  useEffect(() => {
+    handleGetFoldersBackend(copyFolderName)
+      .then((data) => {
+        setFolderRecipes(data.result[copyFolderName]);
+        console.log(data.result[copyFolderName]);
+      })
+      .catch((error) => console.error(error));
+  }, [copyFolderName]);
+  */
 
   useEffect(() => {
     handleGetFoldersBackend(folderName)
       .then((data) => {
         setFolderRecipes(data.result[folderName]);
+        console.log(data.result[folderName]);
       })
       .catch((error) => console.error(error));
   }, [folderName]);
@@ -27,21 +45,26 @@ function CookbookFolderPage() {
     navigate("/d/cookbook"); // Redirect to the home page
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Escape") {
+      handleCancel();
+    }
+    if (event.key === "Enter") {
+      handleConfirmFolderRename();
+    }
+  };
+
+  const handleInputChange = (e) => {
+    setFolderRename(e.target.value);
+  };
+
   const handleFolderOption = (option) => {
     if (option === "rename") {
       console.log("rename folder");
-      /*
-      
-      handleRenameFoldersBackend(folderName, "").then((data) => {
-        if (data["success"]) {
-            navigate("/d/cookbook");
-            }
-        });
-      
-      */
+      setIsRenameOptionOpen(!isRenameOptionOpen);
     } else if (option === "trash") {
       console.log("trash folder");
-      handleDeleteFolderBackend(folderName).then((data) => {
+      handleDeleteFolderBackend(copyFolderName).then((data) => {
         if (data["success"]) {
           navigate("/d/cookbook");
         }
@@ -49,6 +72,20 @@ function CookbookFolderPage() {
     }
 
     setIsFolderOptionsOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsRenameOptionOpen(false);
+  };
+
+  const handleConfirmFolderRename = () => {
+    handleRenameFoldersBackend(copyFolderName, folderRename).then((data) => {
+      if (data["success"]) {
+        setIsRenameOptionOpen(false);
+        window.history.replaceState({}, "", `/d/cookbook/${folderRename}`);
+        setCopyFolderName(folderRename);
+      }
+    });
   };
 
   return (
@@ -89,7 +126,7 @@ function CookbookFolderPage() {
               : {}
           }
         >
-          {folderName}
+          {copyFolderName}
           {isFolderOptionsOpen && (
             <ul className="folder-options">
               <li onClick={() => handleFolderOption("rename")}>
@@ -118,6 +155,14 @@ function CookbookFolderPage() {
                 </svg>
                 Rename
               </li>
+              <hr
+                style={{
+                  height: "1px",
+                  background: "#C8C8C8",
+                  width: "100%",
+                  border: "none",
+                }}
+              />
               <li onClick={() => handleFolderOption("trash")}>
                 <svg
                   className="trash-icon"
@@ -142,6 +187,39 @@ function CookbookFolderPage() {
       {folderRecipes.map((recipe, index) => {
         return <h3 key={index}>{recipe.recipe_label}</h3>;
       })}
+
+      {isRenameOptionOpen && (
+        <div
+          className="rename-popup-overlay"
+          onClick={handleCancel}
+          onKeyDown={handleKeyPress}
+        >
+          <div
+            className="rename-folder-popup"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h1 className="rename-popup-title">Rename</h1>
+
+            <input
+              type="text"
+              placeholder="Enter new folder name"
+              value={folderRename}
+              onChange={handleInputChange}
+              className="rename-input"
+              autoFocus
+            />
+
+            <div className="rename-popup-bttns">
+              <button className="cancel" onClick={handleCancel}>
+                Cancel
+              </button>
+              <button className="confirm" onClick={handleConfirmFolderRename}>
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

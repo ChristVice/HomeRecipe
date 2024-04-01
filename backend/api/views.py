@@ -135,7 +135,7 @@ def specific_folder(request, folder_name):
             
             folder.folder_name = new_name
             folder.save()
-            return Response(f"renamed folder {new_name}", status=status.HTTP_200_OK)
+            return Response({"success" : f"renamed folder {new_name}"}, status=status.HTTP_200_OK)
 
         except Folders.DoesNotExist:
             return Response({'error': f'Folder "{folder_name}" not found'}, status=status.HTTP_404_NOT_FOUND)

@@ -137,6 +137,7 @@
 }
 .cookbook-user-dots-content .folder-options {
   position: absolute;
+  z-index: 999;
 
   padding: 2px 20px;
 

@@ -160,6 +160,14 @@ function FolderTemplate({ folderData: initialFolderData }) {
                 </svg>
                 Rename
               </li>
+              <hr
+                style={{
+                  height: "1px",
+                  background: "#C8C8C8",
+                  width: "100%",
+                  border: "none",
+                }}
+              />
               <li onClick={() => handleFolderOption("trash")}>
                 <svg
                   className="trash-icon"
