@@ -1,3 +1,44 @@
+.cookbook-page-recipe-cards-container {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 5px;
+  padding-right: 40px;
+
+  margin-top: 30px;
+}
+
+/*       WHEN FOLDER IS EMPTY       */
+.empty-folder-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.empty-folder-pic {
+  width: 541px;
+  height: 454px;
+}
+.empty-folder-subtxt {
+  font-family: "EB Garamond";
+  font-style: normal;
+  font-weight: 500;
+  font-size: clamp(10px, 8vw, 16px);
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  color: #000000;
+
+  margin: 0;
+  margin-top: -20px;
+}
+
 /* Cookbook */
 .bttn-titles {
   display: flex;

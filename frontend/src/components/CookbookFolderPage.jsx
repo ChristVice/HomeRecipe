@@ -8,6 +8,8 @@ import {
 } from "./BackendMethods";
 
 import "../styling/CookbookFolderPage.css";
+import CookbookPageRecipeCard from "./CookbookPageRecipeCard";
+import EmptyFolderSVG from "../images/emptycookbook.svg";
 
 function CookbookFolderPage() {
   const navigate = useNavigate();
@@ -36,7 +38,6 @@ function CookbookFolderPage() {
     handleGetFoldersBackend(folderName)
       .then((data) => {
         setFolderRecipes(data.result[folderName]);
-        console.log(data.result[folderName]);
       })
       .catch((error) => console.error(error));
   }, [folderName]);
@@ -184,9 +185,20 @@ function CookbookFolderPage() {
         </button>
       </div>
 
-      {folderRecipes.map((recipe, index) => {
-        return <h3 key={index}>{recipe.recipe_label}</h3>;
-      })}
+      {folderRecipes.length === 0 ? (
+        <div className="empty-folder-container">
+          <img className="empty-folder-pic" src={EmptyFolderSVG} alt="SVG" />
+          <p className="empty-folder-subtxt">
+            It looks like you haven't saved a recipe to your folder yet
+          </p>
+        </div>
+      ) : (
+        <div className="cookbook-page-recipe-cards-container">
+          {folderRecipes.map((recipe, index) => {
+            return <CookbookPageRecipeCard key={index} recipeData={recipe} />;
+          })}
+        </div>
+      )}
 
       {isRenameOptionOpen && (
         <div
