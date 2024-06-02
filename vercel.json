@@ -3,7 +3,7 @@
   "builds": [
     {
       "src": "frontend/package.json",
-      "use": "@vercel/next"
+      "use": "@vercel/static-build"
     },
     {
       "src": "backend/wsgi.py",
@@ -17,8 +17,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/frontend/$1"
+      "dest": "/frontend/build/$1"
     }
   ]
 }
-
