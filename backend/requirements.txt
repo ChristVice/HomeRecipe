@@ -1,3 +1,0 @@
-Django==3.2.6
-whitenoise==5.2.0
-# other dependencies
