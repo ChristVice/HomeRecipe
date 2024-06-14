@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,9 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-6q)@%oeq$pd$hly91-z1h3c4mzay9%na$!vqc#y49j%=k)%!ph'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+
+['ec2-3-137-205-80.us-east-2.compute.amazonaws.com', 'https://home-recipe.vercel.app/']
+
+]
 
 
 # Application definition
@@ -84,6 +89,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+
     }
 }
 
@@ -143,3 +149,5 @@ REST_FRAMEWORK = {
     ),
     # Other settings...
 }
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
