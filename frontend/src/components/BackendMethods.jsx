@@ -1,9 +1,12 @@
 // HANDLE USER MODEL BACKEND *****************************************************
 export const handleGetUsername = async () => {
+  const API_URL = process.env.REACT_APP_API_URL + "api/user";
+  console.log("this is api test :: " + API_URL);
+
   const authToken = JSON.parse(localStorage.getItem("token"))["token"];
 
   try {
-    const response = await fetch("http://localhost:8000/api/user/", {
+    const response = await fetch(API_URL, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -13,6 +16,7 @@ export const handleGetUsername = async () => {
 
     if (response.ok) {
       const responseData = await response.json();
+      console.log(responseData);
       return responseData;
     } else {
       throw new Error("Failed to send favorite");

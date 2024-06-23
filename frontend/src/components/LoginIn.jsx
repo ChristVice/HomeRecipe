@@ -22,7 +22,8 @@ function LoginIn() {
     // Make API call for login, handle incorrect credentials error
 
     try {
-      const response = await fetch("http://localhost:8000/api/login/", {
+      const API_URL = process.env.REACT_APP_API_URL + "api/login/";
+      const response = await fetch(API_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
