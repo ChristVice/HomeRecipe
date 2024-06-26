@@ -1,11 +1,9 @@
 // HANDLE USER MODEL BACKEND *****************************************************
 export const handleGetUsername = async () => {
-  const API_URL = process.env.REACT_APP_API_URL + "api/user";
-  console.log("this is api test :: " + API_URL);
-
   const authToken = JSON.parse(localStorage.getItem("token"))["token"];
 
   try {
+    const API_URL = process.env.REACT_APP_API_URL + "api/user";
     const response = await fetch(API_URL, {
       method: "GET",
       headers: {
@@ -60,17 +58,16 @@ export const handlePutFoldersBackend = async (folderName, recipeData) => {
   }
 
   try {
-    const response = await fetch(
-      `http://localhost:8000/api/folder/${folderName}/`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${authToken}`, // Include the token in the Authorization header
-        },
-        body: JSON.stringify(data),
-      }
-    );
+    const API_URL =
+      process.env.REACT_APP_API_URL + `/api/folder/${folderName}/`;
+    const response = await fetch(API_URL, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${authToken}`, // Include the token in the Authorization header
+      },
+      body: JSON.stringify(data),
+    });
 
     if (response.ok) {
       const responseData = await response.json();
@@ -92,16 +89,16 @@ export const handlePutFoldersBackend = async (folderName, recipeData) => {
 export const handleGetFoldersBackend = async (folderName) => {
   const authToken = JSON.parse(localStorage.getItem("token"))["token"];
   try {
-    const response = await fetch(
-      `http://localhost:8000/api/folder/${folderName}/`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${authToken}`, // Include the token in the Authorization header
-        },
-      }
-    );
+    const API_URL =
+      process.env.REACT_APP_API_URL + `/api/folder/${folderName}/`;
+    console.log("error 94 :: " + API_URL);
+    const response = await fetch(API_URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${authToken}`, // Include the token in the Authorization header
+      },
+    });
 
     if (response.ok) {
       const responseData = await response.json();
@@ -127,7 +124,8 @@ export const handlePostFolderBackend = async (folderName) => {
   };
 
   try {
-    const response = await fetch("http://localhost:8000/api/folder/", {
+    const API_URL = process.env.REACT_APP_API_URL + `/api/folder/`;
+    const response = await fetch(API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -153,7 +151,8 @@ export const handleGetRecipe = async () => {
   const authToken = JSON.parse(localStorage.getItem("token"))["token"];
 
   try {
-    const response = await fetch("http://localhost:8000/api/recipe/", {
+    const API_URL = process.env.REACT_APP_API_URL + `/api/recipe/`;
+    const response = await fetch(API_URL, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -193,7 +192,8 @@ export const handlePostFavorites = async (recipeData) => {
   };
 
   try {
-    const response = await fetch("http://localhost:8000/api/favorites/", {
+    const API_URL = process.env.REACT_APP_API_URL + `/api/favorites/`;
+    const response = await fetch(API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -226,7 +226,8 @@ export const handleDeleteFavorite = async (recipeID) => {
   };
 
   try {
-    const response = await fetch("http://localhost:8000/api/favorites/", {
+    const API_URL = process.env.REACT_APP_API_URL + `/api/favorites/`;
+    const response = await fetch(API_URL, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -254,7 +255,8 @@ export const handleGetFavorites = async () => {
   const authToken = JSON.parse(localStorage.getItem("token"))["token"];
 
   try {
-    const response = await fetch("http://localhost:8000/api/favorites/", {
+    const API_URL = process.env.REACT_APP_API_URL + `/api/favorites/`;
+    const response = await fetch(API_URL, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -284,7 +286,8 @@ export const handleGetMealDates = async () => {
   const authToken = JSON.parse(localStorage.getItem("token"))["token"];
 
   try {
-    const response = await fetch("http://localhost:8000/api/mealdates/", {
+    const API_URL = process.env.REACT_APP_API_URL + `/api/mealdates/`;
+    const response = await fetch(API_URL, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -313,7 +316,8 @@ export const handlePostMealDates = async (info) => {
 
   console.log(info);
   try {
-    const response = await fetch("http://localhost:8000/api/mealdates/", {
+    const API_URL = process.env.REACT_APP_API_URL + `/api/mealdates/`;
+    const response = await fetch(API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -342,7 +346,8 @@ export const handleDeleteMealDates = async (info) => {
   const authToken = JSON.parse(localStorage.getItem("token"))["token"];
 
   try {
-    const response = await fetch("http://localhost:8000/api/mealdates/", {
+    const API_URL = process.env.REACT_APP_API_URL + `/api/mealdates/`;
+    const response = await fetch(API_URL, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

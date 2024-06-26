@@ -22,7 +22,7 @@ function LoginIn() {
     // Make API call for login, handle incorrect credentials error
 
     try {
-      const API_URL = process.env.REACT_APP_API_URL + "api/login/";
+      const API_URL = process.env.REACT_APP_API_URL + "/api/login/";
       const response = await fetch(API_URL, {
         method: "POST",
         headers: {

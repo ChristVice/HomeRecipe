@@ -39,7 +39,8 @@ function SignUp() {
           passwordMatch: !errorHandling.passwordMatch,
         });
       } else {
-        const response = await axios.post("http://localhost:8000/api/signup/", {
+        const API_URL = process.env.REACT_APP_API_URL + "api/signup/";
+        const response = await axios.post(API_URL, {
           email: email,
           username: username,
           password: password,

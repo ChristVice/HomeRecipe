@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/static/css/main.9e42af2e.css",
+    "main.js": "/static/js/main.171105c9.js",
+    "static/js/787.cda612ba.chunk.js": "/static/js/787.cda612ba.chunk.js",
+    "static/media/Recipes by Taylor Kiser.jpg": "/static/media/Recipes by Taylor Kiser.1799a7b4a3676ab2cac1.jpg",
+    "static/media/Cooking by Calum Lewis.jpg": "/static/media/Cooking by Calum Lewis.408a2a6f22a7823e962f.jpg",
+    "static/media/Cooking by Maarten van den Heuvel.jpg": "/static/media/Cooking by Maarten van den Heuvel.25b32c9ffd0e4feb79db.jpg",
+    "static/media/Delicious Recipes Rirri.jpg": "/static/media/Delicious Recipes Rirri.f8922d079db560f1688f.jpg",
+    "static/media/Delicious Food by Sam Moghadam.jpg": "/static/media/Delicious Food by Sam Moghadam.4511b132440a57ff62ce.jpg",
+    "static/media/homerecipelogo1.png": "/static/media/homerecipelogo1.eb642aef7f71dc130641.png",
+    "static/media/tabcookbook-default.png": "/static/media/tabcookbook-default.3c94ac9c1628e18d31c4.png",
+    "static/media/empty-calendar.svg": "/static/media/empty-calendar.b26dca2aae105c50040bec1de0f87163.svg",
+    "static/media/cookbook-icon.svg": "/static/media/cookbook-icon.aea1ed2504f79d8779426f144aee1c41.svg",
+    "index.html": "/index.html",
+    "main.9e42af2e.css.map": "/static/css/main.9e42af2e.css.map",
+    "main.171105c9.js.map": "/static/js/main.171105c9.js.map",
+    "787.cda612ba.chunk.js.map": "/static/js/787.cda612ba.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9e42af2e.css",
+    "static/js/main.171105c9.js"
+  ]
+}
