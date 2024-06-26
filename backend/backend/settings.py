@@ -34,6 +34,11 @@ DATABASES = {
 }
 
 
+# For debugging purposes
+DEBUG = True 
+ALLOWED_HOSTS = []
+
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -148,7 +153,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-    'https://home-recipe.vercel.app/'
+    'https://home-recipe.vercel.app'
     # Add other allowed origins if needed
 ]
 
