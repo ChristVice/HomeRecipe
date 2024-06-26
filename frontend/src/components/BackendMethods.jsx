@@ -91,7 +91,6 @@ export const handleGetFoldersBackend = async (folderName) => {
   try {
     const API_URL =
       process.env.REACT_APP_API_URL + `/api/folder/${folderName}/`;
-    console.log("error 94 :: " + API_URL);
     const response = await fetch(API_URL, {
       method: "GET",
       headers: {
