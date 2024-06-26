@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../styling/SaveToFolderButton.css";
-import { handlePutFoldersBackend } from "./BackendMethods";
+import { handlePostToFolderBackend } from "./BackendMethods";
 
 function SaveToFolderButton({ folders, recipeData }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +36,7 @@ function SaveToFolderButton({ folders, recipeData }) {
   };
 
   const handleCookbookClick = (cookbookName) => {
-    handlePutFoldersBackend(cookbookName, recipeData);
+    handlePostToFolderBackend(cookbookName, recipeData);
     // Close the dropdown
     setIsOpen(false);
   };

@@ -57,17 +57,18 @@ function RecipeCard({ recipeData }) {
           <div
             style={{
               position: "absolute",
+              zIndex: 101,
               top: "100%",
               left: -10,
               background: "rgba(0, 0, 0, 0.7)",
               color: "#fff",
               padding: "4px",
               borderRadius: "4px",
-              width: "220px", // Adjust this value as needed
               whiteSpace: "pre-wrap",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
+              fontSize: "12px",
             }}
           >
             {text}
@@ -102,7 +103,7 @@ function RecipeCard({ recipeData }) {
       className="recipe-card-canvas"
       ref={drag}
       style={{
-        opacity: isDragging ? 0.4 : 1, // Change opacity when dragging
+        opacity: isDragging ? 0.5 : 1, // Change opacity when dragging
       }}
     >
       <div className="recipe-card-image-box">

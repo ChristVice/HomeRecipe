@@ -12,10 +12,10 @@
   flex-shrink: 0;
 
   border-radius: 10px;
-  border: 2px dashed #ababab;
+  border: 2px dashed #aabcc6;
   background: none;
 
-  color: #ababab;
+  color: #aabcc6;
   font-family: Work Sans;
   font-size: 14px;
   font-style: normal;
@@ -25,16 +25,16 @@
 
   transition: 0.2s ease-in;
 
-  padding: 17px 27px;
+  padding: 15px 25px;
 }
 
 .add-new-folder-btn:hover {
   transition: 0.2s ease-in;
 
-  border: 2px dashed #797979;
-  background: #e8e9e8;
+  border: 2px dashed #829cac;
+  background-color: #eef1f3;
 
-  color: #797979;
+  color: #829cac;
 }
 
 .add-new-folder-btn.new-folder-btn-active {

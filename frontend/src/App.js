@@ -7,6 +7,7 @@ import MainPageRightSection from "./components/MainPageRightSection";
 import TabHome from "./components/TabHome";
 import TabCalendar from "./components/TabCalendar";
 import TabCookbook from "./components/TabCookbook";
+import CookbookFolderPage from "./components/CookbookFolderPage";
 import Nav from "./components/Nav";
 import "./styling/Nav.css";
 import "./styling/HomePage.css";
@@ -57,6 +58,10 @@ function App() {
                   <Route path="home" element={<TabHome />} />
                   <Route path="calendar" element={<TabCalendar />} />
                   <Route path="cookbook" element={<TabCookbook />} />
+                  <Route
+                    path="cookbook/:folderName"
+                    element={<CookbookFolderPage />}
+                  />
                 </Routes>
               </ProtectedRoute>
             </div>

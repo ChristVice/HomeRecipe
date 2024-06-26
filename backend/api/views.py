@@ -119,12 +119,29 @@ def register_user(request):
         return Response({'error': f'Invalid data provided :: {e}'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'PUT'])
+@api_view(['GET', 'POST', 'PUT'])
 @permission_classes([IsAuthenticated])
 def specific_folder(request, folder_name):
     user = request.user
 
-    if request.method == 'GET':
+    if request.method == 'PUT':
+
+        try:
+            folder = Folders.objects.get(user=user, folder_name=folder_name)
+            new_name = request.data['folderName']
+
+            if Folders.objects.filter(user=user, folder_name=new_name).exists():
+                return Response({'error': 'Folder name already exists'}, status=status.HTTP_409_CONFLICT)
+            
+            folder.folder_name = new_name
+            folder.save()
+            return Response({"success" : f"renamed folder {new_name}"}, status=status.HTTP_200_OK)
+
+        except Folders.DoesNotExist:
+            return Response({'error': f'Folder "{folder_name}" not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+    elif request.method == 'GET':
         try:
             if user and isinstance(user, CustomUser):  # Ensure user is a CustomUser instance
                 # gets the folder name 
@@ -170,7 +187,8 @@ def specific_folder(request, folder_name):
                 return Response({'error' : f'Invalid data provided {e}'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-    elif request.method == "PUT":
+    elif request.method == "POST":
+        print('here')
         if user and isinstance(user, CustomUser):  # Ensure user is a CustomUser instance
             recipe_data = request.data  # Assuming recipe data is included
             recipeID = recipe_data['recipeID'] 

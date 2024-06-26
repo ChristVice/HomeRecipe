@@ -3,7 +3,7 @@ export const handleGetUsername = async () => {
   const authToken = JSON.parse(localStorage.getItem("token"))["token"];
 
   try {
-    const API_URL = process.env.REACT_APP_API_URL + "api/user";
+    const API_URL = process.env.REACT_APP_API_URL + "/api/user";
     const response = await fetch(API_URL, {
       method: "GET",
       headers: {
@@ -27,11 +27,11 @@ export const handleGetUsername = async () => {
 // HANDLE FOLDER MODEL BACKEND *****************************************************
 /**
  *
- * @param folderName Folder which will be return its associated recipes, "ALL" will return all folders
+ * @param folderName Folder which will send its associated recipes to the backend
  * @param recipeData Recipe data
  * @returns HTTP response
  */
-export const handlePutFoldersBackend = async (folderName, recipeData) => {
+export const handlePostToFolderBackend = async (folderName, recipeData) => {
   const authToken = JSON.parse(localStorage.getItem("token"))["token"];
 
   let data = null;
@@ -114,6 +114,41 @@ export const handleGetFoldersBackend = async (folderName) => {
 
 /**
  *
+ * @param folderName Folder that will be renamed
+ * @param newFolderName The new name for the folder
+ */
+export const handleRenameFoldersBackend = async (folderName, newFolderName) => {
+  const authToken = JSON.parse(localStorage.getItem("token"))["token"];
+
+  const data = {
+    folderName: newFolderName, //will just be recipeID
+  };
+  try {
+    const API_URL =
+      process.env.REACT_APP_API_URL + `/api/folder/${folderName}/`;
+    console.log("error 94 :: " + API_URL);
+    const response = await fetch(API_URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${authToken}`, // Include the token in the Authorization header
+      },
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return responseData;
+    } else {
+      throw new Error("Failed to post folder");
+    }
+  } catch (error) {
+    return "Error posting folder :: " + error;
+    // Handle errors here, e.g., show an error message to the user
+  }
+};
+
+/**
+ *
  * @param folderName Folder which will be posted to the backend to current user logged in
  * @returns backend message either successful or failure
  */
@@ -127,6 +162,40 @@ export const handlePostFolderBackend = async (folderName) => {
     const API_URL = process.env.REACT_APP_API_URL + `/api/folder/`;
     const response = await fetch(API_URL, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${authToken}`, // Include the token in the Authorization header
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return responseData;
+    } else {
+      throw new Error("Failed to post folder");
+    }
+  } catch (error) {
+    return "Error posting folder :: " + error;
+    // Handle errors here, e.g., show an error message to the user
+  }
+};
+
+/**
+ *
+ * @param folderName Folder which will be DELETED to the backend to current user logged in
+ * @returns backend message either successful or failure
+ */
+export const handleDeleteFolderBackend = async (folderName) => {
+  const authToken = JSON.parse(localStorage.getItem("token"))["token"];
+  const data = {
+    folderName: folderName,
+  };
+
+  try {
+    const API_URL = process.env.REACT_APP_API_URL + "/api/folder";
+    const response = await fetch(API_URL, {
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Token ${authToken}`, // Include the token in the Authorization header
