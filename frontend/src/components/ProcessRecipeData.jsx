@@ -73,7 +73,7 @@ function ProcessRecipeData(recipeData) {
       data["timeMin"] = recipeData.totalTime;
     }
     if (recipeData.ingredientLines !== null) {
-      data["ingredients"] = recipeData.ingredientLines.join("&");
+      data["ingredients"] = recipeData.ingredientLines.join("***");
     }
     if (recipeData.url !== null) {
       data["websiteURL"] = recipeData.url;

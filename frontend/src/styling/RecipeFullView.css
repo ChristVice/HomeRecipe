@@ -1,0 +1,96 @@
+/*            MORE INFORMATION CONTAINER CSS        */
+.more-information-container {
+  position: absolute;
+  top: 91%;
+  z-index: -1;
+
+  margin: 0;
+
+  height: auto;
+  width: 100%;
+
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  background: #e6e6e6;
+  border-radius: 0px 0px 20px 20px;
+
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+.more-information-container .bubble-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  gap: 10px;
+}
+.more-information-container .bubble-content p {
+  margin: 0;
+}
+
+.more-information-container .ingredients-subtitle {
+  font-family: "Work Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 8px;
+  line-height: 9px;
+  display: flex;
+  align-items: center;
+
+  color: #ababab;
+
+  margin: 0;
+  padding-left: 15px;
+}
+
+.more-information-container .ingredients-content {
+  margin: 15px;
+  margin-top: 10px;
+  padding-left: 10px;
+}
+
+.more-information-container .ingredients-content .bullet-points {
+  font-family: "Work Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 12px;
+
+  color: #000000;
+}
+
+.recipe-fullview-openlink-btn {
+  margin-left: auto;
+  margin-right: 15px;
+
+  background-color: #000000;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  width: 105px;
+  height: 25px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  font-family: "Work Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 12px;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  color: #ffffff;
+}
+
+.recipe-fullview-openlink-btn .openlink-icon {
+  width: 10px;
+  height: 10px;
+  margin-top: -1px;
+}

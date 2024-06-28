@@ -61,7 +61,7 @@ export const handlePostToFolderBackend = async (folderName, recipeData) => {
     const API_URL =
       process.env.REACT_APP_API_URL + `/api/folder/${folderName}/`;
     const response = await fetch(API_URL, {
-      method: "PUT",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Token ${authToken}`, // Include the token in the Authorization header
@@ -192,7 +192,7 @@ export const handleDeleteFolderBackend = async (folderName) => {
   };
 
   try {
-    const API_URL = process.env.REACT_APP_API_URL + "/api/folder";
+    const API_URL = process.env.REACT_APP_API_URL + "/api/folder/";
     const response = await fetch(API_URL, {
       method: "DELETE",
       headers: {

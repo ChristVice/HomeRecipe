@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import "../styling/CookbookPageRecipeCard.css";
+import RecipeFullView from "./RecipeFullView";
 
 function CookbookPageRecipeCard({ recipeData }) {
-  const [isMoreInformationOpen, setIsMoreInformationOpen] = useState(false);
+  const [isMoreInformationOpen, setIsMoreInformationOpen] = useState(true);
+
+  // change to false when done designing
+  // const [isMoreInformationOpen, setIsMoreInformationOpen] = useState(false);
 
   const handleOpenMoreInformation = () => {
     setIsMoreInformationOpen(!isMoreInformationOpen);
@@ -35,11 +39,7 @@ function CookbookPageRecipeCard({ recipeData }) {
       <img className="image" src={recipeData.image_url} alt="recipe" />
       <h1 className="recipe-label">{recipeData.recipe_label}</h1>
 
-      {isMoreInformationOpen && (
-        <div className="more-information-container">
-          <h1>{isMoreInformationOpen.toString()}</h1>
-        </div>
-      )}
+      {isMoreInformationOpen && <RecipeFullView recipeData={recipeData} />}
     </div>
   );
 }
