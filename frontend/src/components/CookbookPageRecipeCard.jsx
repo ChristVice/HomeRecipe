@@ -3,7 +3,7 @@ import "../styling/CookbookPageRecipeCard.css";
 import RecipeFullView from "./RecipeFullView";
 
 function CookbookPageRecipeCard({ recipeData }) {
-  const [isMoreInformationOpen, setIsMoreInformationOpen] = useState(true);
+  const [isMoreInformationOpen, setIsMoreInformationOpen] = useState(false);
 
   // change to false when done designing
   // const [isMoreInformationOpen, setIsMoreInformationOpen] = useState(false);
@@ -18,7 +18,11 @@ function CookbookPageRecipeCard({ recipeData }) {
   };
 
   return (
-    <div className="image-bttn-container" onClick={handleOpenMoreInformation}>
+    <div
+      className="image-bttn-container"
+      onClick={handleOpenMoreInformation}
+      style={isMoreInformationOpen ? { zIndex: 10 } : {}}
+    >
       <div className="image-blur" />
 
       <button className="etc-bttn" onClick={handleEtcButtn}>

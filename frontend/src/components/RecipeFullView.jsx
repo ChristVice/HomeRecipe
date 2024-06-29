@@ -15,7 +15,16 @@ function RecipeFullView({ recipeData, showBubbles = true }) {
     );
   };
 
-  const handleOpenLink = (url) => {
+  const capitalizeFirstLetter = (string) => {
+    if (string.includes("/")) {
+      string = string.replace(/\/(.)/g, (_, char) => `/${char.toUpperCase()}`);
+    }
+
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
+  const handleOpenLink = (e, url) => {
+    e.stopPropagation();
     window.open(url, "_blank");
   };
 
@@ -23,10 +32,14 @@ function RecipeFullView({ recipeData, showBubbles = true }) {
     <div className="more-information-container">
       {showBubbles && (
         <div className="bubble-content">
-          <p>{recipeData.cuisine_type}</p>
-          <p>{recipeData.calories}</p>
-          <p>{recipeData.time_in_minutes}</p>
-          <p>{recipeData.meal_type}</p>
+          <p>{capitalizeFirstLetter(recipeData.cuisine_type)}</p>
+          <p>{capitalizeFirstLetter(recipeData.meal_type)}</p>
+          <p>{recipeData.calories} calories</p>
+          {recipeData.time_in_minutes < 1 ? (
+            <p>1 minute</p>
+          ) : (
+            <p>{recipeData.time_in_minutes} minutes</p>
+          )}
         </div>
       )}
       <h1 className="ingredients-subtitle">Ingredients</h1>
@@ -35,7 +48,7 @@ function RecipeFullView({ recipeData, showBubbles = true }) {
 
       <button
         className="recipe-fullview-openlink-btn"
-        onClick={() => handleOpenLink(recipeData.website_url)}
+        onClick={(e) => handleOpenLink(e, recipeData.website_url)}
       >
         <svg
           className="openlink-icon"
