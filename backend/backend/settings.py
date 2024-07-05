@@ -37,7 +37,7 @@ DATABASES = {
 # For debugging purposes
 '''
 DEBUG = True 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["my-homerecipe-alb-1796753177.us-east-2.elb.amazonaws.com", "172.31.34.217"]
 '''
 
 
