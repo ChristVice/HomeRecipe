@@ -140,6 +140,12 @@
 .results-labels {
   margin-left: 15px;
   width: auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  height: 90%;
 }
 
 .results-labels h1 {
@@ -178,7 +184,6 @@
   display: flex;
   justify-content: left;
   align-items: center;
-  margin-top: 20px;
   grid-gap: 10px;
 }
 

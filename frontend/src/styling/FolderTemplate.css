@@ -196,3 +196,11 @@
   width: 15px;
   height: auto;
 }
+
+.cookbook-user-dots-content .folder-options li .rename-icon path {
+  fill: none;
+}
+
+.cookbook-user-dots-content .folder-options li .trash-icon path {
+  fill: #5e7c8d;
+}
