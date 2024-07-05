@@ -35,8 +35,11 @@ DATABASES = {
 
 
 # For debugging purposes
+'''
 DEBUG = True 
 ALLOWED_HOSTS = []
+'''
+
 
 
 
@@ -153,7 +156,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-    'https://home-recipe.vercel.app'
+    "https://home-recipe.vercel.app",
+    "https://my-homerecipe.dev",
+    "https://www.my-homerecipe.dev"
     # Add other allowed origins if needed
 ]
 
@@ -168,3 +173,12 @@ REST_FRAMEWORK = {
 }
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# settings.py
+
+# Ensure all HTTP requests are redirected to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# Set the header that identifies a secure request from the proxy
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
