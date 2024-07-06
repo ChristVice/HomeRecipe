@@ -218,7 +218,7 @@
 }
 
 .rename-input:focus {
-  outline: none;
+  outline: 5px auto #ff4d6d;
 }
 .rename-input::placeholder {
   color: #808080;
@@ -228,8 +228,8 @@
 .rename-popup-bttns {
   display: flex;
   justify-content: flex-end;
-  gap: 5px;
   align-items: center;
+  gap: 5px;
 
   margin-top: 30px;
 }
@@ -237,6 +237,7 @@
 .rename-popup-bttns button {
   cursor: pointer;
 
+  color: #000;
   font-family: "Work Sans";
   font-style: normal;
   font-weight: 400;
@@ -273,14 +274,14 @@
 
 /*       CONFIRM BUTTON     */
 .rename-popup-bttns .confirm {
-  color: #67b4db;
+  color: #ff4d6d;
   font-weight: 600;
 
   transition: 0.1s ease-in-out;
 }
 
 .rename-popup-bttns .confirm:hover {
-  background: #67b4db;
+  background: #fae0e4;
 
   color: #000000;
 

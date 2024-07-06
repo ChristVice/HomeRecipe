@@ -117,11 +117,11 @@ function FolderModal() {
               autoFocus
             />
             <div className="modal-folder-action-btns">
-              <button className="new-folder-action-btn" onClick={handleCancel}>
+              <button className="new-folder-cancel-btn" onClick={handleCancel}>
                 Cancel
               </button>
               <button
-                className="new-folder-action-btn"
+                className="new-folder-create-btn"
                 onClick={handleCreateFolder}
               >
                 Create

@@ -67,15 +67,18 @@
 
 /*      MODAL CONTENT STYLE     */
 .new-folder-title {
-  color: #000;
-  font-family: Work Sans;
-  font-size: 20px;
+  margin: 0;
+  margin-bottom: 30px;
+
+  font-family: "Work Sans";
   font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+  font-weight: 500;
+  font-size: clamp(14px, 4vw, 20px);
+
+  color: #000000;
 
   margin: 0;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .new-folder-input {
@@ -94,7 +97,10 @@
   padding: 10px;
 
   margin: 0;
-  margin-bottom: 20px;
+}
+
+.new-folder-input:focus {
+  outline: 5px auto #ff4d6d;
 }
 
 .modal-folder-action-btns {
@@ -102,31 +108,76 @@
   justify-content: flex-end;
   align-items: center;
   gap: 5px;
+
+  margin-top: 30px;
 }
 
-.new-folder-action-btn {
-  border-radius: 10px;
-  background: #fff;
-  border: none;
-
-  color: #000;
-  font-family: Work Sans;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-
+.modal-folder-action-btns button {
   padding: 8px 15px;
 
   cursor: pointer;
+
+  font-family: "Work Sans";
+  font-style: normal;
+  font-size: 12px;
+  line-height: 14px;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  background: none;
 }
 
-.new-folder-action-btn:hover {
+.new-folder-cancel-btn:hover {
   transition: 0.2s ease-in;
   background: #ebebeb;
 }
 
-.new-folder-action-btn:active {
+.new-folder-create-btn:active {
   background: #000;
   color: #fff;
+}
+
+/*       CANCEL BUTTON     */
+.new-folder-cancel-btn {
+  color: #000000;
+  transition: 0.1s ease-in-out;
+}
+
+.new-folder-cancel-btn:hover {
+  background: #e6e6e6;
+  transition: 0.1s ease-in-out;
+}
+
+.new-folder-cancel-btn:active {
+  background: #ababab;
+  transition: 0.1s ease-in-out;
+}
+
+/*       CREATE BUTTON     */
+.new-folder-create-btn {
+  color: #ff4d6d;
+  font-weight: 600;
+
+  transition: 0.1s ease-in-out;
+}
+
+.new-folder-create-btn:hover {
+  background: #fae0e4;
+
+  color: #000000;
+
+  transition: 0.1s ease-in-out;
+}
+
+.new-folder-create-btn:active {
+  background: #000;
+
+  color: #fff;
+
+  transition: 0.1s ease-in-out;
 }

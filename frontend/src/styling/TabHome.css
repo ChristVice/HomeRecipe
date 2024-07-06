@@ -10,6 +10,13 @@
   width: 90%;
   margin-left: auto;
   margin-right: auto;
+
+  outline: 5px solid none;
+}
+
+.search-container:focus-within {
+  outline: 5px auto #ff4d6d;
+  border-radius: 20px;
 }
 
 .search-txt {
@@ -34,7 +41,7 @@
 }
 
 .search-txt:focus {
-  outline: 1px solid #dc2100;
+  outline: none;
 }
 
 .search-btn {

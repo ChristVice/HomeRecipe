@@ -201,14 +201,14 @@
 
 /*       CONFIRM BUTTON     */
 .event-popup-bttns .confirm {
-  color: #67b4db;
+  color: #ff4d6d;
   font-weight: 600;
 
   transition: 0.1s ease-in-out;
 }
 
 .event-popup-bttns .confirm:hover {
-  background: #67b4db;
+  background: #fae0e4;
 
   color: #000000;
 
