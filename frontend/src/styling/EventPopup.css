@@ -222,3 +222,29 @@
 
   transition: 0.1s ease-in-out;
 }
+
+@media screen and (max-width: 575px) {
+  .calendar-event-popup {
+    left: 0;
+  }
+}
+@media screen and (max-width: 500px) {
+  .calendar-event-popup {
+    width: 400px;
+  }
+}
+@media screen and (max-width: 450px) {
+  .calendar-event-popup {
+    width: 350px;
+  }
+}
+@media screen and (max-width: 400px) {
+  .calendar-event-popup {
+    width: 300px;
+  }
+}
+@media screen and (max-width: 350px) {
+  .calendar-event-popup {
+    width: 250px;
+  }
+}

@@ -27,6 +27,11 @@
   gap: 5px;
 }
 
+@media screen and (max-width: 575px) {
+  .tabcookbook-cookbooks-section {
+    padding-right: 0;
+  }
+}
 @media screen and (max-width: 980px) {
   .tabcookbook-cookbooks-section {
     margin-right: 0;

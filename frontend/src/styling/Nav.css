@@ -337,8 +337,13 @@
   .left-side-panel {
     width: auto;
 
-    padding: 20px;
+    padding: 10px;
+    padding-right: 15px;
     padding-bottom: 0;
+  }
+
+  .right-side-panel::before {
+    display: none;
   }
 
   .top-title {
@@ -436,7 +441,8 @@
 
 @media screen and (max-height: 500px) {
 }
-
+@media screen and (max-width: 575px) {
+}
 /*    GENERAL SCREEN SIZES TO ADJUST  */
 
 /*
@@ -450,8 +456,6 @@
 @media screen and (max-width: 980px) {
 }
 
-@media screen and (max-width: 575px) {
-}
 
 @media screen and (max-width: 744px) {
 }

@@ -181,3 +181,9 @@
 
   transition: 0.1s ease-in-out;
 }
+
+@media screen and (max-width: 400px) {
+  .new-folder-input {
+    width: 250px;
+  }
+}

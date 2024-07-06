@@ -4,12 +4,13 @@
 
   background-color: #fff;
 
-  width: 70.2%;
-
   box-sizing: border-box;
   border: 1px solid #ababab;
   margin-top: -1px;
   margin-left: -1px;
+
+  width: -webkit-fill-available;
+  margin-right: 21px;
 }
 
 .unordered-search-options-list {
