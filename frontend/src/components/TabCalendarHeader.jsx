@@ -29,6 +29,7 @@ function TabCalendarHeader({ calendarEvents }) {
   }, []);
 
   useEffect(() => {
+    console.log(calendarEvents);
     const findRecipes = (data) => {
       const sortedData = [...data].sort(
         (a, b) => new Date(a.start) - new Date(b.start)
@@ -97,7 +98,9 @@ function TabCalendarHeader({ calendarEvents }) {
 
   return (
     <>
-      {calendarEvents.length === 0 ? (
+      {calendarEvents.length === 0 ||
+      (calendarEvents.length === 1 &&
+        calendarEvents[0].title === "(New event)") ? ( //when user click to make new event, ignore it until officially selected
         <section className="emptycalendar">
           <h1 className="tabcalendar-start-title">
             Embark on your culinary adventure by clicking on any day on the
@@ -106,7 +109,7 @@ function TabCalendarHeader({ calendarEvents }) {
           <EmptyCalendarSVG className="tabcalendar-empty-calendar-svg" />
           <h1 className="tabcalendar-start-subtitle">
             Effortlessly organize and select recipes, and your upcoming culinary
-            delights will show right here.
+            delights for today or the future will show right here.
           </h1>
         </section>
       ) : (
