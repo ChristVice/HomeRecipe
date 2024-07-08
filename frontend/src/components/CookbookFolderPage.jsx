@@ -23,6 +23,8 @@ function CookbookFolderPage() {
   const [isRenameOptionOpen, setIsRenameOptionOpen] = useState(false);
   const [folderRename, setFolderRename] = useState("");
 
+  const [isLoading, setIsLoading] = useState(true); // New loading state
+
   /*
   useEffect(() => {
     handleGetFoldersBackend(copyFolderName)
@@ -38,6 +40,7 @@ function CookbookFolderPage() {
     handleGetFoldersBackend(folderName)
       .then((data) => {
         setFolderRecipes(data.result[folderName]);
+        setIsLoading(false);
       })
       .catch((error) => console.error(error));
   }, [folderName]);
@@ -185,7 +188,9 @@ function CookbookFolderPage() {
         </button>
       </div>
 
-      {folderRecipes.length === 0 ? (
+      {isLoading ? (
+        <p className="isLoading">Loading...</p>
+      ) : folderRecipes.length === 0 ? (
         <div className="empty-folder-container">
           <img className="empty-folder-pic" src={EmptyFolderSVG} alt="SVG" />
           <p className="empty-folder-subtxt">
