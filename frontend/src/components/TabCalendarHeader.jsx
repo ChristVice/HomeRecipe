@@ -94,13 +94,20 @@ function TabCalendarHeader({ calendarEvents }) {
     console.log("todayMeals", todayMeals);
     console.log("upcomingMeals", upcomingMeals);
     console.log("todayDate", todayDate);
+
+    if (calendarEvents.length === 1) {
+      console.log(calendarEvents[0].start > todayDate); //if event date is after today
+      console.log(calendarEvents[0].start < todayDate); //if event date is before today
+    }
   };
 
   return (
     <>
+      {/* When user clicks to make new event, ignore it until confirmed, also ignore if its before today*/}
       {calendarEvents.length === 0 ||
       (calendarEvents.length === 1 &&
-        calendarEvents[0].title === "(New event)") ? ( //when user click to make new event, ignore it until officially selected
+        calendarEvents[0].title === "(New event)") ||
+      calendarEvents[0].start < todayDate ? (
         <section className="emptycalendar">
           <h1 className="tabcalendar-start-title">
             Embark on your culinary adventure by clicking on any day on the
