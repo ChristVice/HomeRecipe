@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../styling/TabCookbook.css"; // Import your CSS file for styling
 import Cookbooks from "./Cookbooks";
 import PlaceholderImage from "../images/tabcookbook-default.png";
-import { handleGetFavorites } from "./BackendMethods";
+import { handleGetFavorites, handleGetFoldersBackend } from "./BackendMethods";
 import RecipeCard from "./RecipeCard";
 
 import { motion } from "framer-motion";
@@ -13,6 +13,8 @@ function TabCookbook() {
   const [likedRecipes, setLikedRecipes] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // New loading state
 
+  const [folders, setFolders] = useState([]);
+
   useEffect(() => {
     handleGetFavorites()
       .then((data) => {
@@ -21,6 +23,14 @@ function TabCookbook() {
       })
       .catch((error) => {
         console.error("Error getting favorites:", error);
+      });
+
+    handleGetFoldersBackend("ALL")
+      .then((data) => {
+        setFolders(data);
+      })
+      .catch((error) => {
+        console.error("Error getting folders:", error);
       });
   }, []);
 
@@ -68,7 +78,11 @@ function TabCookbook() {
                             key={index}
                             variants={likedRecipesMotionItem}
                           >
-                            <RecipeCard key={index} recipeData={recipe} />
+                            <RecipeCard
+                              key={index}
+                              recipeData={recipe}
+                              folders={folders}
+                            />
                           </motion.div>
                         ))}
                       </div>

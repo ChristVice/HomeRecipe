@@ -25,6 +25,8 @@ function Cookbooks() {
 
   useEffect(() => {
     fetchFolders();
+
+    console.log(folders);
   }, [fetchFolders]);
 
   const getFolderAndLengths = (data) => {
