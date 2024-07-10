@@ -94,7 +94,6 @@
   justify-content: center;
   align-items: center;
 
-  padding: 5px;
   background: none;
 
   cursor: pointer;
@@ -102,7 +101,6 @@
 
 .bttn-titles .folder-bttn:hover {
   background-color: #beccd4;
-  border-radius: 5px;
   transition: background-color ease-in 0.1s;
 }
 
