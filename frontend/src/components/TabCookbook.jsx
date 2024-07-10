@@ -78,11 +78,7 @@ function TabCookbook() {
                             key={index}
                             variants={likedRecipesMotionItem}
                           >
-                            <RecipeCard
-                              key={index}
-                              recipeData={recipe}
-                              folders={folders}
-                            />
+                            <RecipeCard key={index} recipeData={recipe} />
                           </motion.div>
                         ))}
                       </div>

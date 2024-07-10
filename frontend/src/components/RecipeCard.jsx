@@ -7,9 +7,10 @@ import { useDrag } from "react-dnd";
 import {
   handlePostToFolderBackend,
   handleDeleteFavorite,
+  handleGetFoldersBackend,
 } from "./BackendMethods";
 
-function RecipeCard({ recipeData, folders }) {
+function RecipeCard({ recipeData }) {
   const [{ isDragging }, drag, preview] = useDrag({
     type: "RECIPE CARD",
     collect: (monitor) => ({
@@ -20,6 +21,8 @@ function RecipeCard({ recipeData, folders }) {
 
   const [isFolderBtnClicked, setIsFolderBtnClicked] = useState(false);
   const [isUnhearted, setIsUnhearted] = useState(false);
+  //const [newFolders, setNewFolders] = useState([]);
+  const [folders, setFolders] = useState([]);
 
   useEffect(() => {
     // Attach the previewRef to the preview element after the component mounts
@@ -110,6 +113,18 @@ function RecipeCard({ recipeData, folders }) {
     e.stopPropagation();
 
     setIsFolderBtnClicked(!isFolderBtnClicked);
+
+    if (!isFolderBtnClicked) {
+      handleGetFoldersBackend("ALL")
+        .then((data) => {
+          if (data) {
+            setFolders(data);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   const handleAddToFolder = (folderName) => {
