@@ -35,7 +35,7 @@ function FolderTemplate({ folderData: initialFolderData }) {
     drop: (item) => {
       // Handle the drop event, and access the recipeID from the dragged item
       const droppedRecipeID = item.id;
-      const droppedFolder = folderData.folderName;
+      const droppedFolder = copyFolderName;
 
       handlePostToFolderBackend(droppedFolder, droppedRecipeID).then((data) => {
         console.log(data);
