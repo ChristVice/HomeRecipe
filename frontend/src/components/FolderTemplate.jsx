@@ -15,7 +15,15 @@ function FolderTemplate({ folderData: initialFolderData }) {
   // Make a copy of folderData using the spread operator
   const [folderData, setFolderData] = useState({ ...initialFolderData });
   const [isMouseHoveringTitle, setisMouseHoveringTitle] = useState(false);
+
+  const [isRenameOptionOpen, setIsRenameOptionOpen] = useState(false);
+  const [copyFolderName, setCopyFolderName] = useState(folderData.folderName);
+  const [folderRename, setFolderRename] = useState("");
+
+  const [isFolderDeleted, setIsFolderDeleted] = useState(false);
+
   const [isEtcActive, setIsEtcActive] = useState(false);
+
   const navigate = useNavigate();
 
   const [{ isHovering }, drop] = useDrop({
@@ -64,37 +72,63 @@ function FolderTemplate({ folderData: initialFolderData }) {
     setIsEtcActive(!isEtcActive);
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Escape") {
+      setIsRenameOptionOpen(false);
+    }
+    if (event.key === "Enter") {
+      handleConfirmFolderRename();
+    }
+  };
+
+  const handleInputChange = (e) => {
+    setFolderRename(e.target.value);
+  };
+
   const handleFolderOption = (option) => {
     if (option === "Rename") {
-      // console.log("rename folder", folder);
-      // handleRenameFoldersBackend(folder, )
+      setIsRenameOptionOpen(!isRenameOptionOpen);
     } else if (option === "Move to trash") {
-      // console.log("trash folder", folder);
-      /**
-    
-
-      handleDeleteFolderBackend(folder).then((data) => {
-        if (data.success) {
-          console.log("success");
+      handleDeleteFolderBackend(copyFolderName).then((data) => {
+        if (data["success"]) {
+          setIsFolderDeleted(true);
         }
       });
-      navigate("/d/home");
-      
-       */
     }
 
     setIsEtcActive(false);
   };
 
+  const handleCancel = (e) => {
+    e.stopPropagation();
+    setIsRenameOptionOpen(false);
+  };
+
+  const handleConfirmFolderRename = () => {
+    handleRenameFoldersBackend(copyFolderName, folderRename).then((data) => {
+      if (data["success"]) {
+        setIsRenameOptionOpen(false);
+        window.history.replaceState({}, "", `/d/cookbook/${folderRename}`);
+        setCopyFolderName(folderRename);
+      }
+    });
+  };
+
   return (
     <div
       className={"cookbook-user-folder"}
-      onClick={() => handleFolderOpen(folderData.folderName)}
+      onClick={() => handleFolderOpen(copyFolderName)}
       ref={drop}
-      style={{
-        backgroundColor: isHovering ? "rgba(103, 180, 219, 0.4)" : "#e7ecef",
-        transition: "background-color 0.2s ease",
-      }}
+      style={
+        isFolderDeleted
+          ? { display: "none" }
+          : {
+              backgroundColor: isHovering
+                ? "rgba(103, 180, 219, 0.4)"
+                : "#e7ecef",
+              transition: "background-color 0.2s ease",
+            }
+      }
     >
       <div className="cookbook-active-content">
         <CookbookIcon className="cookbook-icon" />
@@ -104,13 +138,11 @@ function FolderTemplate({ folderData: initialFolderData }) {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          {folderData.folderName}
+          {copyFolderName}
         </p>
         {/* HOVER LABEL */}
         {isMouseHoveringTitle && (
-          <p className="cookbook-user-complete-foldername">
-            {folderData.folderName}
-          </p>
+          <p className="cookbook-user-complete-foldername">{copyFolderName}</p>
         )}
         <h1 className="cookbook-user-items-count">{folderData.folderLength}</h1>
 
@@ -149,6 +181,38 @@ function FolderTemplate({ folderData: initialFolderData }) {
           </button>
         </div>
       </div>
+      {isRenameOptionOpen && (
+        <div
+          className="rename-popup-overlay"
+          onClick={(e) => handleCancel(e)}
+          onKeyDown={handleKeyPress}
+        >
+          <div
+            className="rename-folder-popup"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h1 className="rename-popup-title">Rename</h1>
+
+            <input
+              type="text"
+              placeholder="Enter new folder name"
+              value={folderRename}
+              onChange={handleInputChange}
+              className="rename-input"
+              autoFocus
+            />
+
+            <div className="rename-popup-bttns">
+              <button className="cancel" onClick={handleCancel}>
+                Cancel
+              </button>
+              <button className="confirm" onClick={handleConfirmFolderRename}>
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

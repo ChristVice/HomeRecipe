@@ -12,6 +12,7 @@ function TabCalendarHeader({ calendarEvents }) {
 
   const [recipes, setRecipes] = useState([]);
 
+  /* GETS ALL RECIPES ASSOCIATED TO USER */
   useEffect(() => {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
@@ -28,8 +29,8 @@ function TabCalendarHeader({ calendarEvents }) {
     });
   }, []);
 
+  /* GETS EVENTS AND RETURNS TODAYS AND UPCOMING */
   useEffect(() => {
-    console.log(calendarEvents);
     const findRecipes = (data) => {
       const sortedData = [...data].sort(
         (a, b) => new Date(a.start) - new Date(b.start)
@@ -56,6 +57,7 @@ function TabCalendarHeader({ calendarEvents }) {
       setTodayMeals(todayMeals);
       setUpcomingMeals([firstMeals, secondMeals]);
     };
+
     if (calendarEvents.length > 0) {
       findRecipes(calendarEvents);
     }
@@ -101,9 +103,9 @@ function TabCalendarHeader({ calendarEvents }) {
     }
   };
 
+  /* When user clicks to make new event, ignore it until confirmed, also ignore if its before today*/
   return (
     <>
-      {/* When user clicks to make new event, ignore it until confirmed, also ignore if its before today*/}
       {calendarEvents.length === 0 ||
       (calendarEvents.length === 1 &&
         calendarEvents[0].title === "(New event)") ||
