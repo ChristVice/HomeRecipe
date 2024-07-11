@@ -9,6 +9,19 @@
 }
 
 /*       WHEN FOLDER IS EMPTY       */
+.isLoading {
+  color: #000;
+  text-align: start;
+  font-family: "EB Garamond";
+  font-size: clamp(10px, 8vw, 16px);
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+  margin: 0;
+  margin-top: 20px;
+}
+
 .empty-folder-container {
   display: flex;
   justify-content: center;

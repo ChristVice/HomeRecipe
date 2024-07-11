@@ -12,7 +12,12 @@ function TabCalendarHeader({ calendarEvents }) {
 
   const [recipes, setRecipes] = useState([]);
 
+<<<<<<< HEAD
   /* GETS ALL RECIPES ASSOCIATED TO USER */
+=======
+  const [isLoading, setIsLoading] = useState(true);
+
+>>>>>>> ed719d891e6e9e959fe96fd3488c96c02e33a5a5
   useEffect(() => {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
@@ -26,6 +31,7 @@ function TabCalendarHeader({ calendarEvents }) {
 
     handleGetRecipe().then((data) => {
       setRecipes(data);
+      setIsLoading(false);
     });
   }, []);
 
@@ -106,10 +112,16 @@ function TabCalendarHeader({ calendarEvents }) {
   /* When user clicks to make new event, ignore it until confirmed, also ignore if its before today*/
   return (
     <>
+<<<<<<< HEAD
       {calendarEvents.length === 0 ||
       (calendarEvents.length === 1 &&
         calendarEvents[0].title === "(New event)") ||
       calendarEvents[0].start < todayDate ? (
+=======
+      {isLoading ? (
+        <p className="isLoading">Loading...</p>
+      ) : calendarEvents.length === 0 ? (
+>>>>>>> ed719d891e6e9e959fe96fd3488c96c02e33a5a5
         <section className="emptycalendar">
           <h1 className="tabcalendar-start-title">
             Embark on your culinary adventure by clicking on any day on the

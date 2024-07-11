@@ -11,7 +11,7 @@
   margin-left: auto;
   margin-right: auto;
 
-  outline: 5px solid none;
+  outline: 5px solid transparent;
 }
 
 .search-container:focus-within {
