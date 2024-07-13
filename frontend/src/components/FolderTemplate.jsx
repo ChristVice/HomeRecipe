@@ -108,7 +108,7 @@ function FolderTemplate({ folderData: initialFolderData }) {
     handleRenameFoldersBackend(copyFolderName, folderRename).then((data) => {
       if (data["success"]) {
         setIsRenameOptionOpen(false);
-        window.history.replaceState({}, "", `/d/cookbook/${folderRename}`);
+        // window.history.replaceState({}, "", `/d/cookbook/${folderRename}`);
         setCopyFolderName(folderRename);
       }
     });

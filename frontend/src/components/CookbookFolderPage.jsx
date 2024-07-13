@@ -23,11 +23,7 @@ function CookbookFolderPage() {
   const [isRenameOptionOpen, setIsRenameOptionOpen] = useState(false);
   const [folderRename, setFolderRename] = useState("");
 
-<<<<<<< HEAD
   const [isLoading, setIsLoading] = useState(true);
-=======
-  const [isLoading, setIsLoading] = useState(true); // New loading state
->>>>>>> ed719d891e6e9e959fe96fd3488c96c02e33a5a5
 
   /*
   useEffect(() => {
@@ -151,11 +147,7 @@ function CookbookFolderPage() {
       </div>
 
       {isLoading ? (
-<<<<<<< HEAD
-        <p>Loading...</p>
-=======
         <p className="isLoading">Loading...</p>
->>>>>>> ed719d891e6e9e959fe96fd3488c96c02e33a5a5
       ) : folderRecipes.length === 0 ? (
         <div className="empty-folder-container">
           <img className="empty-folder-pic" src={EmptyFolderSVG} alt="SVG" />

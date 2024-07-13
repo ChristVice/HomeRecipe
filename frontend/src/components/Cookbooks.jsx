@@ -17,6 +17,7 @@ function Cookbooks() {
       .then((data) => {
         // Update the folders state with the new data
         setFolders(getFolderAndLengths(data));
+        console.log("folders:: ", getFolderAndLengths(data));
       })
       .catch((error) => {
         console.error("Error fetching folders:", error);
@@ -25,8 +26,6 @@ function Cookbooks() {
 
   useEffect(() => {
     fetchFolders();
-
-    console.log(folders);
   }, [fetchFolders]);
 
   const getFolderAndLengths = (data) => {
@@ -39,10 +38,6 @@ function Cookbooks() {
     }));
 
     return folderData;
-  };
-
-  const openModal = () => {
-    setShowModal(true);
   };
 
   const closeModal = () => {
@@ -70,19 +65,23 @@ function Cookbooks() {
 
   // will send folder name to backend
   const handleCreateFolder = () => {
-    if (folderName.length > 0) {
+    if (folderName.length > 0 && folderName !== null) {
       handlePostFolderBackend(folderName)
         .then((data) => {
-          fetchFolders();
+          if (data) {
+            fetchFolders();
+          }
         })
         .catch((error) => {
           console.error("Error posting folder:", error);
         });
     }
 
+    fetchFolders();
     //need to show error if empty
     closeModal();
   };
+
   return (
     <div className="tabcookbook-cookbooks-section">
       <h1 className="cookbook-subtitle">Personalized Cookbooks</h1>
@@ -96,7 +95,7 @@ function Cookbooks() {
           className={`add-new-folder-btn ${
             showModal ? "new-folder-btn-active" : ""
           }`}
-          onClick={openModal}
+          onClick={() => setShowModal(true)}
         >
           + Add new cookbook
         </button>
