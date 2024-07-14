@@ -128,7 +128,15 @@ function RecipeCard({ recipeData }) {
   };
 
   const handleAddToFolder = (folderName) => {
-    handlePostToFolderBackend(folderName, recipeData.recipeID);
+    handlePostToFolderBackend(folderName, recipeData.recipeID)
+      .then((data) => {
+        if (data) {
+          window.location.reload();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     setIsFolderBtnClicked(false);
   };

@@ -42,7 +42,7 @@ function TabCalendar() {
   useEffect(() => {
     handleGetMealDates()
       .then((data) => {
-        console.log(data);
+        ////console.log(data);
 
         const newEvents = [];
 
@@ -150,7 +150,7 @@ function TabCalendar() {
       setIsEventClicked(false);
       setInputText("");
       handleUpdateEvents();
-      console.log(clickedEvent);
+      //console.log(clickedEvent);
 
       // after the event is updated, we want to change the view to the day of the event
       // otherwise it will send user back to the current day
@@ -165,7 +165,7 @@ function TabCalendar() {
   };
 
   const handleCancel = () => {
-    console.log("cancel");
+    //console.log("cancel");
 
     const eventIndex = events.findIndex(
       (event) => event.eventID === clickedEvent.eventID
@@ -183,7 +183,7 @@ function TabCalendar() {
   };
 
   const handleDateClick = (arg) => {
-    console.log(arg);
+    //console.log(arg);
     const newEvent = {
       className: "recipe-event-div",
       title: "(New event)", // Replace with your desired title
@@ -209,7 +209,7 @@ function TabCalendar() {
     setClickedEvent(events[eventIndex]);
     setIsEventClicked(true);
 
-    console.log(events[eventIndex]);
+    //console.log(events[eventIndex]);
     if (events[eventIndex].title !== "(New event)") {
       setInputText(events[eventIndex].title);
     } else {
@@ -272,8 +272,8 @@ function TabCalendar() {
   };
 
   const handleTrashEvent = () => {
-    console.log("trash event");
-    console.log(clickedEvent);
+    //console.log("trash event");
+    //console.log(clickedEvent);
 
     const eventIndex = events.findIndex(
       (event) => event.eventID === clickedEvent.eventID
@@ -285,6 +285,10 @@ function TabCalendar() {
     handleDeleteMealDates({ eventID: clickedEvent.eventID });
     setIsEventClicked(false);
     setInputText("");
+  };
+
+  const handleEventResize = (info) => {
+    info.revert(); // This will revert the resize action
   };
 
   const EventTitleWithImage = ({ title, imageURL, id }) => (
@@ -342,6 +346,7 @@ function TabCalendar() {
             right: "today",
           }}
           editable={true}
+          eventResize={handleEventResize} // Prevent resizing
           dateClick={handleDateClick}
           eventDrop={handleEventDrop}
           eventClick={handleEventClick}

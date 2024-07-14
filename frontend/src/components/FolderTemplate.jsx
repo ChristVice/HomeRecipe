@@ -37,16 +37,20 @@ function FolderTemplate({ folderData: initialFolderData }) {
       const droppedRecipeID = item.id;
       const droppedFolder = copyFolderName;
 
-      handlePostToFolderBackend(droppedFolder, droppedRecipeID).then((data) => {
-        console.log(data);
-        if (data["success"]) {
-          //if drop is successful
-          setFolderData({
-            ...folderData,
-            folderLength: folderData.folderLength + 1,
-          });
-        }
-      });
+      handlePostToFolderBackend(droppedFolder, droppedRecipeID)
+        .then((data) => {
+          console.log(data);
+          if (data["success"]) {
+            //if drop is successful
+            setFolderData({
+              ...folderData,
+              folderLength: folderData.folderLength + 1,
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   });
 

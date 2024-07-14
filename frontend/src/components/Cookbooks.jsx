@@ -17,7 +17,7 @@ function Cookbooks() {
       .then((data) => {
         // Update the folders state with the new data
         setFolders(getFolderAndLengths(data));
-        console.log("folders:: ", getFolderAndLengths(data));
+        // console.log("folders:: ", getFolderAndLengths(data));
       })
       .catch((error) => {
         console.error("Error fetching folders:", error);
@@ -63,23 +63,27 @@ function Cookbooks() {
     setFolderName(e.target.value);
   };
 
-  // will send folder name to backend
   const handleCreateFolder = () => {
-    if (folderName.length > 0 && folderName !== null) {
-      handlePostFolderBackend(folderName)
+    if (folderName.trim().length > 0 && folderName !== null) {
+      handlePostFolderBackend(folderName.trim())
         .then((data) => {
           if (data) {
+            // Update the folders state with the new data
             fetchFolders();
           }
         })
         .catch((error) => {
           console.error("Error posting folder:", error);
+        })
+        .finally(() => {
+          closeModal(); // Close modal
         });
+    } else {
+      // Show error if folderName is empty or null
+      // You should implement your error handling here
+      console.error("Folder name is empty or null");
     }
-
     fetchFolders();
-    //need to show error if empty
-    closeModal();
   };
 
   return (

@@ -10,7 +10,7 @@ function CookbookPageRecipeCard({ recipeData }) {
 
   const handleOpenMoreInformation = () => {
     setIsMoreInformationOpen(!isMoreInformationOpen);
-    console.log(recipeData);
+    //console.log(recipeData);
   };
 
   const handleEtcButtn = (e) => {

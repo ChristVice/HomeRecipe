@@ -14,7 +14,7 @@ export const handleGetUsername = async () => {
 
     if (response.ok) {
       const responseData = await response.json();
-      console.log(responseData);
+      //console.log(responseData);
       return responseData;
     } else {
       throw new Error("Failed to send favorite");
@@ -382,7 +382,7 @@ export const handleGetMealDates = async () => {
 export const handlePostMealDates = async (info) => {
   const authToken = JSON.parse(localStorage.getItem("token"))["token"];
 
-  console.log(info);
+  //console.log(info);
   try {
     const API_URL = process.env.REACT_APP_API_URL + `/api/mealdates/`;
     const response = await fetch(API_URL, {

@@ -21,7 +21,7 @@ function TabCalendarHeader({ calendarEvents }) {
 
     const today = `${year}-${month}-${day}`;
 
-    console.log("todayDate", today);
+    // console.log("todayDate", today);
     setTodayDate(today);
 
     handleGetRecipe().then((data) => {
@@ -91,25 +91,47 @@ function TabCalendarHeader({ calendarEvents }) {
     },
   };
 
-  const handleTest = () => {
-    console.log("calendarEvent", calendarEvents);
-    console.log("todayMeals", todayMeals);
-    console.log("upcomingMeals", upcomingMeals);
-    console.log("todayDate", todayDate);
+  /**
+   * Checks if all calendar events are before today's date.
+   * @returns {boolean} True if all events are before today, false otherwise.
+   */
+  const areAllEventsBeforeToday = () => {
+    return calendarEvents.every((event) => event.start < todayDate);
+  };
 
-    if (calendarEvents.length === 1) {
-      console.log(calendarEvents[0].start > todayDate); //if event date is after today
-      console.log(calendarEvents[0].start < todayDate); //if event date is before today
+  /**
+   * Checks if the events are good or just drafts. Checks if today events are drafts and upcoming events are not, or vice versa.
+   *
+   * @returns {boolean} Returns true if the events are good, false if they are just drafts.
+   */
+  const areGoodEventsJustDrafts = () => {
+    const isDraft = (meals) =>
+      meals && meals.length === 1 && meals[0].title === "(New event)"; // Check if only the first is a draft
+    const isNotDraft = (meals) =>
+      meals && meals.length > 0 && meals[0].title !== "(New event)";
+
+    if (
+      (isDraft(upcomingMeals[0]) && isNotDraft(upcomingMeals[1])) || // Check if upcoming events are drafts and the next upcoming is not
+      (isDraft(todayMeals) && isNotDraft(upcomingMeals[0])) || // Check if first today events are drafts and the upcoming are not
+      (isNotDraft(todayMeals) && isDraft(upcomingMeals[0])) // Check if today events are not drafts and the first upcoming events are
+    ) {
+      return false;
     }
+
+    if (isDraft(todayMeals) || isDraft(upcomingMeals[0])) {
+      // Check if either today events or upcoming events are drafts
+      return true;
+    }
+
+    return false;
   };
 
   /* When user clicks to make new event, ignore it until confirmed, also ignore if its before today*/
   return (
     <>
       {calendarEvents.length === 0 ||
-      (calendarEvents.length === 1 &&
-        calendarEvents[0].title === "(New event)") ||
-      calendarEvents[0].start < todayDate ? (
+      (calendarEvents.length > 0 &&
+        (areAllEventsBeforeToday() || areGoodEventsJustDrafts())) ? (
         <section className="emptycalendar">
           <h1 className="tabcalendar-start-title">
             Embark on your culinary adventure by clicking on any day on the
@@ -123,9 +145,7 @@ function TabCalendarHeader({ calendarEvents }) {
         </section>
       ) : (
         <section>
-          <h1 className="calendar-upcoming-title" onClick={handleTest}>
-            Upcoming Dishes
-          </h1>
+          <h1 className="calendar-upcoming-title">Upcoming Dishes</h1>
           {todayMeals &&
             todayMeals.length === 0 &&
             recipes["recipes"] &&

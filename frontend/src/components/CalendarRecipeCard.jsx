@@ -11,7 +11,7 @@ function CalendarRecipeCard({ recipe }) {
   };
 
   const handleOpenLink = (url) => {
-    console.log("clicked :: ", recipe.recipe_label);
+    // console.log("clicked :: ", recipe.recipe_label);
     window.open(url, "_blank");
   };
 
